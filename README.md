@@ -98,3 +98,18 @@ scope3.include_impact_response = True
 response = interact()
 print(response.scope3ai.impact)
 ```
+
+## Development
+
+This project use conventional commits and semantic versioning.
+
+Also:
+- [pre-commit](https://pre-commit.com) for code formatting, linting and conventional commit checks
+- [uv](https://github.com/astral-sh/uv) for project and dependency management.
+
+### Initial setup
+
+```bash
+$ pre-commit install
+$ pre-commit install --hook-type commit-msg
+```
