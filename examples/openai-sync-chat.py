@@ -15,8 +15,6 @@ def interact() -> None:
 
 
 if __name__ == "__main__":
-    import logging
-
     scope3 = Scope3AI.init(enable_debug_logging=True)
 
     # 1. Using context
