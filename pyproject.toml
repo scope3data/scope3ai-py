@@ -1,0 +1,38 @@
+[project]
+name = "scope3ai-python"
+version = "0.1.0"
+description = "Track the environmental impact of your use of AI"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.28.1",
+    "pydantic>=2.10.3",
+    "wrapt>=1.17.0",
+]
+
+[project.optional-dependencies]
+openai = [
+    "openai>=1.57.1",
+]
+litellm = [
+    "litellm>=1.53.3",
+    "rapidfuzz>=3.10.1",
+]
+mistralai = [
+    "mistralai>=0.4.2",
+]
+anthropic = [
+    "anthropic>=0.40.0",
+]
+cohere = [
+    "cohere>=5.13.3",
+]
+huggingface-hub = [
+    "aiohttp>=3.11.10",
+    "huggingface-hub>=0.26.5",
+    "minijinja>=2.5.0",
+    "tiktoken>=0.8.0",
+]
+google-generativeai = [
+    "google-generativeai>=0.8.3",
+]
