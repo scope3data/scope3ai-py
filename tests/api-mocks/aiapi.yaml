@@ -1,0 +1,1262 @@
+openapi: "3.0.0"
+security:
+  - bearerAuth: []
+info:
+  version: 1.0.0
+  title: AI impact measurement
+paths:
+  /status:
+    get:
+      servers:
+        - url: http://127.0.0.1:4010
+          description: API server
+      operationId: status
+      responses:
+        "200":
+          description: Model details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResponse"
+        "406":
+          description: Not acceptable response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "415":
+          description: Unsupported media type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /model:
+    get:
+      servers:
+        - url: http://127.0.0.1:4010
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: List models
+      operationId: listModels
+      parameters:
+        - in: query
+          name: family
+          schema:
+            $ref: "#/components/schemas/Family"
+          description: Filter models by family
+          required: false
+      responses:
+        "200":
+          description: Model details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModelResponse"
+        "406":
+          description: Not acceptable response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "415":
+          description: Unsupported media type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /node:
+    get:
+      servers:
+        - url: http://127.0.0.1:4010
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: List nodes
+      operationId: listNodes
+      parameters:
+        - in: query
+          name: service
+          schema:
+            $ref: "#/components/schemas/ManagedServiceProvider"
+          description: Filter models by managed service
+          required: false
+        - in: query
+          name: cloud
+          schema:
+            $ref: "#/components/schemas/CloudProvider"
+          description: Filter models by cloud provider
+          required: false
+      responses:
+        "200":
+          description: Node details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NodeResponse"
+        "406":
+          description: Not acceptable response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "415":
+          description: Unsupported media type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /gpu:
+    get:
+      servers:
+        - url: http://127.0.0.1:4010
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: List GPUs
+      operationId: listGPUs
+      responses:
+        "200":
+          description: GPU details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GPUResponse"
+        "406":
+          description: Not acceptable response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "415":
+          description: Unsupported media type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/impact:
+    post:
+      servers:
+        - url: http://127.0.0.1:4010
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Get impact metrics for a task
+      operationId: getImpact
+      parameters:
+        - in: query
+          name: debug
+          schema:
+            type: boolean
+          description: Filter models by family
+          required: false
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImpactRequest"
+      responses:
+        "200":
+          description: Impact metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactResponse"
+        "406":
+          description: Not acceptable response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "415":
+          description: Unsupported media type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/log_json:
+    post:
+      servers:
+        - url: http://127.0.0.1:4010
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Log requests in JSON format
+      operationId: logImpactJSON
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImpactLogRequest"
+      responses:
+        "200":
+          description: Impact metrics retrieved successfully
+        "406":
+          description: Not acceptable response
+        "429":
+          description: Too many requests
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "415":
+          description: Unsupported media type
+        default:
+          description: Unexpected error
+
+  /:
+    post:
+      servers:
+        - url: http://127.0.0.1:4010
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Calculate AI model impact metrics for BigQuery
+      description: Processes batched impact calculations for BigQuery remote function calls
+      operationId: calculateImpactBigQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImpactBigQueryRequest"
+      responses:
+        "200":
+          description: Impact metrics calculated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactBigQueryResponse"
+        "400":
+          description: Invalid request format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactBigQueryError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactBigQueryError"
+        "415":
+          description: Unsupported media type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactBigQueryError"
+        "429":
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactBigQueryError"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactBigQueryError"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImpactBigQueryError"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    StatusResponse:
+      title: Status Response
+      type: object
+      additionalProperties: false
+      required:
+        - ready
+      properties:
+        ready:
+          type: boolean
+        reason:
+          type: string
+
+    ModelResponse:
+      title: Model Response
+      type: object
+      additionalProperties: false
+      required:
+        - models
+      properties:
+        models:
+          type: array
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/Model"
+
+    NodeResponse:
+      title: Node Response
+      type: object
+      additionalProperties: false
+      required:
+        - nodes
+      properties:
+        nodes:
+          type: array
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/Node"
+
+    GPUResponse:
+      title: GPU Response
+      type: object
+      additionalProperties: false
+      required:
+        - gpus
+      properties:
+        gpus:
+          type: array
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/GPU"
+
+    ImpactBigQueryRequest:
+      type: object
+      required:
+        - requestId
+        - caller
+        - sessionUser
+        - calls
+      properties:
+        requestId:
+          type: string
+          description: Unique identifier for the request
+          example: "124ab1c"
+        caller:
+          type: string
+          description: Full resource name of the BigQuery job
+          example: "//bigquery.googleapis.com/projects/myproject/jobs/myproject:US.bquxjob_5b4c112c_17961fafeaf"
+        sessionUser:
+          type: string
+          description: Email of the user executing the BigQuery query
+          example: "user@company.com"
+        userDefinedContext:
+          type: object
+          description: User-defined context from BigQuery
+        calls:
+          type: array
+          items:
+            description: |
+              Array of function call parameters in this exact order:
+                model_id STRING, model_family STRING, model_name STRING,
+                model_hugging_face_path STRING, request_time TIMESTAMP,
+                node_id STRING, cloud_id STRING, cloud_region STRING,
+                cloud_instance_id STRING, managed_service_id STRING,
+                country STRING, region STRING, task STRING, input_tokens INT64,
+                output_tokens INT64, input_images STRING, output_images STRING,
+                output_video_resolution INT64,
+                output_video_frames INT64, input_audio_seconds INT64, input_steps INT64
+            type: array
+            minItems: 17
+            maxItems: 21
+            items:
+              nullable: true
+              oneOf:
+                - type: string
+                - type: integer
+            example:
+              [
+                "gpt-4-turbo",
+                "2024-03-15T10:30:00Z",
+                "us-central1",
+                "US",
+                "CA",
+                "text-generation",
+                100,
+                50,
+                null,
+              ]
+
+    ImpactBigQueryResponse:
+      type: object
+      required:
+        - replies
+      properties:
+        replies:
+          type: array
+          description: Array of impact metric results
+          minItems: 0
+          maxItems: 1000
+          items:
+            type: string
+        errorMessage:
+          type: string
+
+    ImpactBigQueryError:
+      type: object
+      required:
+        - errorMessage
+      properties:
+        errorMessage:
+          type: string
+          description: Error message for BigQuery
+          example: "Invalid request format: missing required field 'calls'"
+
+    ImpactLogRequest:
+      title: Log impact data
+      type: object
+      additionalProperties: false
+      required:
+        - rows
+      properties:
+        rows:
+          type: array
+          maxItems: 1000
+          items:
+            $ref: "#/components/schemas/ImpactLogRow"
+
+    ImpactLogRow:
+      type: object
+      additionalProperties: false
+      properties:
+        start_time_utc:
+          type: string
+          format: date-time
+          description: The start time of the inference
+          example: "2024-10-01T00:00:00Z"
+        request_duration_ms:
+          type: number
+          format: float
+          description: The time the request took (as measured by client or proxy)
+          example: 283
+        processing_duration_ms:
+          type: number
+          format: float
+          description: The time taken in processing the request (as measured at execution)
+          example: 238
+        integration_source:
+          type: string
+          description: The integration used to source the data
+          example: "litellm"
+        client_id:
+          type: string
+          description: The client to attribute this call to
+        project_id:
+          type: string
+          description: The project to attribute this call to
+        application_id:
+          type: string
+          description: The application to attribute this call to
+        session_id:
+          type: string
+          description: The ID of the session (multiple requests)
+        request_id:
+          type: string
+          description: The unique identifier of this request
+        environment:
+          type: string
+          description: Environment (prod/production indicates production)
+          example: "staging"
+        model_id:
+          type: string
+          description: The ID of the model requested
+          example: "llama_31_8b"
+        model_id_used:
+          type: string
+          description: The ID of the model that did the inference
+          example: "llama_31_8b_0125"
+        model_name:
+          type: string
+          description: The name of the model
+          example: "LLaMa v3.1 8B"
+        model_family:
+          type: string
+          description: The family of the model
+          example: "llama"
+        model_hugging_face_path:
+          type: string
+          description: The Hugging Face path of the model
+          example: "meta/llama31_8b"
+        cloud_id:
+          type: string
+          description: The ID of the cloud
+          example: "aws"
+        cloud_region:
+          type: string
+          description: The region of cloud hosting
+          example: "us-central1"
+        cloud_instance_id:
+          type: string
+          description: The instance type in the cloud
+          example: "xl-4g-8a100"
+        managed_service_id:
+          type: string
+          description: The ID of a managed service provider
+          example: "aws-bedrock"
+        node_id:
+          type: string
+          description: The ID of a proprietary node
+          example: "h200-2024-build"
+        node_country:
+          type: string
+          pattern: "^[A-Z]{2}$"
+          minLength: 2
+          maxLength: 2
+          description: The country where the servers are hosted
+          example: "US"
+        node_region:
+          type: string
+          pattern: "^[A-Z]{2}$"
+          minLength: 2
+          maxLength: 2
+          description: The region where the servers are hosted
+          example: "CA"
+        task:
+          $ref: "#/components/schemas/Task"
+          description: The task the AI is performing
+          example: "text-generation"
+        input_tokens:
+          type: integer
+          description: the number of input tokens
+          minimum: 0
+          maximum: 100000000
+          example: 1033
+        output_tokens:
+          type: integer
+          description: the number of output tokens
+          minimum: 0
+          maximum: 100000000
+          example: 2300
+        input_audio_seconds:
+          type: integer
+          description: the duration of audio input in seconds
+          minimum: 0
+          maximum: 100000
+          example: 60
+        input_images:
+          type: string
+          description: a comma delimited list of image sizes
+          example: "512x512,1024x1024"
+        input_steps:
+          type: integer
+          description: the number of steps in the model
+          minimum: 1
+          maximum: 10000
+          example: 50
+        output_images:
+          type: string
+          description: a comma delimited list of output sizes
+          example: "512x512,1024x1024"
+        output_video_frames:
+          type: integer
+          description: the number of video frames (frame rate x duration)
+          minimum: 0
+          maximum: 100000000
+          example: 60
+        output_video_resolution:
+          type: integer
+          description: the resolution of the video in number of lines (for instance, 1080 for 1080p)
+          example: 1080
+        request_cost:
+          type: number
+          format: float
+          description: the cost of this request
+        currency:
+          type: string
+          description: the currency for cost data
+
+    ImpactRequest:
+      title: Impact Request
+      type: object
+      additionalProperties: false
+      required:
+        - rows
+      properties:
+        rows:
+          type: array
+          maxItems: 1000
+          items:
+            $ref: "#/components/schemas/ImpactRow"
+
+    ImpactRow:
+      type: object
+      additionalProperties: false
+      required:
+        - model
+      properties:
+        utc_datetime:
+          description: The start time of the request in UTC
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00Z"
+        model:
+          $ref: "#/components/schemas/Model"
+        cloud_region:
+          type: string
+          description: The region of cloud hosting
+          example: us-central1
+        node:
+          $ref: "#/components/schemas/Node"
+        country:
+          $ref: "#/components/schemas/CountryCode"
+        region:
+          $ref: "#/components/schemas/RegionCode"
+        task:
+          $ref: "#/components/schemas/Task"
+          example: text-generation
+        input_tokens:
+          type: integer
+          description: the number of input (or prompt) tokens
+          minimum: 0
+          maximum: 100000000
+          example: 128
+        input_audio_seconds:
+          type: integer
+          description: the duration of audio input in seconds
+          minimum: 0
+          maximum: 100000
+          example: 60
+        output_tokens:
+          type: integer
+          description: the number of output (or completion) tokens
+          example: 128
+          minimum: 0
+          maximum: 100000000
+        input_images:
+          type: array
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/Image"
+        input_steps:
+          type: integer
+          description: the number of steps to use in the model
+          minimum: 1
+          maximum: 10000
+          example: 50
+        output_images:
+          type: array
+          description: a list of output image sizes
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/Image"
+        output_video_frames:
+          type: integer
+          description: the number of video frames (frame rate x duration)
+          minimum: 0
+          maximum: 100000000
+          example: 60
+        output_video_resolution:
+          type: integer
+          description: the resolution of the video in number of lines (for instance, 1080 for 1080p)
+          example: 1080
+
+    Model:
+      title: Model
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          example: "gpt-4-turbo"
+        name:
+          type: string
+          example: "GPT-4 Turbo"
+        family:
+          type: string
+          example: "gpt"
+        hugging_face_path:
+          type: string
+          example: "EleutherAI/gpt-neo-2.7B"
+        benchmark_model_id:
+          type: string
+          example: "GPTJ-6B"
+        total_params_billions:
+          type: number
+          example: 175
+          format: float
+        number_of_experts:
+          type: integer
+          example: 7
+        params_per_expert_billions:
+          type: number
+          example: 8
+          format: float
+        tensor_parallelism:
+          type: integer
+          example: 1
+        datatype:
+          $ref: "#/components/schemas/DataType"
+          example: fp8
+        task:
+          $ref: "#/components/schemas/Task"
+          example: text-generation
+        training_usage_energy_kwh:
+          type: number
+          example: 1013.1
+          format: float
+        training_usage_emissions_kgco2e:
+          type: number
+          example: 1013.1
+          format: float
+        training_usage_water_l:
+          type: number
+          example: 1013.1
+          format: float
+        training_embodied_emissions_kgco2e:
+          type: number
+          example: 11013.1
+          format: float
+        training_embodied_water_l:
+          type: number
+          example: 11013.1
+          format: float
+        estimated_use_life_days:
+          type: number
+          example: 1013.1
+          format: float
+        estimated_requests_per_day:
+          type: number
+          example: 1013.1
+          format: float
+        fine_tuned_from_model_id:
+          type: string
+          example: llama_31_8b
+
+    ImpactResponse:
+      title: Impact Response
+      type: object
+      additionalProperties: false
+      required:
+        - rows
+        - has_errors
+      properties:
+        rows:
+          maxItems: 1000
+          type: array
+          items:
+            $ref: "#/components/schemas/ModeledRow"
+        total_energy_wh:
+          type: number
+          example: 0.13
+          format: float
+        total_gco2e:
+          type: number
+          example: 0.81
+          format: float
+        total_mlh2o:
+          type: number
+          example: 1.32
+          format: float
+        has_errors:
+          type: boolean
+          example: false
+
+    ModeledRow:
+      type: object
+      additionalProperties: false
+      required:
+        - total_impact
+      properties:
+        inference_impact:
+          $ref: "#/components/schemas/ImpactMetrics"
+        training_impact:
+          $ref: "#/components/schemas/ImpactMetrics"
+        fine_tuning_impact:
+          $ref: "#/components/schemas/ImpactMetrics"
+        total_impact:
+          $ref: "#/components/schemas/ImpactMetrics"
+        debug:
+          $ref: "#/components/schemas/DebugInfo"
+        error:
+          $ref: "#/components/schemas/Error"
+
+    ImpactMetrics:
+      type: object
+      additionalProperties: false
+      required:
+        - usage_energy_wh
+        - usage_emissions_gco2e
+        - usage_water_ml
+        - embodied_emissions_gco2e
+        - embodied_water_ml
+      properties:
+        usage_energy_wh:
+          type: number
+          example: 0.13
+          format: float
+        usage_emissions_gco2e:
+          type: number
+          example: 0.81
+          format: float
+        usage_water_ml:
+          type: number
+          example: 1.32
+          format: float
+        embodied_emissions_gco2e:
+          type: number
+          example: 0.81
+          format: float
+        embodied_water_ml:
+          type: number
+          example: 1.32
+          format: float
+
+    DebugInfo:
+      type: object
+      additionalProperties: false
+      properties:
+        model:
+          $ref: "#/components/schemas/Model"
+        hardware_node:
+          $ref: "#/components/schemas/Node"
+        grid_mix:
+          $ref: "#/components/schemas/GridMix"
+        steps:
+          type: array
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/PredictionStep"
+
+    PredictionStep:
+      type: object
+      additionalProperties: false
+      required:
+        - description
+        - duration_ms
+        - inferences
+      properties:
+        description:
+          type: string
+        duration_ms:
+          type: number
+          format: float
+        inferences:
+          type: integer
+
+    Error:
+      type: object
+      additionalProperties: false
+      required:
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          properties:
+            reason:
+              type: string
+            field:
+              type: string
+
+    GridMix:
+      type: object
+      additionalProperties: false
+      required:
+        - country
+        - gco2e_per_kwh
+      properties:
+        country:
+          $ref: "#/components/schemas/CountryCode"
+        region:
+          $ref: "#/components/schemas/RegionCode"
+        gco2e_per_kwh:
+          type: number
+          example: 475
+          format: float
+          minimum: 0
+          maximum: 2000
+
+    Node:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          example: base-node-xl
+        cloud_id:
+          type: string
+          example: aws
+        cloud_instance_id:
+          type: string
+          example: a2-highgpu-1g
+        managed_service_id:
+          type: string
+          example: aws-bedrock
+        gpu_id:
+          type: string
+          example: a100_40gb
+        gpu:
+          $ref: "#/components/schemas/GPU"
+        gpu_count:
+          type: integer
+          minimum: 0
+          maximum: 10000
+          example: 8
+        cpu_count:
+          type: integer
+          minimum: 1
+          maximum: 10000
+          example: 2
+        idle_power_w_ex_gpu:
+          type: number
+          example: 100
+          minimum: 0
+          maximum: 10000
+          format: float
+        average_utilization_rate:
+          type: number
+          example: 0.8
+          format: float
+          minimum: 0
+          maximum: 1
+        embodied_emissions_kgco2e_ex_gpu:
+          type: number
+          example: 2500
+          minimum: 0
+          maximum: 100000
+          format: float
+        embodied_water_l_ex_gpu:
+          type: number
+          example: 2500
+          minimum: 0
+          maximum: 100000
+          format: float
+        use_life_years:
+          type: number
+          example: 5
+          minimum: 1
+          maximum: 30
+          format: float
+
+    GPU:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          example: "NVIDIA A100 40GB"
+        id:
+          type: string
+          example: "a100_40gb"
+        max_power_w:
+          type: number
+          example: 700
+          format: float
+        embodied_emissions_kgco2e:
+          type: number
+          example: 282.1
+          format: float
+        embodied_water_mlh2o:
+          type: number
+          example: 181.1
+          format: float
+        performance_ratio_to_h200:
+          type: number
+          example: 1.5
+          format: float
+
+    ManagedServiceProvider:
+      type: string
+      enum:
+        - aws-bedrock
+        - azure-ml
+        - google-vertex
+        - ibm-watson
+        - hugging-face
+
+    Image:
+      type: string
+      example: "1024x1024"
+      format: /^(\d{1,4})x(\d{1,4})$/
+
+    CloudProvider:
+      type: string
+      enum:
+        - aws
+        - azure
+        - gcp
+        - oracle
+        - ibm
+
+    Task:
+      type: string
+      enum:
+        # Language Models
+        - text-generation
+        - chat
+        - text-embedding
+        - text-classification
+        - sentiment-analysis
+        - named-entity-recognition
+        - question-answering
+        - summarization
+        - translation
+
+        # Computer Vision
+        - image-classification
+        - object-detection
+        - image-segmentation
+        - image-generation
+        - image-to-text
+        - text-to-image
+        - style-transfer
+        - face-detection
+        - facial-recognition
+
+        # Audio/Speech
+        - speech-to-text
+        - text-to-speech
+        - speaker-identification
+        - audio-classification
+        - music-generation
+
+        # Multimodal
+        - multimodal-embedding
+        - multimodal-generation
+        - visual-question-answering
+
+        # Specialized
+        - recommendation-system
+        - reinforcement-learning
+        - anomaly-detection
+        - time-series-forecasting
+        - clustering
+      description: |
+        Common types of AI/ML models and their primary functions:
+        - Text-based models for natural language processing
+        - Vision models for image analysis and generation
+        - Audio models for speech and sound processing
+        - Multimodal models that combine different types of inputs/outputs
+        - Specialized models for specific use cases
+
+    Family:
+      type: string
+      enum:
+        # Anthropic Models
+        - claude
+
+        # OpenAI Models
+        - gpt
+        - dall-e
+        - whisper
+
+        # Google Models
+        - gemini
+        - palm
+        - bert
+        - t5
+
+        # Meta Models
+        - llama
+        - opt
+        - galactica
+
+        # Microsoft/OpenAI
+        - phi
+
+        # Stability AI
+        - stable-diffusion
+        - stable-lm
+
+        # Mistral AI
+        - mistral
+        - mixtral
+
+        # Cohere
+        - command
+        - embed
+
+        # Open Source
+        - falcon
+        - mpt
+        - pythia
+        - dolly
+        - bloom
+
+        # Research Models
+        - roberta
+        - gpt-neo
+        - gpt-j
+      description: |
+        Core AI model families from various organizations:
+        - Commercial models from major AI companies
+        - Open source model families
+        - Research/academic model families
+        - Models may appear in multiple categories if they have both commercial and open source variants
+
+    DataType:
+      type: string
+      enum:
+        # Floating Point
+        - fp8
+        - fp8-e4m3
+        - fp8-e5m2
+        - fp16
+        - tf32
+        - fp32
+        - fp64
+
+        # Brain Floating Point
+        - bfloat8
+        - bfloat16
+        - bf16
+
+        # Integer Types
+        - int4
+        - int8
+        - int16
+        - int32
+        - int64
+        - uint4
+        - uint8
+        - uint16
+        - uint32
+        - uint64
+
+    CountryCode:
+      type: string
+      pattern: "^[A-Z]{2}$"
+      minLength: 2
+      maxLength: 2
+      description: Two-letter country code as defined by ISO 3166-1 alpha-2
+      example: "US"
+
+    RegionCode:
+      type: string
+      pattern: "^[A-Z]{2}$"
+      minLength: 2
+      maxLength: 2
+      description: Two-letter region code as defined by ISO 3166-1 alpha-2
+      example: "NY"

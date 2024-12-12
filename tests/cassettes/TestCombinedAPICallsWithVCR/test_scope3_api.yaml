@@ -73,7 +73,6 @@ http_interactions:
     uri: https://api.scope3ai.com/v1/groups/1/impact
     body:
       encoding: UTF-8
-      string: '{"session_data":"mock_session"}'
     headers:
       Authorization:
       - Bearer mock-scope3-api-key
