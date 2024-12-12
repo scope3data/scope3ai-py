@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field
 from typing import Optional, List
-from uuid import UUID
 from enum import Enum
 from datetime import datetime, timezone
 
@@ -163,8 +162,10 @@ class ImpactRequestRow(BaseModel):
         description="UTC timestamp for the request",
     )
     # Context of the request
-    session_id: Optional[UUID] = None
-    request_id: Optional[UUID] = None
+    session_id: Optional[str] = None
+    trace_id: Optional[str] = None  # not implemented in the API yet
+    parent_trace_id: Optional[str] = None  # not implemented in the API yet
+    request_id: Optional[str] = None
     client_id: Optional[str] = None
     project_id: Optional[str] = None
     application_id: Optional[str] = None

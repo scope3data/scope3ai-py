@@ -11,7 +11,7 @@ has_errors=False rows=[ImpactResponseRow(fine_tuning_impact=ImpactMetrics(usage_
 ```
 """
 
-from scope3ai.v1.client import Client
+from scope3ai.api import Client
 
 # api_key is taken from the environment variable SCOPE3AI_API_KEY
 client = Client()
@@ -24,7 +24,7 @@ def list_gpus():
 
 
 def send_impact():
-    from scope3ai.v1.types import ImpactRequestRow, Model
+    from scope3ai.api.types import ImpactRequestRow, Model
 
     print("Sending impact")
     impact = ImpactRequestRow(

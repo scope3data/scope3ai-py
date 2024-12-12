@@ -6,12 +6,12 @@ from contextvars import ContextVar
 from functools import partial
 from os import getenv
 from typing import Optional
-from uuid import UUID, uuid4
+from uuid import uuid4
 import atexit
 
-import httpx
-
-from .types import ImpactRequestRow, ImpactResponse, Scope3AIContext
+from .api.client import Client, AsyncClient
+from .api.types import ImpactRequestRow, ImpactResponse, Scope3AIContext
+from .api.defaults import DEFAULT_API_URL
 from .worker import BackgroundWorker
 
 logger = logging.getLogger("scope3ai.lib")
@@ -30,25 +30,55 @@ _INSTRUMENTS = {
 }
 
 
+def generate_id() -> str:
+    return uuid4().hex
+
+
 class Scope3AIError(Exception):
     pass
 
 
-class Scope3AITracer:
-    def __init__(self) -> None:
+class Tracer:
+    def __init__(
+        self,
+        name: str = None,
+        trace_id: str = None,
+        parent_trace_id: str = None,
+        session_id: str = None,
+    ) -> None:
         self.scope3ai = Scope3AI.get_instance()
-        self.trace_id = uuid4()
+        if trace_id is None:
+            trace_id = generate_id()
+        self.trace_id = trace_id
+        self.session_id = None
+        self.parent_trace_id = None
+        self.name = name
 
     def impact(self) -> ImpactResponse:
-        return self.scope3ai.impact(trace_id=self.trace_id, record_id=None)
+        return self.scope3ai.impact(trace_id=self.trace_id)
 
     async def aimpact(self) -> ImpactResponse:
-        return await self.scope3ai.aimpact(trace_id=self.trace_id, record_id=None)
+        return await self.scope3ai.aimpact(trace_id=self.trace_id)
+
+    def _link_parent(self, tracer: Optional["Tracer"] = None):
+        if self.parent_trace_id is None and tracer:
+            self.parent_trace_id = tracer.trace_id
+
+    def _unlink_parent(self, tracer: Optional["Tracer"] = None):
+        if tracer and tracer.trace_id == self.parent_trace_id:
+            self.parent_trace_id = None
 
 
 class Scope3AI:
+    """
+    Scope3AI tracer class
+
+    This class is a singleton that provides a context manager for tracing
+    inference metadata and submitting impact requests to the Scope3 AI API.
+    """
+
     _instance: Optional["Scope3AI"] = None
-    _tracer: ContextVar[list[Scope3AITracer]] = ContextVar("tracer", default=[])
+    _tracer: ContextVar[list[Tracer]] = ContextVar("tracer", default=[])
     _worker: Optional[BackgroundWorker] = None
 
     def __new__(cls, *args, **kwargs):
@@ -60,7 +90,7 @@ class Scope3AI:
     def init(
         cls,
         api_key: str = None,
-        api_url: str = "https://aiapi.scope3.com/v1",
+        api_url: str = None,
         include_impact_response: bool = False,
         enable_debug_logging: bool = False,
         providers: list[str] | None = None,
@@ -69,7 +99,7 @@ class Scope3AI:
             raise Scope3AIError("Scope3AI is already initialized")
         cls._instance = self = Scope3AI()
         self.api_key = api_key or getenv("SCOPE3AI_API_KEY")
-        self.api_url = api_url or getenv("SCOPE3AI_API_URL")
+        self.api_url = api_url or getenv("SCOPE3AI_API_URL") or DEFAULT_API_URL
         self.include_impact_response = include_impact_response or bool(
             getenv("SCOPE3AI_INCLUDE_IMPACT_RESPONSE", False)
         )
@@ -92,31 +122,41 @@ class Scope3AI:
         if providers is None:
             providers = list(_INSTRUMENTS.keys())
 
-        http_client_options = {
-            "base_url": self.api_url,
-            "headers": {"Authorization": f"Bearer {self.api_key}"},
-        }
-        self._sync_client = httpx.Client(**http_client_options)
-        self._async_client = httpx.AsyncClient(**http_client_options)
+        http_client_options = {"api_key": self.api_key, "api_url": self.api_url}
+        self._sync_client = Client(**http_client_options)
+        self._async_client = AsyncClient(**http_client_options)
         self._init_providers(providers)
         self._init_atexit()
         return cls._instance
 
     @classmethod
-    def get_instance(cls):
+    def get_instance(cls) -> "Scope3AI":
+        """
+        Return the instance of the Scope3AI singleton.
+
+        This method provides access to the default global state of the
+        Scope3AI library. The returned instance can be used to trace
+        inference metadata and submit impact requests to the Scope3 AI
+        API from anywhere in the application.
+
+        Returns:
+            Scope3AI: The singleton instance of the Scope3AI class.
+        """
         return cls._instance
 
     def impact(
         self,
-        trace_id: UUID | None = None,
-        record_id: UUID | None = None,
+        session_id: str | None = None,
+        trace_id: str | None = None,
+        record_id: str | None = None,
     ) -> ImpactResponse:
         pass
 
     async def aimpact(
         self,
-        trace_id: UUID | None = None,
-        record_id: UUID | None = None,
+        session_id: str | None = None,
+        trace_id: str | None = None,
+        record_id: str | None = None,
     ) -> ImpactResponse:
         pass
 
@@ -124,22 +164,40 @@ class Scope3AI:
         self,
         impact_request_row: ImpactRequestRow,
     ) -> Scope3AIContext:
-        self._ensure_worker()
+        """
+        Submit an impact request to the Scope3 AI API.
 
-        def submit_impact(impact_request_row: ImpactRequestRow) -> ImpactResponse:
-            req = self._sync_client.post(
-                "/impact",
-                json=impact_request_row.model_dump(mode="json"),
+        This function sends an impact request represented by the `impact_request_row`
+        to the Scope3 AI API and optionally returns the response.
+
+        Args:
+            impact_request_row (ImpactRequestRow): The impact request data
+                that needs to be submitted to the Scope3 AI API.
+
+        Returns:
+            Scope3AIContext: A context object containing the request data and
+            optionally the response from the API if `include_impact_response`
+            is set to True.
+        """
+
+        def submit_impact(
+            impact_request_row: ImpactRequestRow,
+            with_response=True,
+        ) -> ImpactResponse | None:
+            return self._sync_client.impact(
+                rows=[impact_request_row],
+                with_response=with_response,
             )
-            return ImpactResponse.parse_obj(req.json())
 
+        self._mark_impact_row(impact_request_row)
         ctx = Scope3AIContext(request=impact_request_row)
 
         if self.include_impact_response:
-            impact = submit_impact(impact_request_row)
+            impact = submit_impact(impact_request_row, with_response=True)
             ctx.impact = impact
             return ctx
 
+        self._ensure_worker()
         self._worker.submit(
             partial(submit_impact, impact_request_row=impact_request_row)
         )
@@ -149,32 +207,81 @@ class Scope3AI:
         self,
         impact_request_row: ImpactRequestRow,
     ) -> Scope3AIContext:
-        self._ensure_worker()
+        """
+        Async version of Scope3AI::submit_impact.
+        """
+
+        async def submit_impact(
+            impact_request_row: ImpactRequestRow,
+            with_response=True,
+        ) -> ImpactResponse | None:
+            return await self._async_client.impact(
+                rows=[impact_request_row],
+                with_response=with_response,
+            )
+
+        self._mark_impact_row(impact_request_row)
+        ctx = Scope3AIContext(request=impact_request_row)
+
         if self.include_impact_response:
-            impact = await self._worker.asubmit_impact(impact_request_row, sync=True)
-        else:
-            impact = None
-            self._worker.submit_impact(impact_request_row)
-        return Scope3AIContext(request=impact_request_row, impact=impact)
+            impact = await submit_impact(impact_request_row, with_response=True)
+            ctx.impact = impact
+            return ctx
 
-    def _push_tracer(self, tracer: Scope3AITracer) -> None:
-        self._tracer.get().append(tracer)
+        self._ensure_worker()
+        self._worker.submit(
+            partial(submit_impact, impact_request_row=impact_request_row)
+        )
+        return ctx
 
-    def _pop_tracer(self, tracer: Scope3AITracer) -> None:
-        self._tracer.get().remove(tracer)
+    @property
+    def root_tracer(self):
+        """
+        Return the root tracer.
+
+        The root tracer is the first tracer in the current execution context
+        (tracer stack). If no tracers are currently active, it returns None.
+
+        Returns:
+            Tracer: The root tracer if available, otherwise None.
+        """
+        tracers = self._tracer.get()
+        return tracers[0] if tracers else None
 
     @property
     def current_tracer(self):
-        return self._tracer.get()[-1]
+        """
+        Return the current tracer.
+
+        The current tracer is the last tracer in the current execution context
+        (tracer stack). If no tracers are currently active, it returns None.
+
+        Returns:
+            Tracer: The current tracer if available, otherwise None.
+        """
+        tracers = self._tracer.get()
+        return tracers[-1] if tracers else None
 
     @contextmanager
     def trace(self):
-        tracer = Scope3AITracer()
+        tracer = Tracer()
         try:
             self._push_tracer(tracer)
             yield tracer
         finally:
             self._pop_tracer(tracer)
+
+    #
+    # Internals
+    #
+
+    def _push_tracer(self, tracer: Tracer) -> None:
+        tracer._link_parent(self.current_tracer)
+        self._tracer.get().append(tracer)
+
+    def _pop_tracer(self, tracer: Tracer) -> None:
+        self._tracer.get().remove(tracer)
+        tracer._unlink_parent(self.current_tracer)
 
     def _init_providers(self, providers: list[str]) -> None:
         """Initialize the specified providers."""
@@ -192,18 +299,31 @@ class Scope3AI:
 
     def _init_logging(self) -> None:
         logging.basicConfig(
-            level=logging.INFO,  # Set default logging level to INFO
-            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # Define log format
-            handlers=[
-                logging.StreamHandler()  # Output logs to the console
-            ],
+            level=logging.INFO,
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            handlers=[logging.StreamHandler()],
         )
         logging.getLogger("scope3ai").setLevel(logging.DEBUG)
 
     def _init_atexit(self):
         @atexit.register
         def _shutdown():
-            scope3ai = Scope3AI.get_instance()
-            logging.debug("Waiting background informations to be processed")
-            scope3ai._worker._queue.join()
-            logging.debug("Shutting down Scope3AI")
+            # do not reinstanciate the singleton here if somehow it was deleted
+            scope3ai = Scope3AI._instance
+            if not scope3ai:
+                return
+            if scope3ai._worker and scope3ai._worker._queue:
+                logging.debug("Waiting background informations to be processed")
+                scope3ai._worker._queue.join()
+                logging.debug("Shutting down Scope3AI")
+
+    def _mark_impact_row(self, impact_request_row: ImpactRequestRow) -> None:
+        # augment the impact_request_row with the current information from the tracer
+        impact_request_row.request_id = generate_id()
+        current_tracer = self.current_tracer
+        if current_tracer:
+            impact_request_row.trace_id = current_tracer.trace_id
+            impact_request_row.parent_trace_id = current_tracer.parent_trace_id
+        root_tracer = self.root_tracer
+        if root_tracer:
+            impact_request_row.session_id = root_tracer.session_id
