@@ -4,7 +4,7 @@ from typing import Any, Callable, Optional, Union
 from wrapt import wrap_function_wrapper
 
 from scope3ai.lib import Scope3AI
-from scope3ai.types import Scope3AIContext, Model, ImpactRequestRow
+from scope3ai.api.types import Scope3AIContext, Model, ImpactRequestRow
 
 try:
     from openai import AsyncStream, Stream

@@ -54,6 +54,7 @@ class ClientCommands:
     def model(
         self,
         family: Optional[ModelFamily] = None,
+        with_response: Optional[bool] = True,
     ) -> ModelResponse:
         """
         List models
@@ -66,9 +67,13 @@ class ClientCommands:
             method="GET",
             params=params,
             response_model=ModelResponse,
+            with_response=with_response,
         )
 
-    def gpu(self) -> GpuResponse:
+    def gpu(
+        self,
+        with_response: Optional[bool] = True,
+    ) -> GpuResponse:
         """
         List GPUs
         """
@@ -76,12 +81,14 @@ class ClientCommands:
             "/gpu",
             method="GET",
             response_model=GpuResponse,
+            with_response=with_response,
         )
 
     def node(
         self,
         service: Optional[NodeService] = None,
         cloud: Optional[NodeCloud] = None,
+        with_response: Optional[bool] = True,
     ) -> NodeResponse:
         """
         List nodes
@@ -96,12 +103,14 @@ class ClientCommands:
             method="GET",
             params=params,
             response_model=NodeResponse,
+            with_response=with_response,
         )
 
     def impact(
         self,
         rows: List[ImpactRequestRow],
         debug: Optional[bool] = None,
+        with_response: Optional[bool] = True,
     ) -> ImpactResponse:
         """
         Get impact metrics for a task
@@ -116,6 +125,7 @@ class ClientCommands:
             params=params,
             json=json_body,
             response_model=ImpactResponse,
+            with_response=with_response,
         )
 
 
@@ -134,6 +144,7 @@ class Client(ClientBase, ClientCommands):
         params: Optional[dict] = None,
         json: Optional[dict] = None,
         response_model: Optional[BaseModel] = None,
+        with_response: Optional[bool] = True,
     ):
         full_url = self.api_url + url
         kwargs = {}
@@ -142,8 +153,11 @@ class Client(ClientBase, ClientCommands):
         if json:
             kwargs["json"] = json
         response = self.client.request(method, full_url, **kwargs)
+        response.raise_for_status()
+        if not with_response:
+            return
         if response_model:
-            return response_model.parse_obj(response.json())
+            return response_model.model_validate(response.json())
         return response.json()
 
 
@@ -162,6 +176,7 @@ class AsyncClient(ClientBase, ClientCommands):
         params: Optional[dict] = None,
         json: Optional[dict] = None,
         response_model: Optional[BaseModel] = None,
+        with_response: Optional[bool] = True,
     ):
         full_url = self.api_url + url
         kwargs = {}
@@ -170,6 +185,9 @@ class AsyncClient(ClientBase, ClientCommands):
         if json:
             kwargs["json"] = json
         response = await self.client.request(method, full_url, **kwargs)
+        response.raise_for_status()
+        if not with_response:
+            return
         if response_model:
             return response_model.model_validate(response.json())
         return response.json()

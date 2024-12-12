@@ -24,6 +24,7 @@ scope3 = Scope3AI.init(
     api_key="YOUR_API_KEY",  # Replace "YOUR_API_KEY" with your actual key
     api_url="https://api.scope3.ai/v1",  # Optional: Specify the API URL
     include_impact_response=False,  # Include impact in responses (default: False)
+    enable_debug_logging=False,  # Enable debug logging (default: False)
 )
 ```
 
@@ -99,6 +100,19 @@ response = interact()
 print(response.scope3ai.impact)
 ```
 
+### 5. Specify name for grouping
+
+You can specify a name for grouping the interactions. This is useful for grouping interactions based on a specific context.
+
+```python
+with scope3.trace(name="my_workflow"):
+    interact()
+    with scope3.trace(name="image_generation"):
+        generate_image()
+        save_to_s3()
+    interact()
+```
+
 ## Development
 
 This project use conventional commits and semantic versioning.
@@ -112,4 +126,13 @@ Also:
 ```bash
 $ pre-commit install
 $ pre-commit install --hook-type commit-msg
+```
+
+## Using with specific env
+
+You can use `UV_ENV_FILE` or `--env-file` to specify the environment file to use.
+
+```bash
+$ export UV_ENV_FILE=.env
+$ uv run python -m examples.openai-sync-chat
 ```
