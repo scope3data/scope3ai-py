@@ -1,12 +1,13 @@
 import unittest
 import openai
+import os
 import google.generativeai as genai
 from scope3ai.lib import Scope3AI
 from vcr_unittest import VCRMixin  # Import VCRMixin
 
 # Initialize API keys (replace with actual keys for the first run to generate cassettes)
-openai.api_key = "your-openai-api-key"
-genai.configure(api_key="your-google-api-key")
+openai.api_key = os.environ["OPEN_AI_API_KEY"]
+genai.configure(api_key=os.environ["GOOGLE_GEN_AI_API_KEY"])
 
 
 def fetch_combined_responses(initial_prompt):
