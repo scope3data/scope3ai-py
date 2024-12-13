@@ -24,10 +24,7 @@ scope3 = Scope3AI.init(
     api_key="YOUR_API_KEY",  # Replace "YOUR_API_KEY" with your actual key
     api_url="https://api.scope3.ai/v1",  # Optional: Specify the API URL
     include_impact_response=False,  # Include impact in responses (default: False)
-<<<<<<< HEAD
-=======
     enable_debug_logging=False,  # Enable debug logging (default: False)
->>>>>>> 4438ad7c4bc17e8f64d12bf0aec94dc032b73a1f
 )
 ```
 
