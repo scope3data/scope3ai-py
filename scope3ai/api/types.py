@@ -175,9 +175,9 @@ class ImpactRequestRow(BaseModel):
     input_tokens: Optional[int] = Field(None, ge=0, le=100000000)
     output_tokens: Optional[int] = Field(None, ge=0, le=100000000)
     input_audio_seconds: Optional[int] = Field(None, ge=0, le=100000)
-    input_images: Optional[List[ImageDimensions]] = Field(None, max_items=100)
+    input_images: Optional[List[ImageDimensions]] = Field(None, max_length=100)
     input_steps: Optional[int] = Field(None, ge=1, le=10000)
-    output_images: Optional[List[ImageDimensions]] = Field(None, max_items=100)
+    output_images: Optional[List[ImageDimensions]] = Field(None, max_length=100)
     output_video_frames: Optional[int] = Field(None, ge=0, le=100000000)
     output_video_resolution: Optional[int] = None
 
@@ -241,7 +241,7 @@ class ImpactResponse(BaseModel):
 class ImpactRequest(BaseModel):
     """Final request structure for the API"""
 
-    rows: List[ImpactRequestRow] = Field(..., max_items=1000)
+    rows: List[ImpactRequestRow] = Field(..., max_length=1000)
 
 
 class Scope3AIContext(BaseModel):
