@@ -80,6 +80,7 @@ class Scope3AI:
     _instance: Optional["Scope3AI"] = None
     _tracer: ContextVar[list[Tracer]] = ContextVar("tracer", default=[])
     _worker: Optional[BackgroundWorker] = None
+    _providers: list[str] = []
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
@@ -193,8 +194,8 @@ class Scope3AI:
         ctx = Scope3AIContext(request=impact_request_row)
 
         if self.include_impact_response:
-            impact = submit_impact(impact_request_row, with_response=True)
-            ctx.impact = impact
+            response = submit_impact(impact_request_row, with_response=True)
+            ctx.impact = response.rows[0]
             return ctx
 
         self._ensure_worker()
@@ -271,6 +272,11 @@ class Scope3AI:
         finally:
             self._pop_tracer(tracer)
 
+    def close(self):
+        if self._worker:
+            self._worker.kill()
+        self.__class__._instance = None
+
     #
     # Internals
     #
@@ -290,8 +296,12 @@ class Scope3AI:
                 raise Scope3AIError(
                     f"Could not find tracer for the `{provider}` provider."
                 )
+            if provider in self._providers:
+                # already initialized
+                continue
             init_func = _INSTRUMENTS[provider]
             init_func()
+            self._providers.append(provider)
 
     def _ensure_worker(self) -> None:
         if not self._worker:
