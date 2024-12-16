@@ -1941,8 +1941,6 @@ source = { virtual = "." }
 dependencies = [
     { name = "httpx" },
     { name = "pydantic" },
-    { name = "pytest" },
-    { name = "pytest-vcr" },
     { name = "wrapt" },
 ]
 
@@ -1993,8 +1991,6 @@ requires-dist = [
     { name = "mistralai", marker = "extra == 'mistralai'", specifier = ">=0.4.2" },
     { name = "openai", marker = "extra == 'openai'", specifier = ">=1.57.1" },
     { name = "pydantic", specifier = ">=2.10.3" },
-    { name = "pytest", specifier = ">=8.3.4" },
-    { name = "pytest-vcr", specifier = ">=1.0.2" },
     { name = "rapidfuzz", marker = "extra == 'litellm'", specifier = ">=3.10.1" },
     { name = "tiktoken", marker = "extra == 'huggingface-hub'", specifier = ">=0.8.0" },
     { name = "wrapt", specifier = ">=1.17.0" },
