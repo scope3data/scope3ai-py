@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from functools import partial
 from os import getenv
-from typing import Optional
+from typing import Optional, List
 from uuid import uuid4
 import atexit
 
@@ -78,9 +78,9 @@ class Scope3AI:
     """
 
     _instance: Optional["Scope3AI"] = None
-    _tracer: ContextVar[list[Tracer]] = ContextVar("tracer", default=[])
+    _tracer: ContextVar[List[Tracer]] = ContextVar("tracer", default=[])
     _worker: Optional[BackgroundWorker] = None
-    _providers: list[str] = []
+    _providers: List[str] = []
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
@@ -94,7 +94,7 @@ class Scope3AI:
         api_url: str = None,
         include_impact_response: bool = False,
         enable_debug_logging: bool = False,
-        providers: list[str] | None = None,
+        providers: Optional[List[str]] = None,
     ) -> None:
         if cls._instance is not None:
             raise Scope3AIError("Scope3AI is already initialized")
@@ -147,17 +147,17 @@ class Scope3AI:
 
     def impact(
         self,
-        session_id: str | None = None,
-        trace_id: str | None = None,
-        record_id: str | None = None,
+        session_id: Optional[str] = None,
+        trace_id: Optional[str] = None,
+        record_id: Optional[str] = None,
     ) -> ImpactResponse:
         pass
 
     async def aimpact(
         self,
-        session_id: str | None = None,
-        trace_id: str | None = None,
-        record_id: str | None = None,
+        session_id: Optional[str] = None,
+        trace_id: Optional[str] = None,
+        record_id: Optional[str] = None,
     ) -> ImpactResponse:
         pass
 
@@ -184,7 +184,7 @@ class Scope3AI:
         def submit_impact(
             impact_request_row: ImpactRequestRow,
             with_response=True,
-        ) -> ImpactResponse | None:
+        ) -> Optional[ImpactResponse]:
             return self._sync_client.impact(
                 rows=[impact_request_row],
                 with_response=with_response,
@@ -215,7 +215,7 @@ class Scope3AI:
         async def submit_impact(
             impact_request_row: ImpactRequestRow,
             with_response=True,
-        ) -> ImpactResponse | None:
+        ) -> Optional[ImpactResponse]:
             return await self._async_client.impact(
                 rows=[impact_request_row],
                 with_response=with_response,
@@ -289,7 +289,7 @@ class Scope3AI:
         self._tracer.get().remove(tracer)
         tracer._unlink_parent(self.current_tracer)
 
-    def _init_providers(self, providers: list[str]) -> None:
+    def _init_providers(self, providers: List[str]) -> None:
         """Initialize the specified providers."""
         for provider in providers:
             if provider not in _INSTRUMENTS:

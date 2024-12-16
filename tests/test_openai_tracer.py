@@ -29,6 +29,7 @@ def test_openai_chat_with_response(tracer_with_response_init):
     assert response.scope3ai.request.output_tokens == 9
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
-
-    # XXX fixme as today there is a model mapping issue
-    # (gpt-4 -> gpt_4)
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.errors is None

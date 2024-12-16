@@ -134,5 +134,6 @@ You can use `UV_ENV_FILE` or `--env-file` to specify the environment file to use
 
 ```bash
 $ export UV_ENV_FILE=.env
+$ uv sync --all-extras --all-groups
 $ uv run python -m examples.openai-sync-chat
 ```

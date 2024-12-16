@@ -245,11 +245,11 @@ class ImpactRequest(BaseModel):
 
 
 class Scope3AIContext(BaseModel):
-    request: ImpactRequestRow | None = Field(
+    request: Optional[ImpactRequestRow] = Field(
         None,
         description="The impact request information. Contains `trace_id` and `record_id`",
     )
-    impact: ImpactResponseRow | None = Field(
+    impact: Optional[ImpactResponseRow] = Field(
         None,
         description="The impact response if `include_impact_response` is set to True",
     )
