@@ -4,7 +4,7 @@ from typing import Any, Callable, Optional, Union
 from wrapt import wrap_function_wrapper
 
 from scope3ai.lib import Scope3AI
-from scope3ai.api.types import Scope3AIContext, Model, ImpactRequestRow
+from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 
 try:
     from openai import AsyncStream, Stream
@@ -53,13 +53,12 @@ def openai_chat_wrapper_non_stream(
     model_requested = kwargs["model"]
     model_used = response.model
 
-    scope3_row = ImpactRequestRow(
+    scope3_row = ImpactRow(
         model=Model(id=model_requested),
         model_used=Model(id=model_used),
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
-        request_duration_ms=request_latency
-        * 1000,  # TODO: can we get the header that has the processing time
+        request_duration_ms=request_latency * 1000,
         managed_service_id=PROVIDER,
     )
 
@@ -88,7 +87,7 @@ def openai_chat_wrapper_stream(
             model_requested = kwargs["model"]
             model_used = chunk.model
 
-            scope3_row = ImpactRequestRow(
+            scope3_row = ImpactRow(
                 model=Model(id=model_requested),
                 model_used=Model(id=model_used),
                 input_tokens=chunk.usage.prompt_tokens,
@@ -128,7 +127,7 @@ async def openai_async_chat_wrapper_base(
     model_requested = kwargs["model"]
     model_used = response.model
 
-    scope3_row = ImpactRequestRow(
+    scope3_row = ImpactRow(
         model=Model(id=model_requested),
         model_used=Model(id=model_used),
         input_tokens=response.usage.prompt_tokens,
@@ -169,7 +168,7 @@ async def openai_async_chat_wrapper_stream(
         model_used = chunk.model
 
         if chunk.usage is not None:
-            scope3_row = ImpactRequestRow(
+            scope3_row = ImpactRow(
                 model=Model(id=model_requested),
                 model_used=Model(id=model_used),
                 input_tokens=chunk.usage.prompt_tokens,

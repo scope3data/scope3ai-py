@@ -1121,7 +1121,7 @@ components:
     Image:
       type: string
       example: "1024x1024"
-      format: /^(\d{1,4})x(\d{1,4})$/
+      pattern: '^\d{1,4}x\d{1,4}$'
 
     CloudProvider:
       type: string
