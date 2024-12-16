@@ -6,15 +6,15 @@ from pydantic import BaseModel
 
 from .defaults import DEFAULT_API_URL
 from .types import (
-    GpuResponse,
+    GPU,
     ImpactRequest,
-    ImpactRequestRow,
+    ImpactRow,
     ImpactResponse,
-    ModelFamily,
+    Family,
     ModelResponse,
-    NodeCloud,
+    CloudProvider,
     NodeResponse,
-    NodeService,
+    ManagedServiceProvider,
 )
 
 
@@ -53,7 +53,7 @@ class ClientBase:
 class ClientCommands:
     def model(
         self,
-        family: Optional[ModelFamily] = None,
+        family: Optional[Family] = None,
         with_response: Optional[bool] = True,
     ) -> ModelResponse:
         """
@@ -73,21 +73,21 @@ class ClientCommands:
     def gpu(
         self,
         with_response: Optional[bool] = True,
-    ) -> GpuResponse:
+    ) -> GPU:
         """
         List GPUs
         """
         return self.execute_request(
             "/gpu",
             method="GET",
-            response_model=GpuResponse,
+            response_model=GPU,
             with_response=with_response,
         )
 
     def node(
         self,
-        service: Optional[NodeService] = None,
-        cloud: Optional[NodeCloud] = None,
+        service: Optional[ManagedServiceProvider] = None,
+        cloud: Optional[CloudProvider] = None,
         with_response: Optional[bool] = True,
     ) -> NodeResponse:
         """
@@ -108,7 +108,7 @@ class ClientCommands:
 
     def impact(
         self,
-        rows: List[ImpactRequestRow],
+        rows: List[ImpactRow],
         debug: Optional[bool] = None,
         with_response: Optional[bool] = True,
     ) -> ImpactResponse:
@@ -201,17 +201,17 @@ if __name__ == "__main__":
 
     funcs_to_test = [
         ["model", {}],
-        ["model", {"family": ModelFamily.CLAUDE}],
+        ["model", {"family": Family.claud}],
         ["gpu", {}],
         ["node", {}],
-        ["node", {"cloud": NodeCloud.AWS}],
-        # ["node", {"service": NodeService.AZURE_ML}],
+        ["node", {"cloud": CloudProvider.aws}],
+        # ["node", {"service": ManagedServiceProvider.azure_ml}],
         ["impact", {"rows": []}],
         [
             "impact",
             {
                 "rows": [
-                    ImpactRequestRow(
+                    ImpactRow(
                         model=Model(id="gpt_4o"),
                         input_tokens=1000,
                         output_tokens=200,

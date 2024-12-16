@@ -43,3 +43,6 @@ tests = [
     "pytest>=8.3.4",
     "pytest-docker>=3.1.1",
 ]
+openapi = [
+    "datamodel-code-generator>=0.26.4",
+]

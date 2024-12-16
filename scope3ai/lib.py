@@ -10,7 +10,7 @@ from uuid import uuid4
 import atexit
 
 from .api.client import Client, AsyncClient
-from .api.types import ImpactRequestRow, ImpactResponse, Scope3AIContext
+from .api.types import ImpactRow, ImpactResponse, Scope3AIContext
 from .api.defaults import DEFAULT_API_URL
 from .worker import BackgroundWorker
 
@@ -163,16 +163,16 @@ class Scope3AI:
 
     def submit_impact(
         self,
-        impact_request_row: ImpactRequestRow,
+        impact_row: ImpactRow,
     ) -> Scope3AIContext:
         """
         Submit an impact request to the Scope3 AI API.
 
-        This function sends an impact request represented by the `impact_request_row`
+        This function sends an impact request represented by the `impact_row`
         to the Scope3 AI API and optionally returns the response.
 
         Args:
-            impact_request_row (ImpactRequestRow): The impact request data
+            impact_row (ImpactRow): The impact request data
                 that needs to be submitted to the Scope3 AI API.
 
         Returns:
@@ -182,57 +182,53 @@ class Scope3AI:
         """
 
         def submit_impact(
-            impact_request_row: ImpactRequestRow,
+            impact_row: ImpactRow,
             with_response=True,
         ) -> Optional[ImpactResponse]:
             return self._sync_client.impact(
-                rows=[impact_request_row],
+                rows=[impact_row],
                 with_response=with_response,
             )
 
-        self._mark_impact_row(impact_request_row)
-        ctx = Scope3AIContext(request=impact_request_row)
+        self._mark_impact_row(impact_row)
+        ctx = Scope3AIContext(request=impact_row)
 
         if self.include_impact_response:
-            response = submit_impact(impact_request_row, with_response=True)
+            response = submit_impact(impact_row, with_response=True)
             ctx.impact = response.rows[0]
             return ctx
 
         self._ensure_worker()
-        self._worker.submit(
-            partial(submit_impact, impact_request_row=impact_request_row)
-        )
+        self._worker.submit(partial(submit_impact, impact_row=impact_row))
         return ctx
 
     async def asubmit_impact(
         self,
-        impact_request_row: ImpactRequestRow,
+        impact_row: ImpactRow,
     ) -> Scope3AIContext:
         """
         Async version of Scope3AI::submit_impact.
         """
 
         async def submit_impact(
-            impact_request_row: ImpactRequestRow,
+            impact_row: ImpactRow,
             with_response=True,
         ) -> Optional[ImpactResponse]:
             return await self._async_client.impact(
-                rows=[impact_request_row],
+                rows=[impact_row],
                 with_response=with_response,
             )
 
-        self._mark_impact_row(impact_request_row)
-        ctx = Scope3AIContext(request=impact_request_row)
+        self._mark_impact_row(impact_row)
+        ctx = Scope3AIContext(request=impact_row)
 
         if self.include_impact_response:
-            impact = await submit_impact(impact_request_row, with_response=True)
+            impact = await submit_impact(impact_row, with_response=True)
             ctx.impact = impact
             return ctx
 
         self._ensure_worker()
-        self._worker.submit(
-            partial(submit_impact, impact_request_row=impact_request_row)
-        )
+        self._worker.submit(partial(submit_impact, impact_row=impact_row))
         return ctx
 
     @property
@@ -327,13 +323,13 @@ class Scope3AI:
                 scope3ai._worker._queue.join()
                 logging.debug("Shutting down Scope3AI")
 
-    def _mark_impact_row(self, impact_request_row: ImpactRequestRow) -> None:
-        # augment the impact_request_row with the current information from the tracer
-        impact_request_row.request_id = generate_id()
+    def _mark_impact_row(self, impact_row: ImpactRow) -> None:
+        # augment the impact_row with the current information from the tracer
+        impact_row.request_id = generate_id()
         current_tracer = self.current_tracer
         if current_tracer:
-            impact_request_row.trace_id = current_tracer.trace_id
-            impact_request_row.parent_trace_id = current_tracer.parent_trace_id
+            impact_row.trace_id = current_tracer.trace_id
+            impact_row.parent_trace_id = current_tracer.parent_trace_id
         root_tracer = self.root_tracer
         if root_tracer:
-            impact_request_row.session_id = root_tracer.session_id
+            impact_row.session_id = root_tracer.session_id

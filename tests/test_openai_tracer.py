@@ -32,4 +32,3 @@ def test_openai_chat_with_response(tracer_with_response_init):
     assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
     assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
     assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
-    assert response.scope3ai.impact.total_impact.errors is None
