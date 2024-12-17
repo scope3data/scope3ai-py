@@ -137,3 +137,16 @@ $ export UV_ENV_FILE=.env
 $ uv sync --all-extras --all-groups
 $ uv run python -m examples.openai-sync-chat
 ```
+
+## Update typesgen.py
+
+```bash
+$ uv run datamodel-codegen \
+    --input tests/api-mocks/aiapi.yaml \
+    --input-file-type openapi \
+    --output scope3ai/api/typesgen.py \
+    --output-model-type pydantic_v2.BaseModel \
+    --use-schema-description \
+    --allow-extra-fields \
+    && uv run ruff format scope3ai/api/typesgen.py
+```
