@@ -1,57 +1,47 @@
 import time
+from collections.abc import AsyncIterable, Iterable
+from dataclasses import asdict, dataclass
 from typing import Any, Callable, Optional, Union
 
-from wrapt import wrap_function_wrapper
+from huggingface_hub import AsyncInferenceClient, InferenceClient  # type: ignore[import-untyped]
+from huggingface_hub import ChatCompletionOutput as _ChatCompletionOutput
+from huggingface_hub import ChatCompletionStreamOutput as _ChatCompletionStreamOutput
+from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
 
 from scope3ai.lib import Scope3AI
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 
-try:
-    from openai import AsyncStream, Stream
-    from openai.resources.chat import AsyncCompletions, Completions
-    from openai.types.chat import ChatCompletion as _ChatCompletion
-    from openai.types.chat import ChatCompletionChunk as _ChatCompletionChunk
-except ImportError:
-    AsyncStream = object()
-    Stream = object()
-    AsyncCompletions = object()
-    Completions = object()
-    _ChatCompletion = object()
-    _ChatCompletionChunk = object()
-
-PROVIDER = "huggingface"
+PROVIDER = "huggingface_hub"
 
 
-class ChatCompletion(_ChatCompletion):
+@dataclass
+class ChatCompletionOutput(_ChatCompletionOutput):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-class ChatCompletionChunk(_ChatCompletionChunk):
+@dataclass
+class ChatCompletionStreamOutput(_ChatCompletionStreamOutput):
     scope3ai: Optional[Scope3AIContext] = None
 
 
 def huggingface_chat_wrapper(
-    wrapped: Callable, instance: Completions, args: Any, kwargs: Any
-) -> Union[ChatCompletion, Stream[ChatCompletionChunk]]:
+    wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
+) -> Union[ChatCompletionOutput, Iterable[ChatCompletionStreamOutput]]:
     if kwargs.get("stream", False):
-        return hugging_chat_wrapper_stream(wrapped, instance, args, kwargs)
+        return huggingface_chat_wrapper_stream(wrapped, instance, args, kwargs)
     else:
-        return hugging_chat_wrapper_non_stream(wrapped, instance, args, kwargs)
+        return huggingface_chat_wrapper_non_stream(wrapped, instance, args, kwargs)
 
 
-def hugging_chat_wrapper_non_stream(
-    wrapped: Callable,
-    instance: Completions,  # noqa: ARG001
-    args: Any,
-    kwargs: Any,
-) -> ChatCompletion:
+def huggingface_chat_wrapper_non_stream(
+    wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
+) -> ChatCompletionOutput:
     timer_start = time.perf_counter()
     response = wrapped(*args, **kwargs)
     request_latency = time.perf_counter() - timer_start
 
     model_requested = kwargs["model"]
     model_used = response.model
-
     scope3_row = ImpactRow(
         model=Model(id=model_requested),
         model_used=Model(id=model_used),
@@ -60,17 +50,13 @@ def hugging_chat_wrapper_non_stream(
         request_duration_ms=request_latency * 1000,
         managed_service_id=PROVIDER,
     )
-
     scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
+    return ChatCompletionOutput(**asdict(response), scope3ai=scope3ai_ctx)
 
 
-def hugging_chat_wrapper_stream(
-    wrapped: Callable,
-    instance: Completions,  # noqa: ARG001
-    args: Any,
-    kwargs: Any,
-) -> Stream[ChatCompletionChunk]:
+def huggingface_chat_wrapper_stream(
+    wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
+) -> Iterable[ChatCompletionStreamOutput]:
     timer_start = time.perf_counter()
     if "stream_options" not in kwargs:
         kwargs["stream_options"] = {}
@@ -78,48 +64,40 @@ def hugging_chat_wrapper_stream(
         kwargs["stream_options"]["include_usage"] = True
     elif not kwargs["stream_options"]["include_usage"]:
         raise ValueError("stream_options include_usage must be True")
-
     stream = wrapped(*args, **kwargs)
-    for i, chunk in enumerate(stream):
+    token_count = 0
+    model_request = kwargs["model"]
+    model_used = instance.model
+    for chunk in stream:
+        token_count += 1
         request_latency = time.perf_counter() - timer_start
-        if chunk.usage is not None:
-            model_requested = kwargs["model"]
-            model_used = chunk.model
-
-            scope3_row = ImpactRow(
-                model=Model(id=model_requested),
-                model_used=Model(id=model_used),
-                input_tokens=chunk.usage.prompt_tokens,
-                output_tokens=chunk.usage.completion_tokens,
-                request_duration_ms=request_latency
-                * 1000,  # TODO: can we get the header that has the processing time
-                managed_service_id=PROVIDER,
-            )
-
-            scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-            yield ChatCompletionChunk(**chunk.model_dump(), scope3ai=scope3_ctx)
-        else:
-            yield chunk
+        scope3_row = ImpactRow(
+            model=Model(id=model_request),
+            model_used=Model(id=model_used),
+            input_tokens=chunk.usage.prompt_tokens,
+            output_tokens=chunk.usage.completion_tokens,
+            request_duration_ms=request_latency
+            * 1000,  # TODO: can we get the header that has the processing time
+            managed_service_id=PROVIDER,
+        )
+        scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+        yield ChatCompletionStreamOutput(**asdict(chunk), scope3ai=scope3_ctx)
 
 
-async def hugging_async_chat_wrapper(
-    wrapped: Callable,
-    instance: AsyncCompletions,
-    args: Any,
-    kwargs: Any,
-) -> Union[ChatCompletion, AsyncStream[ChatCompletionChunk]]:
+async def huggingface_async_chat_wrapper(
+    wrapped: Callable, instance: AsyncInferenceClient, args: Any, kwargs: Any
+) -> Union[ChatCompletionOutput, AsyncIterable[ChatCompletionStreamOutput]]:
     if kwargs.get("stream", False):
-        return hugging_async_chat_wrapper_stream(wrapped, instance, args, kwargs)
+        return huggingface_async_chat_wrapper_stream(wrapped, instance, args, kwargs)
     else:
-        return await hugging_async_chat_wrapper_base(wrapped, instance, args, kwargs)
+        return await huggingface_async_chat_wrapper_non_stream(
+            wrapped, instance, args, kwargs
+        )
 
 
-async def hugging_async_chat_wrapper_base(
-    wrapped: Callable,
-    instance: AsyncCompletions,  # noqa: ARG001
-    args: Any,
-    kwargs: Any,
-) -> ChatCompletion:
+async def huggingface_async_chat_wrapper_non_stream(
+    wrapped: Callable, instance: AsyncInferenceClient, args: Any, kwargs: Any
+) -> ChatCompletionOutput:
     timer_start = time.perf_counter()
     response = await wrapped(*args, **kwargs)
     request_latency = time.perf_counter() - timer_start
@@ -137,65 +115,45 @@ async def hugging_async_chat_wrapper_base(
     )
 
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    return ChatCompletion(**response.model_dump(), scope3ai=scope3_ctx)
+    return ChatCompletionOutput(**response.model_dump(), scope3ai=scope3_ctx)
 
 
-async def hugging_async_chat_wrapper_stream(
-    wrapped: Callable,
-    instance: AsyncCompletions,  # noqa: ARG001
-    args: Any,
-    kwargs: Any,
-) -> AsyncStream[ChatCompletionChunk]:
+async def huggingface_async_chat_wrapper_stream(
+    wrapped: Callable, instance: AsyncInferenceClient, args: Any, kwargs: Any
+) -> AsyncIterable[ChatCompletionStreamOutput]:
     timer_start = time.perf_counter()
-    if "stream_options" not in kwargs:
-        kwargs["stream_options"] = {}
-    if "include_usage" not in kwargs["stream_options"]:
-        kwargs["stream_options"]["include_usage"] = True
-    elif not kwargs["stream_options"]["include_usage"]:
-        raise ValueError("stream_options include_usage must be True")
-
     stream = await wrapped(*args, **kwargs)
-    i = 0
     token_count = 0
-    model_requested = kwargs["model"]
+    model_request = kwargs["model"]
+    model_used = instance.model
     async for chunk in stream:
-        if i == 0 and chunk.model == "":
-            continue
-        if i > 0 and chunk.choices[0].finish_reason is None:
-            token_count += 1
+        token_count += 1
         request_latency = time.perf_counter() - timer_start
-        model_used = chunk.model
-
-        if chunk.usage is not None:
-            scope3_row = ImpactRow(
-                model=Model(id=model_requested),
-                model_used=Model(id=model_used),
-                input_tokens=chunk.usage.prompt_tokens,
-                output_tokens=chunk.usage.completion_tokens,
-                request_duration_ms=request_latency
-                * 1000,  # TODO: can we get the header that has the processing time
-                managed_service_id=PROVIDER,
-            )
-
-            scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-            yield ChatCompletionChunk(**chunk.model_dump(), scope3ai=scope3_ctx)
-        else:
-            yield chunk
-        i += 1
+        scope3_row = ImpactRow(
+            model=Model(id=model_request),
+            model_used=Model(id=model_used),
+            input_tokens=chunk.usage.prompt_tokens,
+            output_tokens=chunk.usage.completion_tokens,
+            request_duration_ms=request_latency
+            * 1000,  # TODO: can we get the header that has the processing time
+            managed_service_id=PROVIDER,
+        )
+        scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+        yield ChatCompletionStreamOutput(**asdict(chunk), scope3ai=scope3_ctx)
 
 
-class HuggingFaceInstrumentor:
+class HuggingfaceInstrumentor:
     def __init__(self) -> None:
         self.wrapped_methods = [
             {
-                "module": "huggingface_hub.inference._client.InferenceClient",
-                "name": "Completions.create",
+                "module": "huggingface_hub.inference._client",
+                "name": "InferenceClient.chat_completion",
                 "wrapper": huggingface_chat_wrapper,
             },
             {
-                "module": "openai.resources.chat.completions",
-                "name": "AsyncCompletions.create",
-                "wrapper": hugging_async_chat_wrapper,
+                "module": "huggingface_hub.inference._generated._async_client",
+                "name": "AsyncInferenceClient.chat_completion",
+                "wrapper": huggingface_async_chat_wrapper,
             },
         ]
 
