@@ -118,7 +118,10 @@ class ClientCommands:
         params = {}
         if debug is not None:
             params["debug"] = debug
-        json_body = ImpactRequest(rows=rows).model_dump(mode="json")
+        json_body = ImpactRequest(rows=rows).model_dump(
+            mode="json",
+            exclude_unset=True,
+        )
         return self.execute_request(
             "/v1/impact",
             method="POST",
