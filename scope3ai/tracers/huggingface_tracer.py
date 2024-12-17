@@ -28,6 +28,7 @@ def huggingface_chat_wrapper(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
 ) -> Union[ChatCompletionOutput, Iterable[ChatCompletionStreamOutput]]:
     if kwargs.get("stream", False):
+        print(kwargs)
         return huggingface_chat_wrapper_stream(wrapped, instance, args, kwargs)
     else:
         return huggingface_chat_wrapper_non_stream(wrapped, instance, args, kwargs)
@@ -39,8 +40,7 @@ def huggingface_chat_wrapper_non_stream(
     timer_start = time.perf_counter()
     response = wrapped(*args, **kwargs)
     request_latency = time.perf_counter() - timer_start
-
-    model_requested = kwargs["model"]
+    model_requested = instance.model
     model_used = response.model
     scope3_row = ImpactRow(
         model=Model(id=model_requested),
@@ -66,7 +66,7 @@ def huggingface_chat_wrapper_stream(
         raise ValueError("stream_options include_usage must be True")
     stream = wrapped(*args, **kwargs)
     token_count = 0
-    model_request = kwargs["model"]
+    model_request = instance.model
     model_used = instance.model
     for chunk in stream:
         token_count += 1
@@ -115,7 +115,7 @@ async def huggingface_async_chat_wrapper_non_stream(
     )
 
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    return ChatCompletionOutput(**response.model_dump(), scope3ai=scope3_ctx)
+    return ChatCompletionOutput(**asdict(response), scope3ai=scope3_ctx)
 
 
 async def huggingface_async_chat_wrapper_stream(

@@ -27,9 +27,9 @@ def init_openai_instrumentor() -> None:
 
 def init_hugginface_hub_instrumentor() -> None:
     if importlib.util.find_spec("huggingface_hub") is not None:
-        from scope3ai.tracers.huggingface_tracer import HuggingFaceInstrumentor
+        from scope3ai.tracers.huggingface_tracer import HuggingfaceInstrumentor
 
-        instrumentor = HuggingFaceInstrumentor()
+        instrumentor = HuggingfaceInstrumentor()
         instrumentor.instrument()
 
 
