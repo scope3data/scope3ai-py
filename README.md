@@ -147,5 +147,6 @@ $ uv run datamodel-codegen \
     --output scope3ai/api/typesgen.py \
     --output-model-type pydantic_v2.BaseModel \
     --use-schema-description \
-    --allow-extra-fields
+    --allow-extra-fields \
+    && uv run ruff format scope3ai/api/typesgen.py
 ```
