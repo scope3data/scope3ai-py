@@ -2093,6 +2093,8 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "httpx" },
+    { name = "huggingface-hub" },
+    { name = "litellm" },
     { name = "pydantic" },
     { name = "wrapt" },
 ]
@@ -2141,7 +2143,9 @@ requires-dist = [
     { name = "cohere", marker = "extra == 'cohere'", specifier = ">=5.13.3" },
     { name = "google-generativeai", marker = "extra == 'google-generativeai'", specifier = ">=0.8.3" },
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "huggingface-hub", specifier = ">=0.26.5" },
     { name = "huggingface-hub", marker = "extra == 'huggingface-hub'", specifier = ">=0.26.5" },
+    { name = "litellm", specifier = ">=1.53.3" },
     { name = "litellm", marker = "extra == 'litellm'", specifier = ">=1.53.3" },
     { name = "minijinja", marker = "extra == 'huggingface-hub'", specifier = ">=2.5.0" },
     { name = "mistralai", marker = "extra == 'mistralai'", specifier = ">=0.4.2" },
