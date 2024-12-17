@@ -6,10 +6,9 @@ from typing import Any, Callable, Optional, Union
 from huggingface_hub import AsyncInferenceClient, InferenceClient  # type: ignore[import-untyped]
 from huggingface_hub import ChatCompletionOutput as _ChatCompletionOutput
 from huggingface_hub import ChatCompletionStreamOutput as _ChatCompletionStreamOutput
-from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
 
-from scope3ai.lib import Scope3AI
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
+from scope3ai.lib import Scope3AI
 
 PROVIDER = "huggingface_hub"
 
@@ -140,25 +139,3 @@ async def huggingface_async_chat_wrapper_stream(
         )
         scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
         yield ChatCompletionStreamOutput(**asdict(chunk), scope3ai=scope3_ctx)
-
-
-class HuggingfaceInstrumentor:
-    def __init__(self) -> None:
-        self.wrapped_methods = [
-            {
-                "module": "huggingface_hub.inference._client",
-                "name": "InferenceClient.chat_completion",
-                "wrapper": huggingface_chat_wrapper,
-            },
-            {
-                "module": "huggingface_hub.inference._generated._async_client",
-                "name": "AsyncInferenceClient.chat_completion",
-                "wrapper": huggingface_async_chat_wrapper,
-            },
-        ]
-
-    def instrument(self) -> None:
-        for wrapper in self.wrapped_methods:
-            wrap_function_wrapper(
-                wrapper["module"], wrapper["name"], wrapper["wrapper"]
-            )
