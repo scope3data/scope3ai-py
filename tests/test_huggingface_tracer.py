@@ -19,4 +19,7 @@ def test_huggingface_hub_chat(tracer_init):
 @pytest.mark.vcr
 def test_huggingface_hub_image_generation(tracer_init):
     client = InferenceClient()
-    client.text_to_image("An astronaut riding a horse on the moon.")
+    response = client.text_to_image(prompt="An astronaut riding a horse on the moon.")
+    assert response.image
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.request.request_id is not None

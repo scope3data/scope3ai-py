@@ -27,7 +27,6 @@ def huggingface_chat_wrapper(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
 ) -> Union[ChatCompletionOutput, Iterable[ChatCompletionStreamOutput]]:
     if kwargs.get("stream", False):
-        print(kwargs)
         return huggingface_chat_wrapper_stream(wrapped, instance, args, kwargs)
     else:
         return huggingface_chat_wrapper_non_stream(wrapped, instance, args, kwargs)
