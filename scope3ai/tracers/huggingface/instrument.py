@@ -5,6 +5,10 @@ from scope3ai.tracers.huggingface.chat import (
 from scope3ai.tracers.huggingface.text_to_image import huggingface_text_to_image_wrapper
 from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
 
+from scope3ai.tracers.huggingface.translation import (
+    huggingface_translation_wrapper_non_stream,
+)
+
 
 class HuggingfaceInstrumentor:
     def __init__(self) -> None:
@@ -18,6 +22,11 @@ class HuggingfaceInstrumentor:
                 "module": "huggingface_hub.inference._client",
                 "name": "InferenceClient.text_to_image",
                 "wrapper": huggingface_text_to_image_wrapper,
+            },
+            {
+                "module": "huggingface_hub.inference._client",
+                "name": "InferenceClient.translation",
+                "wrapper": huggingface_translation_wrapper_non_stream,
             },
             {
                 "module": "huggingface_hub.inference._generated._async_client",

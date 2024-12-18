@@ -24,5 +24,21 @@ def test_huggingface_hub_image_generation(tracer_init):
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.request_id is not None
     assert response.scope3ai.request.input_tokens == 9
-    assert response.scope3ai.request.output_tokens == 9
+    assert len(response.scope3ai.request.output_images) == 1
     assert response.scope3ai.impact is None
+
+
+@pytest.mark.vcr
+def test_huggingface_hub_translation(tracer_init):
+    client = InferenceClient()
+    response = client.translation(
+        "My name is Wolfgang and I live in Berlin", model="Helsinki-NLP/opus-mt-en-fr"
+    )
+    assert getattr(response, "scope3ai") is not None
+
+
+# @pytest.mark.vcr
+# def test_huggingface_hub_text_to_speech(tracer_init):
+#     client = InferenceClient()
+#     audio = client.text_to_speech("text to generate speech from")
+#     Path("hello_world.flac").write_bytes(audio)

@@ -1,0 +1,100 @@
+interactions:
+- request:
+    body: '{"inputs": "My name is Wolfgang and I live in Berlin"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '54'
+      Content-Type:
+      - application/json
+      X-Amzn-Trace-Id:
+      - 3d141813-02f6-47df-944e-625c54b552b3
+      authorization:
+      - DUMMY
+      user-agent:
+      - unknown/None; hf_hub/0.26.5; python/3.12.8
+    method: POST
+    uri: https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-en-fr
+  response:
+    body:
+      string: '{"error":"Model Helsinki-NLP/opus-mt-en-fr is currently loading","estimated_time":20.0}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '87'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 18 Dec 2024 15:31:19 GMT
+      access-control-allow-credentials:
+      - 'true'
+      vary:
+      - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+      x-request-id:
+      - P-tmcSF59mM7KEpnc2iKz
+    status:
+      code: 503
+      message: Service Unavailable
+- request:
+    body: '{"inputs": "My name is Wolfgang and I live in Berlin"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '54'
+      Content-Type:
+      - application/json
+      X-Amzn-Trace-Id:
+      - c1535df2-4f6d-4140-a4b1-35893845eb85
+      X-wait-for-model:
+      - '1'
+      authorization:
+      - DUMMY
+      user-agent:
+      - unknown/None; hf_hub/0.26.5; python/3.12.8
+    method: POST
+    uri: https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-en-fr
+  response:
+    body:
+      string: "[{\"translation_text\":\"Je m'appelle Wolfgang et je vis \xE0 Berlin.\"}]"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 18 Dec 2024 15:31:30 GMT
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-credentials:
+      - 'true'
+      access-control-expose-headers:
+      - x-compute-type, x-compute-time
+      server:
+      - uvicorn
+      vary:
+      - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+      x-compute-characters:
+      - '40'
+      x-compute-time:
+      - '0.265'
+      x-compute-type:
+      - cpu
+      x-request-id:
+      - 7G_CHLO4lHkNI3l2bYDYc
+      x-sha:
+      - dd7f6540a7a48a7f4db59e5c0b9c42c8eea67f18
+    status:
+      code: 200
+      message: OK
+version: 1
