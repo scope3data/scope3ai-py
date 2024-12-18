@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: '{"model": "meta-llama/Meta-Llama-3-8B-Instruct", "messages": [{"role":
+      "user", "content": "Hello World!"}], "max_tokens": 15, "stream": false}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '142'
+      Content-Type:
+      - application/json
+      X-Amzn-Trace-Id:
+      - f28f8ce4-915a-4966-b9cd-bd1f5bfcbde5
+      authorization:
+      - DUMMY
+      user-agent:
+      - unknown/None; hf_hub/0.26.5; python/3.12.8
+    method: POST
+    uri: https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct/v1/chat/completions
+  response:
+    body:
+      string: '{"object":"chat.completion","id":"","created":1734476823,"model":"meta-llama/Meta-Llama-3-8B-Instruct","system_fingerprint":"2.3.1-dev0-sha-169178b","choices":[{"index":0,"message":{"role":"assistant","content":"Hello
+        World!"},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":13,"completion_tokens":4,"total_tokens":17}}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 17 Dec 2024 23:07:03 GMT
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin, access-control-request-method, access-control-request-headers, Origin,
+        Access-Control-Request-Method, Access-Control-Request-Headers
+      x-compute-characters:
+      - '128'
+      x-compute-time:
+      - '0.087580445'
+      x-compute-type:
+      - 2-a10-g
+      x-generated-tokens:
+      - '4'
+      x-inference-time:
+      - '87'
+      x-prompt-tokens:
+      - '13'
+      x-queue-time:
+      - '0'
+      x-request-id:
+      - NpwJVhthXCwtN2Nl87uwa
+      x-sha:
+      - 5f0b02c75b57c5855da9ae460ce51323ea669d8a
+      x-time-per-token:
+      - '21'
+      x-total-time:
+      - '87'
+      x-validation-time:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1
