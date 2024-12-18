@@ -800,6 +800,19 @@ components:
           description: The ID of the parent trace
           example: "124ab1c"
           nullable: true
+        request_duration_ms:
+          type: number
+          format: float
+          description: The time the request took (as measured by client or proxy)
+          example: 283
+          nullable: true
+        managed_service_id:
+          type: string
+          description: The ID of a managed service provider
+          example: "aws-bedrock"
+          nullable: true
+        model_used:
+          $ref: "#/components/schemas/Model"
 
     Model:
       title: Model

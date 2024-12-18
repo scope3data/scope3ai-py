@@ -23,3 +23,6 @@ def test_huggingface_hub_image_generation(tracer_init):
     assert response.image
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.request_id is not None
+    assert response.scope3ai.request.input_tokens == 9
+    assert response.scope3ai.request.output_tokens == 9
+    assert response.scope3ai.impact is None
