@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: '{"inputs": "text to generate speech from"}'
+    body: '{"inputs": "Even use the service to create audiobooks"}'
     headers:
       Accept:
       - '*/*'
@@ -9,11 +9,11 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '42'
+      - '55'
       Content-Type:
       - application/json
       X-Amzn-Trace-Id:
-      - 2903b0bb-7fb1-4cab-bd60-34af328e2909
+      - b8e04532-ea19-40b6-b889-51a4a8b16399
       authorization:
       - DUMMY
       user-agent:
@@ -32,13 +32,13 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 18 Dec 2024 15:28:30 GMT
+      - Wed, 18 Dec 2024 20:40:36 GMT
       access-control-allow-credentials:
       - 'true'
       vary:
       - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
       x-request-id:
-      - 8gkOU_ZR2faXAvpR5hiGI
+      - nVvKTbkDKKPV1ijKqFNKd
     status:
       code: 400
       message: Bad Request

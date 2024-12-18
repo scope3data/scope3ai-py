@@ -39,6 +39,13 @@ def test_huggingface_hub_translation(tracer_init):
 
 # @pytest.mark.vcr
 # def test_huggingface_hub_text_to_speech(tracer_init):
-#     client = InferenceClient()
-#     audio = client.text_to_speech("text to generate speech from")
-#     Path("hello_world.flac").write_bytes(audio)
+#     client = InferenceClient(token="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")
+#     audio = client.text_to_speech("Even use the service to create audiobooks")
+#     print(type (audio))
+
+
+@pytest.mark.vcr
+def test_huggingface_hub_speech_to_text(tracer_init):
+    client = InferenceClient(token="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")
+    response = client.automatic_speech_recognition(audio="hello_there.mp3")
+    print(response.text)
