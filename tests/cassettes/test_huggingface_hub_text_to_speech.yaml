@@ -1,0 +1,45 @@
+interactions:
+- request:
+    body: '{"inputs": "text to generate speech from"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '42'
+      Content-Type:
+      - application/json
+      X-Amzn-Trace-Id:
+      - 2903b0bb-7fb1-4cab-bd60-34af328e2909
+      authorization:
+      - DUMMY
+      user-agent:
+      - unknown/None; hf_hub/0.26.5; python/3.12.8
+    method: POST
+    uri: https://api-inference.huggingface.co/models/suno/bark
+  response:
+    body:
+      string: '{"error":"Model requires a Pro subscription; check out hf.co/pricing
+        to learn more. Make sure to include your HF token in your query."}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '135'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 18 Dec 2024 15:28:30 GMT
+      access-control-allow-credentials:
+      - 'true'
+      vary:
+      - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+      x-request-id:
+      - 8gkOU_ZR2faXAvpR5hiGI
+    status:
+      code: 400
+      message: Bad Request
+version: 1

@@ -19,14 +19,23 @@ logger = logging.getLogger("scope3ai.lib")
 
 def init_openai_instrumentor() -> None:
     if importlib.util.find_spec("openai") is not None:
-        from scope3ai.tracers.openai_tracer import OpenAIInstrumentor
+        from scope3ai.tracers.openai.instrument import OpenAIInstrumentor
 
         instrumentor = OpenAIInstrumentor()
         instrumentor.instrument()
 
 
+def init_huggingface_hub_instrumentor() -> None:
+    if importlib.util.find_spec("huggingface_hub") is not None:
+        from scope3ai.tracers.huggingface.instrument import HuggingfaceInstrumentor
+
+        instrumentor = HuggingfaceInstrumentor()
+        instrumentor.instrument()
+
+
 _INSTRUMENTS = {
     "openai": init_openai_instrumentor,
+    "huggingface_hub": init_huggingface_hub_instrumentor,
 }
 
 

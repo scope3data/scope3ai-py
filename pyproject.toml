@@ -6,6 +6,9 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "httpx>=0.28.1",
+    "huggingface-hub>=0.26.5",
+    "litellm>=1.53.3",
+    "pillow>=11.0.0",
     "pydantic>=2.10.3",
     "wrapt>=1.17.0",
 ]
