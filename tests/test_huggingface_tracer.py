@@ -54,4 +54,10 @@ def test_huggingface_hub_speech_to_text(tracer_init):
     response.status_code = 404  # Simulating a 404 response
     response._content = b'{"error": "Not Found"}'
     hf_raise_for_status(response)
+    import huggingface_hub
+
+    print(dir(huggingface_hub.utils._http))
+    import huggingface_hub.utils
+
+    print(hf_raise_for_status.__module__)
     print(response.text)

@@ -9,6 +9,8 @@ from typing import Optional, List
 from uuid import uuid4
 import atexit
 
+import huggingface_hub
+
 from .api.client import Client, AsyncClient
 from .api.types import ImpactRow, ImpactResponse, Scope3AIContext
 from .api.defaults import DEFAULT_API_URL
@@ -28,6 +30,7 @@ def init_openai_instrumentor() -> None:
 def init_huggingface_hub_instrumentor() -> None:
     print(importlib.util.find_spec("huggingface_hub.utils"))
     if importlib.util.find_spec("huggingface_hub") is not None:
+        print(huggingface_hub.utils.__dir__())
         from scope3ai.tracers.huggingface.instrument import HuggingfaceInstrumentor
 
         instrumentor = HuggingfaceInstrumentor()

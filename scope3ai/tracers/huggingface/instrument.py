@@ -57,7 +57,7 @@ class HuggingfaceInstrumentor:
 
     def instrument(self) -> None:
         wrap_function_wrapper(
-            "huggingface_hub.utils",  # Module where the function resides
+            "huggingface_hub.utils._http",  # Module where the function resides
             "hf_raise_for_status",  # Name of the function to mock
             my_wrapper,  # Your custom wrapper
         )

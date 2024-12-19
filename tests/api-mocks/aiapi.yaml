@@ -484,7 +484,7 @@ components:
                 country STRING, region STRING, task STRING, input_tokens INT64,
                 output_tokens INT64, input_images STRING, output_images STRING,
                 output_video_resolution INT64,
-                output_video_frames INT64, input_audio_seconds INT64, input_steps INT64
+                output_video_frames INT64, input_audio_seconds INT64, output_audio_seconds INT64,  input_steps INT64
             type: array
             minItems: 17
             maxItems: 21
@@ -662,6 +662,12 @@ components:
           minimum: 0
           maximum: 100000
           example: 60
+        output_audio_seconds:
+          type: integer
+          description: the duration of audio output in seconds
+          minimum: 0
+          maximum: 100000
+          example: 60
         input_images:
           type: string
           description: a comma delimited list of image sizes
@@ -742,6 +748,12 @@ components:
         input_audio_seconds:
           type: integer
           description: the duration of audio input in seconds
+          minimum: 0
+          maximum: 100000
+          example: 60
+        output_audio_seconds:
+          type: integer
+          description: the duration of audio output in seconds
           minimum: 0
           maximum: 100000
           example: 60
