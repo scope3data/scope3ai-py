@@ -9,6 +9,7 @@ from typing import Optional, List
 from uuid import uuid4
 import atexit
 
+
 from .api.client import Client, AsyncClient
 from .api.types import ImpactRow, ImpactResponse, Scope3AIContext
 from .api.defaults import DEFAULT_API_URL
