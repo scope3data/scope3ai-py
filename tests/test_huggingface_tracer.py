@@ -1,5 +1,7 @@
 import pytest
 from huggingface_hub import InferenceClient
+from huggingface_hub.utils import hf_raise_for_status
+from requests import Response
 
 
 @pytest.mark.vcr
@@ -39,13 +41,17 @@ def test_huggingface_hub_translation(tracer_init):
 
 # @pytest.mark.vcr
 # def test_huggingface_hub_text_to_speech(tracer_init):
-#     client = InferenceClient(token="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")
+#     client = InferenceClient()
 #     audio = client.text_to_speech("Even use the service to create audiobooks")
 #     print(type (audio))
 
 
 @pytest.mark.vcr
 def test_huggingface_hub_speech_to_text(tracer_init):
-    client = InferenceClient(token="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")
-    response = client.automatic_speech_recognition(audio="hello_there.mp3")
+    client = InferenceClient()
+    client.automatic_speech_recognition(audio="hello_there.mp3")
+    response = Response()
+    response.status_code = 404  # Simulating a 404 response
+    response._content = b'{"error": "Not Found"}'
+    hf_raise_for_status(response)
     print(response.text)

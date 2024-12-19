@@ -4,9 +4,6 @@ from scope3ai.tracers.huggingface.chat import (
     huggingface_chat_wrapper,
     huggingface_async_chat_wrapper,
 )
-from scope3ai.tracers.huggingface.post_request_interceptor import (
-    hf_raise_for_status_wrapper,
-)
 from scope3ai.tracers.huggingface.text_to_image import huggingface_text_to_image_wrapper
 from scope3ai.tracers.huggingface.text_to_speech import (
     huggingface_text_to_speech_wrapper,
@@ -16,14 +13,21 @@ from scope3ai.tracers.huggingface.translation import (
 )
 
 
+def my_wrapper(wrapped, instance, args, kwargs):
+    # Custom logic before calling the original function
+    print("Mocked hf_raise_for_status is called")
+
+    # Optionally, you can call the original function or skip it
+    # Uncomment the line below to call the original function
+    # return wrapped(*args, **kwargs)
+
+    # Custom mock response
+    return "Mocked response"
+
+
 class HuggingfaceInstrumentor:
     def __init__(self) -> None:
         self.wrapped_methods = [
-            {
-                "module": "huggingface_hub.utils._http",
-                "name": "hf_raise_for_status",
-                "wrapper": hf_raise_for_status_wrapper,
-            },
             {
                 "module": "huggingface_hub.inference._client",
                 "name": "InferenceClient.chat_completion",
@@ -52,7 +56,13 @@ class HuggingfaceInstrumentor:
         ]
 
     def instrument(self) -> None:
+        wrap_function_wrapper(
+            "huggingface_hub.utils",  # Module where the function resides
+            "hf_raise_for_status",  # Name of the function to mock
+            my_wrapper,  # Your custom wrapper
+        )
         for wrapper in self.wrapped_methods:
+            # print(wrapper)
             wrap_function_wrapper(
                 wrapper["module"], wrapper["name"], wrapper["wrapper"]
             )
