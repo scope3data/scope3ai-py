@@ -1,10 +1,11 @@
 import time
 import tiktoken
 from dataclasses import dataclass, asdict
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Union
 
 from huggingface_hub import InferenceClient  # type: ignore[import-untyped]
 from huggingface_hub import TranslationOutput as _TranslationOutput
+from requests import Response
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.api.typesgen import Task
@@ -36,6 +37,9 @@ def huggingface_translation_wrapper_non_stream(
         prompt = args[0]
     else:
         prompt = kwargs["text"]
+    http_response: Union[Response, None] = getattr(instance, "response")
+    if http_response is not None:
+        print(http_response.headers)
     input_tokens = len(encoder.encode(prompt))
     output_tokens = len(encoder.encode(response.translation_text))
     scope3_row = ImpactRow(

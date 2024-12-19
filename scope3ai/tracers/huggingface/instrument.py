@@ -1,5 +1,8 @@
 from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
 
+from scope3ai.tracers.huggingface.post_request_interceptor import (
+    post_request_interceptor,
+)
 from scope3ai.tracers.huggingface.chat import (
     huggingface_chat_wrapper,
     huggingface_async_chat_wrapper,
@@ -35,6 +38,11 @@ class HuggingfaceInstrumentor:
             },
             {
                 "module": "huggingface_hub.inference._client",
+                "name": "InferenceClient.post",
+                "wrapper": post_request_interceptor,
+            },
+            {
+                "module": "huggingface_hub.inference._client",
                 "name": "InferenceClient.text_to_image",
                 "wrapper": huggingface_text_to_image_wrapper,
             },
@@ -56,11 +64,6 @@ class HuggingfaceInstrumentor:
         ]
 
     def instrument(self) -> None:
-        wrap_function_wrapper(
-            "huggingface_hub.utils._http",  # Module where the function resides
-            "hf_raise_for_status",  # Name of the function to mock
-            my_wrapper,  # Your custom wrapper
-        )
         for wrapper in self.wrapped_methods:
             # print(wrapper)
             wrap_function_wrapper(
