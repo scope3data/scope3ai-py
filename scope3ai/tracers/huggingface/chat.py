@@ -6,10 +6,10 @@ from typing import Any, Callable, Optional, Union
 from huggingface_hub import AsyncInferenceClient, InferenceClient  # type: ignore[import-untyped]
 from huggingface_hub import ChatCompletionOutput as _ChatCompletionOutput
 from huggingface_hub import ChatCompletionStreamOutput as _ChatCompletionStreamOutput
-from requests import Response
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.lib import Scope3AI
+from scope3ai.tracers.huggingface.utils import hf_raise_for_status_capture
 
 PROVIDER = "huggingface_hub"
 
@@ -36,21 +36,18 @@ def huggingface_chat_wrapper(
 def huggingface_chat_wrapper_non_stream(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
 ) -> ChatCompletionOutput:
-    timer_start = time.perf_counter()
-    response = wrapped(*args, **kwargs)
-    request_latency = (time.perf_counter() - timer_start) * 1000
+    with hf_raise_for_status_capture() as capture_response:
+        response = wrapped(*args, **kwargs)
+        http_response = capture_response.get()
     model_requested = instance.model
     model_used = response.model
-    http_response: Union[Response, None] = getattr(instance, "response")
-    if http_response is not None:
-        if http_response.headers.get("x-compute-time"):
-            request_latency = float(http_response.headers.get("x-compute-time"))
+    compute_time = http_response.headers.get("x-compute-time")
     scope3_row = ImpactRow(
         model=Model(id=model_requested),
         model_used=Model(id=model_used),
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
-        request_duration_ms=request_latency,
+        request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
     )
     scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
