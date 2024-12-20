@@ -6,6 +6,7 @@ from typing import Any, Callable, Optional, Union
 from huggingface_hub import AsyncInferenceClient, InferenceClient  # type: ignore[import-untyped]
 from huggingface_hub import ChatCompletionOutput as _ChatCompletionOutput
 from huggingface_hub import ChatCompletionStreamOutput as _ChatCompletionStreamOutput
+from requests import Response
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.lib import Scope3AI
@@ -37,15 +38,19 @@ def huggingface_chat_wrapper_non_stream(
 ) -> ChatCompletionOutput:
     timer_start = time.perf_counter()
     response = wrapped(*args, **kwargs)
-    request_latency = time.perf_counter() - timer_start
+    request_latency = (time.perf_counter() - timer_start) * 1000
     model_requested = instance.model
     model_used = response.model
+    http_response: Union[Response, None] = getattr(instance, "response")
+    if http_response is not None:
+        if http_response.headers.get("x-compute-time"):
+            request_latency = float(http_response.headers.get("x-compute-time"))
     scope3_row = ImpactRow(
         model=Model(id=model_requested),
         model_used=Model(id=model_used),
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
-        request_duration_ms=request_latency * 1000,
+        request_duration_ms=request_latency,
         managed_service_id=PROVIDER,
     )
     scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
@@ -74,8 +79,7 @@ def huggingface_chat_wrapper_stream(
             model_used=Model(id=model_used),
             input_tokens=chunk.usage.prompt_tokens,
             output_tokens=chunk.usage.completion_tokens,
-            request_duration_ms=request_latency
-            * 1000,  # TODO: can we get the header that has the processing time
+            request_duration_ms=request_latency,
             managed_service_id=PROVIDER,
         )
         scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
