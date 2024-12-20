@@ -45,6 +45,9 @@ def test_huggingface_hub_translation(tracer_init):
 
 @pytest.mark.vcr
 def test_huggingface_hub_speech_to_text(tracer_init):
+    client = InferenceClient()
+    response = client.automatic_speech_recognition(audio="hello_there.mp3")
+    assert getattr(response, "scope3ai") is not None
     pass
 
     # client = InferenceClient()

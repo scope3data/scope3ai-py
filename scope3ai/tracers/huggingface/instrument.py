@@ -1,4 +1,5 @@
-from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
+import contextvars
+from wrapt import FunctionWrapper, wrap_function_wrapper, wrap_object  # type: ignore[import-untyped]
 
 from scope3ai.tracers.huggingface.post_request_interceptor import (
     post_request_interceptor,
@@ -11,21 +12,13 @@ from scope3ai.tracers.huggingface.text_to_image import huggingface_text_to_image
 from scope3ai.tracers.huggingface.text_to_speech import (
     huggingface_text_to_speech_wrapper,
 )
+from scope3ai.tracers.huggingface.speech_to_text import (
+    huggingface_automatic_recognition_output_wrapper,
+)
 from scope3ai.tracers.huggingface.translation import (
     huggingface_translation_wrapper_non_stream,
 )
-
-
-def my_wrapper(wrapped, instance, args, kwargs):
-    # Custom logic before calling the original function
-    print("Mocked hf_raise_for_status is called")
-
-    # Optionally, you can call the original function or skip it
-    # Uncomment the line below to call the original function
-    # return wrapped(*args, **kwargs)
-
-    # Custom mock response
-    return "Mocked response"
+from .utils import hf_raise_for_status_enabled, hf_raise_for_status_wrapper
 
 
 class HuggingfaceInstrumentor:
@@ -36,11 +29,11 @@ class HuggingfaceInstrumentor:
                 "name": "InferenceClient.chat_completion",
                 "wrapper": huggingface_chat_wrapper,
             },
-            {
-                "module": "huggingface_hub.inference._client",
-                "name": "InferenceClient.post",
-                "wrapper": post_request_interceptor,
-            },
+            # {
+            #     "module": "huggingface_hub.inference._client",
+            #     "name": "InferenceClient.post",
+            #     "wrapper": post_request_interceptor,
+            # },
             {
                 "module": "huggingface_hub.inference._client",
                 "name": "InferenceClient.text_to_image",
@@ -57,15 +50,33 @@ class HuggingfaceInstrumentor:
                 "wrapper": huggingface_text_to_speech_wrapper,
             },
             {
+                "module": "huggingface_hub.inference._client",
+                "name": "InferenceClient.automatic_speech_recognition",
+                "wrapper": huggingface_automatic_recognition_output_wrapper,
+            },
+            {
                 "module": "huggingface_hub.inference._generated._async_client",
                 "name": "AsyncInferenceClient.chat_completion",
                 "wrapper": huggingface_async_chat_wrapper,
+            },
+            {
+                "module": "huggingface_hub.inference._client",
+                "name": "hf_raise_for_status",
+                "wrapper": hf_raise_for_status_wrapper,
+                "enabled": hf_raise_for_status_enabled,
             },
         ]
 
     def instrument(self) -> None:
         for wrapper in self.wrapped_methods:
-            # print(wrapper)
-            wrap_function_wrapper(
-                wrapper["module"], wrapper["name"], wrapper["wrapper"]
-            )
+            if "enabled" in wrapper:
+                wrap_object(
+                    wrapper["module"],
+                    wrapper["name"],
+                    FunctionWrapper,
+                    (wrapper["wrapper"], wrapper["enabled"]),
+                )
+            else:
+                wrap_function_wrapper(
+                    wrapper["module"], wrapper["name"], wrapper["wrapper"]
+                )
