@@ -39,7 +39,8 @@ def huggingface_translation_wrapper_non_stream(
         prompt = kwargs["text"]
     http_response: Union[Response, None] = getattr(instance, "response")
     if http_response is not None:
-        print(http_response.headers)
+        if http_response.headers.get("x-compute-time"):
+            request_latency = float(http_response.headers.get("x-compute-time"))
     input_tokens = len(encoder.encode(prompt))
     output_tokens = len(encoder.encode(response.translation_text))
     scope3_row = ImpactRow(
@@ -48,8 +49,7 @@ def huggingface_translation_wrapper_non_stream(
         task=Task.translation,
         input_tokens=input_tokens,
         output_tokens=output_tokens,  # TODO: How we can calculate the output tokens of a translation?
-        request_duration_ms=request_latency
-        * 1000,  # TODO: can we get the header that has the processing time
+        request_duration_ms=request_latency,
         managed_service_id=PROVIDER,
     )
 

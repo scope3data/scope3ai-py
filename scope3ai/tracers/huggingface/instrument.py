@@ -1,11 +1,14 @@
 from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
 
-from scope3ai.tracers.huggingface.post_request_interceptor import (
-    post_request_interceptor,
-)
 from scope3ai.tracers.huggingface.chat import (
     huggingface_chat_wrapper,
     huggingface_async_chat_wrapper,
+)
+from scope3ai.tracers.huggingface.post_request_interceptor import (
+    post_request_interceptor,
+)
+from scope3ai.tracers.huggingface.speech_to_text import (
+    huggingface_speech_to_text_wrapper,
 )
 from scope3ai.tracers.huggingface.text_to_image import huggingface_text_to_image_wrapper
 from scope3ai.tracers.huggingface.text_to_speech import (
@@ -16,21 +19,14 @@ from scope3ai.tracers.huggingface.translation import (
 )
 
 
-def my_wrapper(wrapped, instance, args, kwargs):
-    # Custom logic before calling the original function
-    print("Mocked hf_raise_for_status is called")
-
-    # Optionally, you can call the original function or skip it
-    # Uncomment the line below to call the original function
-    # return wrapped(*args, **kwargs)
-
-    # Custom mock response
-    return "Mocked response"
-
-
 class HuggingfaceInstrumentor:
     def __init__(self) -> None:
         self.wrapped_methods = [
+            {
+                "module": "huggingface_hub.inference._client",
+                "name": "InferenceClient.post",
+                "wrapper": post_request_interceptor,
+            },
             {
                 "module": "huggingface_hub.inference._client",
                 "name": "InferenceClient.chat_completion",
@@ -38,8 +34,8 @@ class HuggingfaceInstrumentor:
             },
             {
                 "module": "huggingface_hub.inference._client",
-                "name": "InferenceClient.post",
-                "wrapper": post_request_interceptor,
+                "name": "InferenceClient.automatic_speech_recognition",
+                "wrapper": huggingface_speech_to_text_wrapper,
             },
             {
                 "module": "huggingface_hub.inference._client",

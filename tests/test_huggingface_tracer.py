@@ -14,6 +14,7 @@ def test_huggingface_hub_chat(tracer_init):
     assert response.scope3ai.request.input_tokens == 13
     assert response.scope3ai.request.output_tokens == 4
     assert response.scope3ai.impact is None
+    assert response.scope3ai.request.request_duration_ms == 0.087580445
 
 
 @pytest.mark.vcr
@@ -26,6 +27,7 @@ def test_huggingface_hub_image_generation(tracer_init):
     assert response.scope3ai.request.input_tokens == 9
     assert len(response.scope3ai.request.output_images) == 1
     assert response.scope3ai.impact is None
+    assert response.scope3ai.request.request_duration_ms == 18.85
 
 
 @pytest.mark.vcr
@@ -45,11 +47,6 @@ def test_huggingface_hub_translation(tracer_init):
 
 @pytest.mark.vcr
 def test_huggingface_hub_speech_to_text(tracer_init):
-    pass
-
-    # client = InferenceClient()
-    # client.automatic_speech_recognition(audio="hello_there.mp3")
-    # response = Response()
-    # response.status_code = 404  # Simulating a 404 response
-    # response._content = b'{"error": "Not Found"}'
-    # hf_raise_for_status(response)
+    client = InferenceClient()
+    response = client.automatic_speech_recognition(audio="hello_there.mp3")
+    assert getattr(response, "scope3ai") is not None
