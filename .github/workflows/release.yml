@@ -56,6 +56,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.sha }}
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup | Force correct release branch on workflow sha
         run: |
