@@ -24,13 +24,7 @@ def huggingface_text_to_image_wrapper_non_stream(
     with hf_raise_for_status_capture() as capture_response:
         response = wrapped(*args, **kwargs)
         http_response = capture_response.get()
-    if kwargs.get("model"):
-        model_requested = kwargs.get("model")
-        model_used = kwargs.get("model")
-    else:
-        recommended_model = instance.get_recommended_model("text-to-image")
-        model_requested = recommended_model
-        model_used = recommended_model
+    model = kwargs.get("model") or instance.get_recommended_model("text-to-speech")
     encoder = tiktoken.get_encoding("cl100k_base")
     if len(args) > 0:
         prompt = args[0]
@@ -40,8 +34,7 @@ def huggingface_text_to_image_wrapper_non_stream(
     input_tokens = len(encoder.encode(prompt))
     width, height = response.size
     scope3_row = ImpactRow(
-        model=Model(id=model_requested),
-        model_used=Model(id=model_used),
+        model=Model(id=model),
         input_tokens=input_tokens,
         task=Task.text_to_image,
         output_images=["{width}x{height}".format(width=width, height=height)],

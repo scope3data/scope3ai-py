@@ -66,14 +66,12 @@ def huggingface_chat_wrapper_stream(
         raise ValueError("stream_options include_usage must be True")
     stream = wrapped(*args, **kwargs)
     token_count = 0
-    model_request = instance.model
-    model_used = instance.model
+    model = kwargs.get("model") or instance.get_recommended_model("chat")
     for chunk in stream:
         token_count += 1
         request_latency = time.perf_counter() - timer_start
         scope3_row = ImpactRow(
-            model=Model(id=model_request),
-            model_used=Model(id=model_used),
+            model=Model(id=model),
             input_tokens=chunk.usage.prompt_tokens,
             output_tokens=chunk.usage.completion_tokens,
             request_duration_ms=request_latency,
@@ -101,12 +99,9 @@ async def huggingface_async_chat_wrapper_non_stream(
         response = await wrapped(*args, **kwargs)
         http_response = capture_response.get()
     compute_time = http_response.headers.get("x-compute-time")
-    model_requested = kwargs["model"]
-    model_used = response.model
-
+    model = kwargs.get("model") or instance.get_recommended_model("chat")
     scope3_row = ImpactRow(
-        model=Model(id=model_requested),
-        model_used=Model(id=model_used),
+        model=Model(id=model),
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
         request_duration_ms=compute_time

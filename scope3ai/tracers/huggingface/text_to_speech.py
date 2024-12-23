@@ -25,13 +25,7 @@ def huggingface_text_to_speech_wrapper_non_stream(
     timer_start = time.perf_counter()
     response = wrapped(*args, **kwargs)
     request_latency = (time.perf_counter() - timer_start) * 1000
-    if kwargs.get("model"):
-        model_requested = kwargs.get("model")
-        model_used = kwargs.get("model")
-    else:
-        recommended_model = instance.get_recommended_model("text-to-speech")
-        model_requested = recommended_model
-        model_used = recommended_model
+    model = kwargs.get("model") or instance.get_recommended_model("text-to-speech")
     encoder = tiktoken.get_encoding("cl100k_base")
     if len(args) > 0:
         prompt = args[0]
@@ -43,8 +37,7 @@ def huggingface_text_to_speech_wrapper_non_stream(
             request_latency = float(http_response.headers.get("x-compute-time"))
     input_tokens = len(encoder.encode(prompt))
     scope3_row = ImpactRow(
-        model=Model(id=model_requested),
-        model_used=Model(id=model_used),
+        model=Model(id=model),
         input_tokens=input_tokens,
         task=Task.text_to_speech,
         request_duration_ms=request_latency,

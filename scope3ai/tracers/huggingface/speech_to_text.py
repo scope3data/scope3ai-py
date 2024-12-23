@@ -28,19 +28,10 @@ def huggingface_automatic_recognition_output_wrapper_non_stream(
 
     compute_audio_length = http_response.headers.get("x-compute-audio-length")
     compute_time = http_response.headers.get("x-compute-time")
-    if kwargs.get("model"):
-        model_requested = kwargs.get("model")
-        model_used = kwargs.get("model")
-    else:
-        recommended_model = instance.get_recommended_model(
-            "automatic-speech-recognition"
-        )
-        model_requested = recommended_model
-        model_used = recommended_model
+    model = kwargs.get("model") or instance.get_recommended_model("text-to-speech")
 
     scope3_row = ImpactRow(
-        model=Model(id=model_requested),
-        model_used=Model(id=model_used),
+        model=Model(id=model),
         task=Task.text_to_speech,
         output_audio_seconds=int(float(compute_audio_length)),
         request_duration_ms=float(compute_time) * 1000,

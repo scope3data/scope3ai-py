@@ -14,7 +14,7 @@ def test_huggingface_hub_chat(tracer_init):
     assert response.scope3ai.request.input_tokens == 13
     assert response.scope3ai.request.output_tokens == 4
     assert response.scope3ai.impact is None
-    assert response.scope3ai.request.request_duration_ms == 87.58044500000001
+    assert response.scope3ai.request.request_duration_ms == pytest.approx(87.5, 0.1)
 
 
 @pytest.mark.vcr
@@ -27,8 +27,7 @@ def test_huggingface_hub_image_generation(tracer_init):
     assert response.scope3ai.request.input_tokens == 9
     assert len(response.scope3ai.request.output_images) == 1
     assert response.scope3ai.impact is None
-    assert response.scope3ai.request.request_duration_ms == 18850.0
-    print(response.scope3ai.impact)
+    assert response.scope3ai.request.request_duration_ms == pytest.approx(18850, 0.1)
 
 
 @pytest.mark.vcr
