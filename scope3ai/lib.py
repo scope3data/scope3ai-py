@@ -17,6 +17,14 @@ from .worker import BackgroundWorker
 logger = logging.getLogger("scope3ai.lib")
 
 
+def init_anthropic_instrumentor() -> None:
+    if importlib.util.find_spec("anthropic") is not None:
+        from scope3ai.tracers.anthropic.instrument import AnthropicInstrumentor
+
+        instrumentor = AnthropicInstrumentor()
+        instrumentor.instrument()
+
+
 def init_openai_instrumentor() -> None:
     if importlib.util.find_spec("openai") is not None:
         from scope3ai.tracers.openai.instrument import OpenAIInstrumentor
@@ -34,6 +42,7 @@ def init_huggingface_hub_instrumentor() -> None:
 
 
 _INSTRUMENTS = {
+    "anthropic": init_anthropic_instrumentor,
     "openai": init_openai_instrumentor,
     "huggingface_hub": init_huggingface_hub_instrumentor,
 }
