@@ -9,6 +9,7 @@ from huggingface_hub import ChatCompletionStreamOutput as _ChatCompletionStreamO
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.lib import Scope3AI
+from scope3ai.tracers.huggingface.utils import hf_raise_for_status_capture
 
 PROVIDER = "huggingface_hub"
 
@@ -35,17 +36,18 @@ def huggingface_chat_wrapper(
 def huggingface_chat_wrapper_non_stream(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
 ) -> ChatCompletionOutput:
-    timer_start = time.perf_counter()
-    response = wrapped(*args, **kwargs)
-    request_latency = time.perf_counter() - timer_start
+    with hf_raise_for_status_capture() as capture_response:
+        response = wrapped(*args, **kwargs)
+        http_response = capture_response.get()
     model_requested = instance.model
     model_used = response.model
+    compute_time = http_response.headers.get("x-compute-time")
     scope3_row = ImpactRow(
         model=Model(id=model_requested),
         model_used=Model(id=model_used),
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
-        request_duration_ms=request_latency * 1000,
+        request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
     )
     scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
@@ -74,8 +76,7 @@ def huggingface_chat_wrapper_stream(
             model_used=Model(id=model_used),
             input_tokens=chunk.usage.prompt_tokens,
             output_tokens=chunk.usage.completion_tokens,
-            request_duration_ms=request_latency
-            * 1000,  # TODO: can we get the header that has the processing time
+            request_duration_ms=request_latency,
             managed_service_id=PROVIDER,
         )
         scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
@@ -96,9 +97,10 @@ async def huggingface_async_chat_wrapper(
 async def huggingface_async_chat_wrapper_non_stream(
     wrapped: Callable, instance: AsyncInferenceClient, args: Any, kwargs: Any
 ) -> ChatCompletionOutput:
-    timer_start = time.perf_counter()
-    response = await wrapped(*args, **kwargs)
-    request_latency = time.perf_counter() - timer_start
+    with hf_raise_for_status_capture() as capture_response:
+        response = await wrapped(*args, **kwargs)
+        http_response = capture_response.get()
+    compute_time = http_response.headers.get("x-compute-time")
     model_requested = kwargs["model"]
     model_used = response.model
 
@@ -107,7 +109,8 @@ async def huggingface_async_chat_wrapper_non_stream(
         model_used=Model(id=model_used),
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
-        request_duration_ms=request_latency
+        request_duration_ms=compute_time
+        * 1000
         * 1000,  # TODO: can we get the header that has the processing time
         managed_service_id=PROVIDER,
     )
@@ -116,6 +119,7 @@ async def huggingface_async_chat_wrapper_non_stream(
     return ChatCompletionOutput(**asdict(response), scope3ai=scope3_ctx)
 
 
+# Todo: How headers works for stream
 async def huggingface_async_chat_wrapper_stream(
     wrapped: Callable, instance: AsyncInferenceClient, args: Any, kwargs: Any
 ) -> AsyncIterable[ChatCompletionStreamOutput]:

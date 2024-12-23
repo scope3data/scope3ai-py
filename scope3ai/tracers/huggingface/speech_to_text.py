@@ -1,59 +1,59 @@
-import tiktoken
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from typing import Any, Callable, Optional
 
 from huggingface_hub import InferenceClient  # type: ignore[import-untyped]
-from huggingface_hub import TextToImageOutput as _TextToImageOutput
+from huggingface_hub import (
+    AutomaticSpeechRecognitionOutput as _AutomaticSpeechRecognitionOutput,
+)
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.api.typesgen import Task
 from scope3ai.lib import Scope3AI
-from scope3ai.tracers.huggingface.utils import hf_raise_for_status_capture
+from .utils import hf_raise_for_status_capture
 
 PROVIDER = "huggingface_hub"
 
 
 @dataclass
-class TextToImageOutput(_TextToImageOutput):
+class AutomaticSpeechRecognitionOutput(_AutomaticSpeechRecognitionOutput):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def huggingface_text_to_image_wrapper_non_stream(
+def huggingface_automatic_recognition_output_wrapper_non_stream(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
-) -> TextToImageOutput:
+) -> AutomaticSpeechRecognitionOutput:
     with hf_raise_for_status_capture() as capture_response:
         response = wrapped(*args, **kwargs)
         http_response = capture_response.get()
+
+    compute_audio_length = http_response.headers.get("x-compute-audio-length")
+    compute_time = http_response.headers.get("x-compute-time")
     if kwargs.get("model"):
         model_requested = kwargs.get("model")
         model_used = kwargs.get("model")
     else:
-        recommended_model = instance.get_recommended_model("text-to-image")
+        recommended_model = instance.get_recommended_model(
+            "automatic-speech-recognition"
+        )
         model_requested = recommended_model
         model_used = recommended_model
-    encoder = tiktoken.get_encoding("cl100k_base")
-    if len(args) > 0:
-        prompt = args[0]
-    else:
-        prompt = kwargs["prompt"]
-    compute_time = http_response.headers.get("x-compute-time")
-    input_tokens = len(encoder.encode(prompt))
-    width, height = response.size
+
     scope3_row = ImpactRow(
         model=Model(id=model_requested),
         model_used=Model(id=model_used),
-        input_tokens=input_tokens,
-        task=Task.text_to_image,
-        output_images=["{width}x{height}".format(width=width, height=height)],
+        task=Task.text_to_speech,
+        output_audio_seconds=int(float(compute_audio_length)),
         request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
     )
 
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    return TextToImageOutput(response, scope3ai=scope3_ctx)
+    return AutomaticSpeechRecognitionOutput(**asdict(response), scope3ai=scope3_ctx)
 
 
-def huggingface_text_to_image_wrapper(
+def huggingface_automatic_recognition_output_wrapper(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
-) -> TextToImageOutput:
-    return huggingface_text_to_image_wrapper_non_stream(wrapped, instance, args, kwargs)
+) -> AutomaticSpeechRecognitionOutput:
+    return huggingface_automatic_recognition_output_wrapper_non_stream(
+        wrapped, instance, args, kwargs
+    )
