@@ -11,13 +11,14 @@ def set_envvar_if_unset(name: str, value: str):
 
 @pytest.fixture(autouse=True)
 def environment():
+    set_envvar_if_unset("ANTHROPIC_API_KEY", "DUMMY")
     set_envvar_if_unset("OPENAI_API_KEY", "DUMMY")
 
 
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [("authorization", "DUMMY")],
+        "filter_headers": [("authorization", "DUMMY"), ("x-api-key", "DUMMY")],
         "ignore_localhost": True,
         "ignore_hosts": ["aiapi.scope3.com"],
     }
