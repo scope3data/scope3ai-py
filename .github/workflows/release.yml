@@ -82,6 +82,8 @@ jobs:
           force: ${{ github.event.inputs.release_force }}
           prerelease: ${{ github.event.inputs.prerelease }}
           prerelease_token: ${{ github.event.inputs.prerelease_token }}
+          ssh_public_signing_key: ${{ secrets.DEPLOY_KEY_PUB }}
+          ssh_private_signing_key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Publish | Upload package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
