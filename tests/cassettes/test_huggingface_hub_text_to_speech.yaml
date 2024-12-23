@@ -13,33 +13,36 @@ interactions:
       Content-Type:
       - application/json
       X-Amzn-Trace-Id:
-      - b8e04532-ea19-40b6-b889-51a4a8b16399
+      - e46c0341-235f-4b22-8588-84ff96c7073c
       authorization:
       - DUMMY
       user-agent:
       - unknown/None; hf_hub/0.26.5; python/3.12.8
     method: POST
-    uri: https://api-inference.huggingface.co/models/suno/bark
+    uri: https://api-inference.huggingface.co/models/suno/bark-small
   response:
     body:
-      string: '{"error":"Model requires a Pro subscription; check out hf.co/pricing
-        to learn more. Make sure to include your HF token in your query."}'
+      string: Internal Server Error
     headers:
       Connection:
       - keep-alive
-      Content-Length:
-      - '135'
       Content-Type:
-      - application/json
+      - text/plain; charset=utf-8
       Date:
-      - Wed, 18 Dec 2024 20:40:36 GMT
+      - Mon, 23 Dec 2024 15:46:40 GMT
+      Transfer-Encoding:
+      - chunked
       access-control-allow-credentials:
       - 'true'
+      server:
+      - uvicorn
       vary:
       - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
       x-request-id:
-      - nVvKTbkDKKPV1ijKqFNKd
+      - O_2Ar76Dhe9Ern_nh4xJw
+      x-sha:
+      - 1dbd7a128513b8ae4a4e2130fed57b7ac9da5bcd
     status:
-      code: 400
-      message: Bad Request
+      code: 500
+      message: Internal Server Error
 version: 1
