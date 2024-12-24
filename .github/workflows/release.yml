@@ -88,7 +88,7 @@ jobs:
 
       - name: Push and tags
         run: |
-          git push --follow-tags
+          git push --set-upstream --follow-tags origin ${{ github.ref_name }}
 
       - name: Publish | Upload package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
