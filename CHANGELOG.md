@@ -1,6 +1,23 @@
 # CHANGELOG
 
 
+## v0.1.0-alpha.2 (2024-12-24)
+
+### Bug Fixes
+
+- Fix the workflow (#23) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`760e177`](https://github.com/scope3data/scope3ai-py/commit/760e1776ab0066381244b4f4d13962e8ce378035))
+
+- Prevent uv.lock to be out of sync after release (#22)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`2db0d78`](https://github.com/scope3data/scope3ai-py/commit/2db0d78b889eaea688c224d4edbd4fd21c198342))
+
+### Continuous Integration
+
+- Update package name (#21) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`2733f5f`](https://github.com/scope3data/scope3ai-py/commit/2733f5fc9f6837d0f9c3b981787f657f5914d148))
+
+
 ## v0.1.0-alpha.1 (2024-12-24)
 
 ### Bug Fixes
@@ -10,6 +27,9 @@
   [`bf5f7b3`](https://github.com/scope3data/scope3ai-py/commit/bf5f7b353fac1907dbe8754d5a1c7779390a32a4))
 
 ### Chores
+
+- **release**: 0.1.0-alpha.1 ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`0d30557`](https://github.com/scope3data/scope3ai-py/commit/0d30557437d483fb7d1ebe7a6e2504cdadf3f3fd))
 
 - **release**: Allow release workflow to commit on main (#15)
   ([](https://github.com/scope3data/scope3ai-py/pull),
