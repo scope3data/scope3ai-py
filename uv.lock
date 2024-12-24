@@ -2182,7 +2182,7 @@ wheels = [
 ]
 
 [[package]]
-name = "scope3ai-python"
+name = "scope3ai-py"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
