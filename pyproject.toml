@@ -1,5 +1,5 @@
 [project]
-name = "scope3ai-python"
+name = "scope3ai-py"
 version = "0.1.0-alpha.1"
 description = "Track the environmental impact of your use of AI"
 readme = "README.md"
