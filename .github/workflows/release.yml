@@ -71,9 +71,32 @@ jobs:
       - name: Install all dependencies
         run: uv sync --frozen --all-extras --all-groups
 
-      - name: Action | Semantic Version Release
+      # 2 steps to prevent uv.lock out of sync
+      # CF https://github.com/python-semantic-release/python-semantic-release/issues/1125
+      - name: Action | Semantic Version Release (stamp only)
         id: release
-        # Adjust tag with desired version if applicable.
+        uses: python-semantic-release/python-semantic-release@v9.12.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git_committer_name: "github-actions"
+          git_committer_email: "actions@users.noreply.github.com"
+          force: ${{ github.event.inputs.release_force }}
+          prerelease: ${{ github.event.inputs.prerelease }}
+          prerelease_token: ${{ github.event.inputs.prerelease_token }}
+          ssh_public_signing_key: ${{ secrets.DEPLOY_KEY_PUB }}
+          ssh_private_signing_key: ${{ secrets.DEPLOY_KEY }}
+          push: false
+          commit: false
+          tag: false
+          changelog: false
+
+      - name: Push and tags
+        run: |
+          uv lock
+          git add uv.lock
+
+      - name: Action | Semantic Version Release (fully to create release)
+        id: release
         uses: python-semantic-release/python-semantic-release@v9.12.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
