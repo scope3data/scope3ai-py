@@ -56,7 +56,6 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.sha }}
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup | Force correct release branch on workflow sha
         run: |
@@ -76,14 +75,12 @@ jobs:
         # Adjust tag with desired version if applicable.
         uses: python-semantic-release/python-semantic-release@v9.12.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.RELEASE_PAT }}
           git_committer_name: "github-actions"
           git_committer_email: "actions@users.noreply.github.com"
           force: ${{ github.event.inputs.release_force }}
           prerelease: ${{ github.event.inputs.prerelease }}
           prerelease_token: ${{ github.event.inputs.prerelease_token }}
-          ssh_public_signing_key: ${{ secrets.DEPLOY_KEY_PUB }}
-          ssh_private_signing_key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Publish | Upload package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
