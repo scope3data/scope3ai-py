@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v0.1.1-alpha.1 (2024-12-24)
+
+### Build System
+
+- Rename the project from scope3ai-py to scope3ai for easier installation (#24)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`e5f9356`](https://github.com/scope3data/scope3ai-py/commit/e5f93569ce098201f4d155665b3ffc4689bf8fec))
+
+### Testing
+
+- Move the mp3 to appropriate location in tests/data (#25)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`1a080b0`](https://github.com/scope3data/scope3ai-py/commit/1a080b08062a9d5ecd846f97a82e0d4a6dd42bb2))
+
+
 ## v0.1.0-alpha.2 (2024-12-24)
 
 ### Bug Fixes
@@ -11,6 +26,11 @@
 - Prevent uv.lock to be out of sync after release (#22)
   ([](https://github.com/scope3data/scope3ai-py/pull),
   [`2db0d78`](https://github.com/scope3data/scope3ai-py/commit/2db0d78b889eaea688c224d4edbd4fd21c198342))
+
+### Chores
+
+- **release**: 0.1.0-alpha.2 ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`6c7eaa9`](https://github.com/scope3data/scope3ai-py/commit/6c7eaa9d5c009ed6614dcd6877f21c517c540404))
 
 ### Continuous Integration
 
