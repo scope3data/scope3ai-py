@@ -1,4 +1,5 @@
 import pytest
+from pathlib import Path
 from huggingface_hub import InferenceClient
 
 
@@ -48,7 +49,9 @@ def test_huggingface_hub_translation(tracer_init):
 
 @pytest.mark.vcr
 def test_huggingface_hub_speech_to_text(tracer_init):
+    datadir = Path(__file__).parent / "data"
     client = InferenceClient()
-    response = client.automatic_speech_recognition(audio="hello_there.mp3")
+    response = client.automatic_speech_recognition(
+        audio=(datadir / "hello_there.mp3").as_posix()
+    )
     assert getattr(response, "scope3ai") is not None
-    pass
