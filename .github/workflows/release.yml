@@ -90,6 +90,9 @@ jobs:
         run: |
           git push --set-upstream --follow-tags origin ${{ github.ref_name }}
 
+      - name: Build package
+        run: uv build
+
       - name: Publish | Upload package to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         if: steps.release.outputs.released == 'true'
