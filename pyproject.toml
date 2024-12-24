@@ -1,12 +1,11 @@
 [project]
-name = "scope3ai-py"
+name = "scope3ai"
 version = "0.1.0-alpha.2"
 description = "Track the environmental impact of your use of AI"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "httpx>=0.28.1",
-    "huggingface-hub>=0.26.5",
     "litellm>=1.53.3",
     "pillow>=11.0.0",
     "pydantic>=2.10.3",
