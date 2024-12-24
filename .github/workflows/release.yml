@@ -74,7 +74,6 @@ jobs:
       # 2 steps to prevent uv.lock out of sync
       # CF https://github.com/python-semantic-release/python-semantic-release/issues/1125
       - name: Action | Semantic Version Release (stamp only)
-        id: release
         uses: python-semantic-release/python-semantic-release@v9.12.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
