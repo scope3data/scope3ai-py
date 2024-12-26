@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v0.1.1-alpha.2 (2024-12-26)
+
+### Features
+
+- **tracer**: Add impact and synchronisation in tracer (#26)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`f48b63c`](https://github.com/scope3data/scope3ai-py/commit/f48b63ce8137cf2d8855e9c76539d956221316d3))
+
+
 ## v0.1.1-alpha.1 (2024-12-24)
 
 ### Build System
@@ -8,6 +17,11 @@
 - Rename the project from scope3ai-py to scope3ai for easier installation (#24)
   ([](https://github.com/scope3data/scope3ai-py/pull),
   [`e5f9356`](https://github.com/scope3data/scope3ai-py/commit/e5f93569ce098201f4d155665b3ffc4689bf8fec))
+
+### Chores
+
+- **release**: 0.1.1-alpha.1 ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`e5754da`](https://github.com/scope3data/scope3ai-py/commit/e5754dae5a9d8a9b8d6984162ecaa9c903170148))
 
 ### Testing
 
