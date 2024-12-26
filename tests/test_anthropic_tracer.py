@@ -12,7 +12,6 @@ def test_anthropic_chat(tracer_init):
     )
     assert len(response.content) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.request_id is not None
     assert response.scope3ai.request.input_tokens == 10
     assert response.scope3ai.request.output_tokens == 37
     assert response.scope3ai.impact is None
@@ -29,7 +28,6 @@ async def test_anthropic_async_chat(tracer_init):
     )
     assert len(response.content) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.request_id is not None
     assert response.scope3ai.request.input_tokens == 10
     assert response.scope3ai.request.output_tokens == 43
     assert response.scope3ai.impact is None
@@ -49,7 +47,6 @@ def test_anthropic_stream_chat(tracer_init):
             text_response += text
 
         assert getattr(stream, "scope3ai") is not None
-        assert stream.scope3ai.request.request_id is not None
         assert stream.scope3ai.request.input_tokens == 10
         assert stream.scope3ai.request.output_tokens == 45
         assert stream.scope3ai.impact is None
@@ -72,7 +69,6 @@ async def test_anthropic_async_stream_chat(tracer_init):
             text_response += text
 
         assert getattr(stream, "scope3ai") is not None
-        assert stream.scope3ai.request.request_id is not None
         assert stream.scope3ai.request.input_tokens == 10
         assert stream.scope3ai.request.output_tokens == 44
         assert stream.scope3ai.impact is None

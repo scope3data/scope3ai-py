@@ -16,6 +16,8 @@ class BackgroundWorker:
         self._queue = queue.Queue(maxsize=size)
         self._lock = threading.Lock()
         self._thread: Optional[threading.Thread] = None
+        self._pause_event = threading.Event()
+        self._pause_event.set()
 
     @property
     def is_alive(self) -> bool:
@@ -102,6 +104,7 @@ class BackgroundWorker:
             try:
                 if callback is self.STOP_WORKER:
                     break
+                self._pause_event.wait()
                 try:
                     callback()
                 except Exception:
@@ -109,3 +112,9 @@ class BackgroundWorker:
             finally:
                 self._queue.task_done()
             sleep(0)
+
+    def pause(self) -> None:
+        self._pause_event.clear()
+
+    def resume(self) -> None:
+        self._pause_event.set()

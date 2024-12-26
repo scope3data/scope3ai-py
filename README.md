@@ -23,8 +23,8 @@ from scope3ai import Scope3AI
 scope3 = Scope3AI.init(
     api_key="YOUR_API_KEY",  # Replace "YOUR_API_KEY" with your actual key
     api_url="https://api.scope3.ai/v1",  # Optional: Specify the API URL
-    include_impact_response=False,  # Include impact in responses (default: False)
     enable_debug_logging=False,  # Enable debug logging (default: False)
+    sync_mode=False,  # Enable synchronous mode when sending telemetry to the API (default: False)
 )
 ```
 
@@ -34,7 +34,7 @@ You can also use environment variable to setup the SDK:
 
 - `SCOPE3AI_API_KEY`: Your Scope3AI API key
 - `SCOPE3AI_API_URL`: The API endpoint URL. Default: `https://api.scope3.ai/v1`
-- `SCOPE3AI_INCLUDE_IMPACT_RESPONSE`: If `True`, every interaction will include its impact in the response. Default: `False`
+- `SCOPE3AI_SYNC_MODE`: If `True`, every interaction will be send synchronously to the API, otherwise it will use a background worker. Default: `False`
 
 ```python
 from scope3ai import Scope3AI
@@ -46,71 +46,57 @@ scope3 = Scope3AI.init()
 
 ### 1. Using Context Management for Tracing
 
-You can record interactions using a `trace()` context. This allows you to analyze the sustainability impact of all interactions within the context.
+Within the context of a `trace`, all interactions are recorded and you can query the impact of the trace.
+As the interactions are captured and send to Scope3 AI for analysis, the impact is calculated and returned asynchronously.
+This will automatically wait for all traces to be processed and return the impact.
 
 ```python
 with scope3.trace() as tracer:
     # Perform your interactions
     interact()
+    interact()
 
     # Print the impact of the recorded trace
-    print(tracer.impact())
+    impact = tracer.impact()
+    print(f"Total Energy Wh: {impact.total_energy_wh}")
+    print(f"Total GCO2e: {impact.total_gco2e}")
+    print(f"Total MLH2O: {impact.total_mlh2o}")
 ```
 
-### 2. Recording `trace_id` for Later Usage
+### 2. Single interaction
 
-Store the `trace_id` during the interaction for querying the impact later.
+For a single interaction, the response is augmented with a `scope3ai` attribute that contains the
+`request` and `impact` data. The impact data is calculated asynchronously so we need to wait
+for the impact to be calculated and for the attribute to be ready.
 
 ```python
-trace_id = None
-with scope3.trace() as tracer:
-    trace_id = tracer.trace_id
-    interact()
+client = OpenAI()
+response = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[{"role": "user", "content": "Hello world"}],
+    stream=False,
+)
 
-# Fetch and print the impact using the stored trace_id
-print(scope3.impact(trace_id=trace_id))
+response.scope3ai.wait_impact()
+impact = response.scope3ai.impact
+print(f"Total Energy Wh: {impact.total_energy_wh}")
+print(f"Total GCO2e: {impact.total_gco2e}")
+print(f"Total MLH2O: {impact.total_mlh2o}")
 ```
 
-### 3. Using `record_id` from the Interaction Response
+### 3. Enabling Synchronous Mode for Immediate Impact Response
 
-Retrieve the `record_id` from the interaction response and query the impact.
-
-```python
-response = interact()
-print(scope3.impact(record_id=response.scope3ai.record_id))
-```
-
-#### Alternative: Fetch Impact for Multiple Records
-
-You can query impacts for multiple `record_id`s simultaneously:
+In synchronous mode, the SDK will include the impact data directly in the interaction response.
+This is useful when you want to get the impact data immediately after the interaction without waiting.
 
 ```python
-record_ids = [response.scope3ai.record_id]
-print(scope3.impact_many(record_ids=record_ids))
-```
-
-### 4. Enabling Synchronous Mode for Immediate Impact Response
-
-In synchronous mode, the SDK will include the impact data directly in the interaction response. This ensures that every interaction immediately returns its impact data.
-
-```python
-scope3.include_impact_response = True
+scope3.sync_mode = True
 
 response = interact()
-print(response.scope3ai.impact)
-```
-
-### 5. Specify name for grouping
-
-You can specify a name for grouping the interactions. This is useful for grouping interactions based on a specific context.
-
-```python
-with scope3.trace(name="my_workflow"):
-    interact()
-    with scope3.trace(name="image_generation"):
-        generate_image()
-        save_to_s3()
-    interact()
+impact = response.scope3ai.impact
+print(f"Total Energy Wh: {impact.total_energy_wh}")
+print(f"Total GCO2e: {impact.total_gco2e}")
+print(f"Total MLH2O: {impact.total_mlh2o}")
 ```
 
 ## Development

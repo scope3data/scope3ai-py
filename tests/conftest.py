@@ -70,7 +70,7 @@ def tracer_with_response_init(docker_api_info):
 
     scope3 = Scope3AI.init(
         enable_debug_logging=True,
-        include_impact_response=True,
+        sync_mode=True,
         **docker_api_info,
     )
     try:
