@@ -43,7 +43,9 @@ def huggingface_translation_wrapper_non_stream(
     )
 
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    return TranslationOutput(**asdict(response), scope3ai=scope3_ctx)
+    result = TranslationOutput(**asdict(response))
+    result.scope3ai = scope3_ctx
+    return result
 
 
 def huggingface_text_to_image_wrapper(

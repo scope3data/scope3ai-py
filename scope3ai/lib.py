@@ -80,7 +80,7 @@ class Scope3AI:
         cls,
         api_key: str = None,
         api_url: str = None,
-        include_impact_response: bool = False,
+        sync_mode: bool = False,
         enable_debug_logging: bool = False,
         providers: Optional[List[str]] = None,
     ) -> None:
@@ -89,9 +89,7 @@ class Scope3AI:
         cls._instance = self = Scope3AI()
         self.api_key = api_key or getenv("SCOPE3AI_API_KEY")
         self.api_url = api_url or getenv("SCOPE3AI_API_URL") or DEFAULT_API_URL
-        self.include_impact_response = include_impact_response or bool(
-            getenv("SCOPE3AI_INCLUDE_IMPACT_RESPONSE", False)
-        )
+        self.sync_mode = sync_mode or bool(getenv("SCOPE3AI_SYNC_MODE", False))
         if not self.api_key:
             raise Scope3AIError(
                 "The scope3 api_key option must be set either by "
@@ -149,8 +147,7 @@ class Scope3AI:
 
         Returns:
             Scope3AIContext: A context object containing the request data and
-            optionally the response from the API if `include_impact_response`
-            is set to True.
+            the response from the API.
         """
 
         def submit_impact(
@@ -168,11 +165,12 @@ class Scope3AI:
             return response
 
         tracer = self.current_tracer
-        ctx = Scope3AIContext(request=impact_row, tracer=tracer)
+        ctx = Scope3AIContext(request=impact_row)
+        ctx._tracer = tracer
         if tracer:
             tracer._link_trace(ctx)
 
-        if self.include_impact_response:
+        if self.sync_mode:
             submit_impact(impact_row, ctx=ctx)
             return ctx
 
@@ -203,11 +201,12 @@ class Scope3AI:
             return response
 
         tracer = self.current_tracer
-        ctx = Scope3AIContext(request=impact_row, tracer=tracer)
+        ctx = Scope3AIContext(request=impact_row)
+        ctx._tracer = tracer
         if tracer:
             tracer._link_trace(ctx)
 
-        if self.include_impact_response:
+        if self.sync_mode:
             await submit_impact(impact_row)
             return ctx
 

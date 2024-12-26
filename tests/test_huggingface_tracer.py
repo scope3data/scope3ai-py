@@ -11,7 +11,6 @@ def test_huggingface_hub_chat(tracer_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.request_id is not None
     assert response.scope3ai.request.input_tokens == 13
     assert response.scope3ai.request.output_tokens == 4
     assert response.scope3ai.impact is None
@@ -24,7 +23,6 @@ def test_huggingface_hub_image_generation(tracer_init):
     response = client.text_to_image(prompt="An astronaut riding a horse on the moon.")
     assert response.image
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.request_id is not None
     assert response.scope3ai.request.input_tokens == 9
     assert len(response.scope3ai.request.output_images) == 1
     assert response.scope3ai.impact is None

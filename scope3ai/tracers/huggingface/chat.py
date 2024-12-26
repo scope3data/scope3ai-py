@@ -51,7 +51,9 @@ def huggingface_chat_wrapper_non_stream(
         managed_service_id=PROVIDER,
     )
     scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    return ChatCompletionOutput(**asdict(response), scope3ai=scope3ai_ctx)
+    chat = ChatCompletionOutput(**asdict(response))
+    chat.scope3ai = scope3ai_ctx
+    return chat
 
 
 def huggingface_chat_wrapper_stream(
@@ -110,8 +112,10 @@ async def huggingface_async_chat_wrapper_non_stream(
         managed_service_id=PROVIDER,
     )
 
-    scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    return ChatCompletionOutput(**asdict(response), scope3ai=scope3_ctx)
+    scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+    chat = ChatCompletionOutput(**asdict(response))
+    chat.scope3ai = scope3ai_ctx
+    return chat
 
 
 # Todo: How headers works for stream

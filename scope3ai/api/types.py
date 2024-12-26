@@ -47,7 +47,10 @@ class Scope3AIContext(BaseModel):
     )
     impact: Optional[ModeledRow] = Field(
         None,
-        description="The impact response if `include_impact_response` is set to True",
+        description=(
+            "The impact response. Use `wait_impact` to wait for the "
+            "response, or configure `scope3.sync_mode` to True"
+        ),
     )
 
     # non serializable fields
