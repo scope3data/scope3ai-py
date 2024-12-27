@@ -28,26 +28,26 @@ async def test_litellm_async_chat(tracer_init):
     assert response.scope3ai.impact is None
 
 
-# @pytest.mark.vcr
-# def test_litellm_stream_chat(tracer_init):
-#     stream = litellm.completion(
-#         messages=[{"role": "user", "content": "Hello World!"}],
-#         model="claude-3-5-sonnet-20240620",
-#         stream=True,
-#     )
-#     for chunk in stream:
-#         assert getattr(chunk, "scope3ai") is not None
-#         assert chunk.scope3ai.impact is None
-#
-#
-# @pytest.mark.vcr
-# @pytest.mark.asyncio
-# async def test_litellm_async_stream_chat(tracer_init):
-#     stream = await litellm.acompletion(
-#         messages=[{"role": "user", "content": "Hello World!"}],
-#         model="claude-3-5-sonnet-20240620",
-#         stream=True,
-#     )
-#     async for chunk in stream:
-#         assert getattr(chunk, "scope3ai") is not None
-#         assert chunk.scope3ai.impact is None
+@pytest.mark.vcr
+def test_litellm_stream_chat(tracer_init):
+    stream = litellm.completion(
+        messages=[{"role": "user", "content": "Hello World!"}],
+        model="claude-3-5-sonnet-20240620",
+        stream=True,
+    )
+    for chunk in stream:
+        assert getattr(chunk, "scope3ai") is not None
+        assert chunk.scope3ai.impact is None
+
+
+@pytest.mark.vcr
+@pytest.mark.asyncio
+async def test_litellm_async_stream_chat(tracer_init):
+    stream = await litellm.acompletion(
+        messages=[{"role": "user", "content": "Hello World!"}],
+        model="claude-3-5-sonnet-20240620",
+        stream=True,
+    )
+    async for chunk in stream:
+        assert getattr(chunk, "scope3ai") is not None
+        assert chunk.scope3ai.impact is None
