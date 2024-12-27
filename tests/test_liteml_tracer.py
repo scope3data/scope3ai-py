@@ -1,8 +1,5 @@
 import litellm
 import pytest
-import os
-
-os.environ["COHERE_API_KEY"] = "ucj5hZEbQ9f3GFgXL2Ivgtwp3uojJJd1et63r8nn"
 
 
 @pytest.mark.vcr
