@@ -1,7 +1,34 @@
 # CHANGELOG
 
 
+## v0.1.1-alpha.3 (2024-12-27)
+
+### Documentation
+
+- Update readme with badge and compatibility matrix (#27)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`c4ad6cb`](https://github.com/scope3data/scope3ai-py/commit/c4ad6cb6fa3962fba1fd54ea0d97eca10eb47f05))
+
+### Features
+
+- **cohere**: Add support for Cohere client V1 (#29)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`60c6295`](https://github.com/scope3data/scope3ai-py/commit/60c62957198fddfa5f707cc6a213c3e1cd7926f3))
+
+- **cohere**: Add support for v2 client + examples (#30)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`2f2850f`](https://github.com/scope3data/scope3ai-py/commit/2f2850f9770333bc69080f614d8cf8615a0c42ed))
+
+- **litellm**: Litellm integration (#28) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`c1f56b9`](https://github.com/scope3data/scope3ai-py/commit/c1f56b9c1fb9e245ed637c41900e6b0749c975e1))
+
+
 ## v0.1.1-alpha.2 (2024-12-26)
+
+### Chores
+
+- **release**: 0.1.1-alpha.2 ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`02c461f`](https://github.com/scope3data/scope3ai-py/commit/02c461f14c9ae2540c2b25eeb02554a749459f0f))
 
 ### Features
 
