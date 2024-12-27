@@ -5,6 +5,12 @@ from .chat import (
     cohere_stream_chat_wrapper,
     cohere_async_stream_chat_wrapper,
 )
+from .chat_v2 import (
+    cohere_chat_v2_wrapper,
+    cohere_async_chat_v2_wrapper,
+    cohere_stream_chat_v2_wrapper,
+    cohere_async_stream_chat_v2_wrapper,
+)
 
 
 class CohereInstrumentor:
@@ -29,6 +35,26 @@ class CohereInstrumentor:
                 "module": "cohere.base_client",
                 "name": "AsyncBaseCohere.chat_stream",
                 "wrapper": cohere_async_stream_chat_wrapper,
+            },
+            {
+                "module": "cohere.v2.client",
+                "name": "V2Client.chat",
+                "wrapper": cohere_chat_v2_wrapper,
+            },
+            {
+                "module": "cohere.v2.client",
+                "name": "V2Client.chat_stream",
+                "wrapper": cohere_stream_chat_v2_wrapper,
+            },
+            {
+                "module": "cohere.v2.client",
+                "name": "AsyncV2Client.chat",
+                "wrapper": cohere_async_chat_v2_wrapper,
+            },
+            {
+                "module": "cohere.v2.client",
+                "name": "AsyncV2Client.chat_stream",
+                "wrapper": cohere_async_stream_chat_v2_wrapper,
             },
         ]
 

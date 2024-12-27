@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: '{"model":"command-r-plus-08-2024","messages":[{"role":"user","content":"Hello
+      world!"}],"stream":false}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - DUMMY
+      connection:
+      - keep-alive
+      content-length:
+      - '103'
+      content-type:
+      - application/json
+      host:
+      - api.cohere.com
+      user-agent:
+      - python-httpx/0.28.1
+      x-fern-language:
+      - Python
+      x-fern-sdk-name:
+      - cohere
+      x-fern-sdk-version:
+      - 5.13.3
+    method: POST
+    uri: https://api.cohere.com/v2/chat
+  response:
+    body:
+      string: '{"id":"eb5ddd68-340f-4e84-b0cf-7a55608bc266","message":{"role":"assistant","content":[{"type":"text","text":"Hello!
+        How can I help you today?"}]},"finish_reason":"COMPLETE","usage":{"billed_units":{"input_tokens":3,"output_tokens":9},"tokens":{"input_tokens":204,"output_tokens":9}}}'
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Length:
+      - '283'
+      Via:
+      - 1.1 google
+      access-control-expose-headers:
+      - X-Debug-Trace-ID
+      cache-control:
+      - no-cache, no-store, no-transform, must-revalidate, private, max-age=0
+      content-type:
+      - application/json
+      date:
+      - Fri, 27 Dec 2024 17:43:41 GMT
+      expires:
+      - Thu, 01 Jan 1970 00:00:00 UTC
+      num_chars:
+      - '1190'
+      num_tokens:
+      - '12'
+      pragma:
+      - no-cache
+      server:
+      - envoy
+      vary:
+      - Origin
+      x-accel-expires:
+      - '0'
+      x-debug-trace-id:
+      - be47e81f3c707b291538301ccf089240
+      x-endpoint-monthly-call-limit:
+      - '1000'
+      x-envoy-upstream-service-time:
+      - '249'
+      x-trial-endpoint-call-limit:
+      - '10'
+      x-trial-endpoint-call-remaining:
+      - '9'
+    status:
+      code: 200
+      message: OK
+version: 1
