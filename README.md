@@ -1,4 +1,6 @@
-# Scope3AI Python SDK - Python SDK for Scope3 AI API
+# Scope3AI Python SDK
+
+![PyPI - Version](https://img.shields.io/pypi/v/scope3ai)
 
 Track the environmental impact of your use of AI !
 The **Scope3AI Python SDK** provides an easy-to-use interface for interacting with Scope3AI's API. This library enables users to record, trace, and analyze the impact of interactions with a focus on sustainability metrics. Below are the different ways to use the SDK.
@@ -10,6 +12,20 @@ To install the SDK, use pip:
 ```bash
 pip install scope3ai
 ```
+
+## Library and SDK support Matrix
+
+| Library/SDK | Text generation | TTS | STT | Image Generation | Translation |
+|-------------|-----------------|-----|-----|------------------|-------------|
+| OpenAI      | ✅              |     |     |                  |             |
+| Anthropic   | ✅              |     |     |                  |             |
+| Huggingface | ✅              | ✅  | ✅  | ✅               | ✅          |
+
+Roadmap:
+- Cohere
+- Google
+- LiteLLM
+- Langchain
 
 ## Getting Started
 
