@@ -1,0 +1,279 @@
+interactions:
+- request:
+    body: '{"message":"Tell me a short story","max_tokens":100,"stream":true}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - DUMMY
+      connection:
+      - keep-alive
+      content-length:
+      - '66'
+      content-type:
+      - application/json
+      host:
+      - api.cohere.com
+      user-agent:
+      - python-httpx/0.28.1
+      x-fern-language:
+      - Python
+      x-fern-sdk-name:
+      - cohere
+      x-fern-sdk-version:
+      - 5.13.3
+    method: POST
+    uri: https://api.cohere.com/v1/chat
+  response:
+    body:
+      string: '{"is_finished":false,"event_type":"stream-start","generation_id":"65c30029-45b5-4d89-aef6-ba3cd82c73b7"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"Sure"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" here"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"''s"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" short"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" story"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" about"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" an"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" unexpected"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" adventure"}
+
+        {"is_finished":false,"event_type":"text-generation","text":":"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"\n\nOnce"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" upon"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" time"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" in"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" bustling"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" city"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" there"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" lived"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" young"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" woman"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" named"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" Emily"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" who"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" had"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" always"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" dreamed"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" of"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" exploring"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" distant"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" lands"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"."}
+
+        {"is_finished":false,"event_type":"text-generation","text":" Her"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" days"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" were"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" filled"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" with"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" office"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" work"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" but"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" her"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" heart"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" long"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"ed"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" for"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" something"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" more"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"."}
+
+        {"is_finished":false,"event_type":"text-generation","text":" One"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" un"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"event"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"ful"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" Friday"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" evening"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" after"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" tedious"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" week"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" Emily"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" decided"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" to"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" take"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" stroll"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" through"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" the"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" city"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" park"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" seeking"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" moment"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" of"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" tranquility"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"."}
+
+        {"is_finished":false,"event_type":"text-generation","text":"\n\nAs"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" she"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" walked"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" beneath"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" the"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" sway"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"ing"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" trees"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" peculiar"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"-"}
+
+        {"is_finished":true,"event_type":"stream-end","response":{"response_id":"ae9a95e6-0949-4305-881b-35dc06cefe2d","text":"Sure,
+        here''s a short story about an unexpected adventure:\n\nOnce upon a time,
+        in a bustling city, there lived a young woman named Emily who had always dreamed
+        of exploring distant lands. Her days were filled with office work, but her
+        heart longed for something more. One uneventful Friday evening, after a tedious
+        week, Emily decided to take a stroll through the city park, seeking a moment
+        of tranquility.\n\nAs she walked beneath the swaying trees, a peculiar-","generation_id":"65c30029-45b5-4d89-aef6-ba3cd82c73b7","chat_history":[{"role":"USER","message":"Tell
+        me a short story"},{"role":"CHATBOT","message":"Sure, here''s a short story
+        about an unexpected adventure:\n\nOnce upon a time, in a bustling city, there
+        lived a young woman named Emily who had always dreamed of exploring distant
+        lands. Her days were filled with office work, but her heart longed for something
+        more. One uneventful Friday evening, after a tedious week, Emily decided to
+        take a stroll through the city park, seeking a moment of tranquility.\n\nAs
+        she walked beneath the swaying trees, a peculiar-"}],"finish_reason":"MAX_TOKENS","meta":{"api_version":{"version":"1"},"billed_units":{"input_tokens":5,"output_tokens":100},"tokens":{"input_tokens":206,"output_tokens":100}}},"finish_reason":"MAX_TOKENS"}
+
+        '
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 google
+      access-control-expose-headers:
+      - X-Debug-Trace-ID
+      cache-control:
+      - no-cache, no-store, no-transform, must-revalidate, private, max-age=0
+      content-type:
+      - application/stream+json
+      date:
+      - Fri, 27 Dec 2024 17:20:16 GMT
+      expires:
+      - Thu, 01 Jan 1970 00:00:00 UTC
+      pragma:
+      - no-cache
+      server:
+      - envoy
+      vary:
+      - Origin
+      x-accel-expires:
+      - '0'
+      x-debug-trace-id:
+      - 2cb35da61516082c1bf835d41d63939a
+      x-endpoint-monthly-call-limit:
+      - '1000'
+      x-envoy-upstream-service-time:
+      - '33'
+      x-trial-endpoint-call-limit:
+      - '10'
+      x-trial-endpoint-call-remaining:
+      - '9'
+    status:
+      code: 200
+      message: OK
+version: 1
