@@ -1,0 +1,279 @@
+interactions:
+- request:
+    body: '{"message":"Tell me a short story","max_tokens":100,"stream":true}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - DUMMY
+      connection:
+      - keep-alive
+      content-length:
+      - '66'
+      content-type:
+      - application/json
+      host:
+      - api.cohere.com
+      user-agent:
+      - python-httpx/0.28.1
+      x-fern-language:
+      - Python
+      x-fern-sdk-name:
+      - cohere
+      x-fern-sdk-version:
+      - 5.13.3
+    method: POST
+    uri: https://api.cohere.com/v1/chat
+  response:
+    body:
+      string: '{"is_finished":false,"event_type":"stream-start","generation_id":"f875b19b-90e0-4c6b-8acb-9d0d0a5d44e6"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"Sure"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" here"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"''s"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" short"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" story"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" about"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" an"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" unexpected"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" adventure"}
+
+        {"is_finished":false,"event_type":"text-generation","text":":"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"\n\nOn"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" seemingly"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" ordinary"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" Tuesday"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" morning"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" Sarah"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" stepped"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" out"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" of"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" her"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" apartment"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" ready"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" to"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" embrace"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" the"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" day"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"."}
+
+        {"is_finished":false,"event_type":"text-generation","text":" As"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" she"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" walked"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" towards"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" the"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" bus"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" stop"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" sudden"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" gust"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" of"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" wind"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" blew"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" colorful"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" flyer"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" into"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" her"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" path"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"."}
+
+        {"is_finished":false,"event_type":"text-generation","text":" Intr"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"igued"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" she"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" picked"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" it"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" up"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" and"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" read"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" \""}
+
+        {"is_finished":false,"event_type":"text-generation","text":"Emb"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"ark"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" on"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" Mystery"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" Tour"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"!"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" An"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" adventure"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" awaits"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":false,"event_type":"text-generation","text":" but"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" the"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" destination"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" is"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" a"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" secret"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"."}
+
+        {"is_finished":false,"event_type":"text-generation","text":" Are"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" you"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" brave"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" enough"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"?\""}
+
+        {"is_finished":false,"event_type":"text-generation","text":"\n\nSarah"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"''s"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" curiosity"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" pi"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"qued"}
+
+        {"is_finished":false,"event_type":"text-generation","text":"."}
+
+        {"is_finished":false,"event_type":"text-generation","text":" Without"}
+
+        {"is_finished":false,"event_type":"text-generation","text":" hesitation"}
+
+        {"is_finished":false,"event_type":"text-generation","text":","}
+
+        {"is_finished":true,"event_type":"stream-end","response":{"response_id":"d1b3478b-26f7-45da-bede-d1438cfbc5fe","text":"Sure,
+        here''s a short story about an unexpected adventure:\n\nOn a seemingly ordinary
+        Tuesday morning, Sarah stepped out of her apartment, ready to embrace the
+        day. As she walked towards the bus stop, a sudden gust of wind blew a colorful
+        flyer into her path. Intrigued, she picked it up and read, \"Embark on a Mystery
+        Tour! An adventure awaits, but the destination is a secret. Are you brave
+        enough?\"\n\nSarah''s curiosity piqued. Without hesitation,","generation_id":"f875b19b-90e0-4c6b-8acb-9d0d0a5d44e6","chat_history":[{"role":"USER","message":"Tell
+        me a short story"},{"role":"CHATBOT","message":"Sure, here''s a short story
+        about an unexpected adventure:\n\nOn a seemingly ordinary Tuesday morning,
+        Sarah stepped out of her apartment, ready to embrace the day. As she walked
+        towards the bus stop, a sudden gust of wind blew a colorful flyer into her
+        path. Intrigued, she picked it up and read, \"Embark on a Mystery Tour! An
+        adventure awaits, but the destination is a secret. Are you brave enough?\"\n\nSarah''s
+        curiosity piqued. Without hesitation,"}],"finish_reason":"MAX_TOKENS","meta":{"api_version":{"version":"1"},"billed_units":{"input_tokens":5,"output_tokens":100},"tokens":{"input_tokens":206,"output_tokens":100}}},"finish_reason":"MAX_TOKENS"}
+
+        '
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 google
+      access-control-expose-headers:
+      - X-Debug-Trace-ID
+      cache-control:
+      - no-cache, no-store, no-transform, must-revalidate, private, max-age=0
+      content-type:
+      - application/stream+json
+      date:
+      - Fri, 27 Dec 2024 17:19:13 GMT
+      expires:
+      - Thu, 01 Jan 1970 00:00:00 UTC
+      pragma:
+      - no-cache
+      server:
+      - envoy
+      vary:
+      - Origin
+      x-accel-expires:
+      - '0'
+      x-debug-trace-id:
+      - cd67e747265e0265e6f26b70627fe90b
+      x-endpoint-monthly-call-limit:
+      - '1000'
+      x-envoy-upstream-service-time:
+      - '22'
+      x-trial-endpoint-call-limit:
+      - '10'
+      x-trial-endpoint-call-remaining:
+      - '8'
+    status:
+      code: 200
+      message: OK
+version: 1

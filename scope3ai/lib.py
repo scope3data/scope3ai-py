@@ -26,6 +26,14 @@ def init_anthropic_instrumentor() -> None:
         instrumentor.instrument()
 
 
+def init_cohere_instrumentor() -> None:
+    if importlib.util.find_spec("cohere") is not None:
+        from scope3ai.tracers.cohere.instrument import CohereInstrumentor
+
+        instrumentor = CohereInstrumentor()
+        instrumentor.instrument()
+
+
 def init_openai_instrumentor() -> None:
     if importlib.util.find_spec("openai") is not None:
         from scope3ai.tracers.openai.instrument import OpenAIInstrumentor
@@ -44,6 +52,7 @@ def init_huggingface_hub_instrumentor() -> None:
 
 _INSTRUMENTS = {
     "anthropic": init_anthropic_instrumentor,
+    "cohere": init_cohere_instrumentor,
     "openai": init_openai_instrumentor,
     "huggingface_hub": init_huggingface_hub_instrumentor,
 }
