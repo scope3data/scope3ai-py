@@ -12,6 +12,7 @@ import atexit
 from .api.client import Client, AsyncClient
 from .api.types import ImpactRow, ImpactResponse, Scope3AIContext
 from .api.defaults import DEFAULT_API_URL
+
 from .worker import BackgroundWorker
 
 logger = logging.getLogger("scope3ai.lib")
@@ -41,10 +42,19 @@ def init_huggingface_hub_instrumentor() -> None:
         instrumentor.instrument()
 
 
+def init_litellm_instrumentor() -> None:
+    if importlib.util.find_spec("litellm") is not None:
+        from scope3ai.tracers.litellm.instrument import LiteLLMInstrumentor
+
+        instrumentor = LiteLLMInstrumentor()
+        instrumentor.instrument()
+
+
 _INSTRUMENTS = {
     "anthropic": init_anthropic_instrumentor,
     "openai": init_openai_instrumentor,
     "huggingface_hub": init_huggingface_hub_instrumentor,
+    "litellm": init_litellm_instrumentor,
 }
 
 

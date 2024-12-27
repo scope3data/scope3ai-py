@@ -1,0 +1,81 @@
+interactions:
+- request:
+    body: '{"inputs": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\nHello
+      World!<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n", "parameters":
+      {"details": true, "return_full_text": false}, "stream": false}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '223'
+      User-Agent:
+      - python-requests/2.32.3
+      authorization:
+      - DUMMY
+      content-type:
+      - application/json
+    method: POST
+    uri: https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct
+  response:
+    body:
+      string: '[{"generated_text":"Hello World! It''s nice to meet you! Is there something
+        I can help you with or would you like to chat?","details":{"finish_reason":"eos_token","generated_tokens":26,"seed":null,"prefill":[],"tokens":[{"id":9906,"text":"Hello","logprob":-0.00095653534,"special":false},{"id":4435,"text":"
+        World","logprob":-0.7558594,"special":false},{"id":0,"text":"!","logprob":-0.0005221367,"special":false},{"id":1102,"text":"
+        It","logprob":-0.23498535,"special":false},{"id":596,"text":"''s","logprob":-0.00017011166,"special":false},{"id":6555,"text":"
+        nice","logprob":-0.19714355,"special":false},{"id":311,"text":" to","logprob":-0.0000029802322,"special":false},{"id":3449,"text":"
+        meet","logprob":-0.000202775,"special":false},{"id":499,"text":" you","logprob":-0.0000010728836,"special":false},{"id":0,"text":"!","logprob":-0.07965088,"special":false},{"id":2209,"text":"
+        Is","logprob":-0.016738892,"special":false},{"id":1070,"text":" there","logprob":-0.0000166893,"special":false},{"id":2555,"text":"
+        something","logprob":-0.0016059875,"special":false},{"id":358,"text":" I","logprob":-0.01537323,"special":false},{"id":649,"text":"
+        can","logprob":-3.5762787e-7,"special":false},{"id":1520,"text":" help","logprob":-0.0012950897,"special":false},{"id":499,"text":"
+        you","logprob":-0.0008840561,"special":false},{"id":449,"text":" with","logprob":-0.000014305115,"special":false},{"id":477,"text":"
+        or","logprob":-0.6586914,"special":false},{"id":1053,"text":" would","logprob":-0.00083494186,"special":false},{"id":499,"text":"
+        you","logprob":-0.0000013113022,"special":false},{"id":1093,"text":" like","logprob":-0.0003736019,"special":false},{"id":311,"text":"
+        to","logprob":-0.0000047683716,"special":false},{"id":6369,"text":" chat","logprob":-0.0053977966,"special":false},{"id":30,"text":"?","logprob":-0.056915283,"special":false},{"id":128009,"text":"<|eot_id|>","logprob":-0.0006275177,"special":true}]}}]'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 27 Dec 2024 16:19:28 GMT
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin, access-control-request-method, access-control-request-headers, Origin,
+        Access-Control-Request-Method, Access-Control-Request-Headers
+      x-compute-characters:
+      - '128'
+      x-compute-time:
+      - '0.528481663'
+      x-compute-type:
+      - 2-a10-g
+      x-generated-tokens:
+      - '26'
+      x-inference-time:
+      - '528'
+      x-prompt-tokens:
+      - '14'
+      x-queue-time:
+      - '0'
+      x-request-id:
+      - k4SlrnykvRJq4EmHB60Tg
+      x-sha:
+      - 5f0b02c75b57c5855da9ae460ce51323ea669d8a
+      x-time-per-token:
+      - '20'
+      x-total-time:
+      - '528'
+      x-validation-time:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1
