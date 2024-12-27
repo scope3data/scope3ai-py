@@ -792,26 +792,6 @@ components:
           example: 1080
 
         # field proposed to track information
-        request_id:
-          type: string
-          description: The unique identifier of this request
-          example: "124ab1c"
-          nullable: true
-        session_id:
-          type: string
-          description: The ID of the session
-          example: "124ab1c"
-          nullable: true
-        trace_id:
-          type: string
-          description: The ID of the trace
-          example: "124ab1c"
-          nullable: true
-        parent_trace_id:
-          type: string
-          description: The ID of the parent trace
-          example: "124ab1c"
-          nullable: true
         request_duration_ms:
           type: number
           format: float

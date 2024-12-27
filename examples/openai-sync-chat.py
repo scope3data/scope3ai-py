@@ -9,40 +9,31 @@ def interact() -> None:
         messages=[{"role": "user", "content": "Hello world"}],
         stream=False,
     )
-    print(response.choices[0].message.content)
-    print(response)
     return response
 
 
 if __name__ == "__main__":
     scope3 = Scope3AI.init(enable_debug_logging=True)
 
-    # 1. Using context
-    # trace() will create a "tracer" that will record all the interactions
-    # with a specific trace_id (UUID)
-    # it can be used later to get the impact of the interactions
+    # 1. Impact calculation are done via the Scope3AI API in background
+    # so you need to wait for the impact to be calculated
+    response = interact()
+    response.scope3ai.wait_impact()
+    print(response.scope3ai.impact)
+
+    # 2. A tracer will automatically wait for the impact response
     with scope3.trace() as tracer:
-        interact()
-        print(tracer.impact())
+        response = interact()
+        impact = tracer.impact()
+        print(f"Total Energy Wh: {impact.total_energy_wh}")
+        print(f"Total GCO2e: {impact.total_gco2e}")
+        print(f"Total MLH2O: {impact.total_mlh2o}")
 
-    # # 2. Using context, but record trace_id for usage on global scope
-    # # you could keep the trace_id and use it later
-    # trace_id = None
-    # with scope3.trace() as tracer:
-    #     trace_id = tracer.trace_id
-    #     interact()
-
-    # print(scope3.impact(trace_id=trace_id))
-
-    # # 3. Using record_id from the response
-    # response = interact()
-    # print(scope3.impact(record_id=response.scope3ai.record_id))
-
-    # # 3.1 Alternative with many record_id
-    # print(scope3.impact_many(record_ids=[response.scope3ai.record_id]))
-
-    # # 4. Using sync mode to extend the response with the impact
-    # # it always include impact in the response by querying the API on every call
-    # scope3.include_impact_response = True
-    # response = interact()
-    # print(response.scope3ai.impact)
+    # 3. A tracer can be used to calculate the impact of multiple requests
+    with scope3.trace() as tracer:
+        response = interact()
+        response = interact()
+        impact = tracer.impact()
+        print(f"Total Energy Wh: {impact.total_energy_wh}")
+        print(f"Total GCO2e: {impact.total_gco2e}")
+        print(f"Total MLH2O: {impact.total_mlh2o}")

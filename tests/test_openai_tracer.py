@@ -10,7 +10,6 @@ def test_openai_chat(tracer_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.request_id is not None
     assert response.scope3ai.request.input_tokens == 10
     assert response.scope3ai.request.output_tokens == 9
     assert response.scope3ai.impact is None
@@ -24,7 +23,6 @@ def test_openai_chat_with_response(tracer_with_response_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.request_id is not None
     assert response.scope3ai.request.input_tokens == 10
     assert response.scope3ai.request.output_tokens == 9
     assert response.scope3ai.impact is not None

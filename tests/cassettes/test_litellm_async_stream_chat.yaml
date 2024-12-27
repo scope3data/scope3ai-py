@@ -1,0 +1,189 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.32.3
+    method: GET
+    uri: https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct/raw/main/config.json
+  response:
+    body:
+      string: Access to model meta-llama/Meta-Llama-3-8B-Instruct is restricted. You
+        must have access to it and be authenticated to access it. Please log in.
+    headers:
+      Access-Control-Allow-Origin:
+      - https://huggingface.co
+      Access-Control-Expose-Headers:
+      - X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '143'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 27 Dec 2024 18:09:40 GMT
+      ETag:
+      - W/"8f-HcHLmAGS2uZd8Xa7xKDdl+v7vFw"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Vary:
+      - Origin
+      Via:
+      - 1.1 58e580cc043cb16a24dd53c7ad22b8d4.cloudfront.net (CloudFront)
+      WWW-Authenticate:
+      - Bearer realm="Authentication required", charset="UTF-8"
+      X-Amz-Cf-Id:
+      - _OFbflNEl2ljfLJI5H3sv8_rCE_12zULFITg-7fEbx7BXFXN-Evi7g==
+      X-Amz-Cf-Pop:
+      - BOG50-C1
+      X-Cache:
+      - Error from cloudfront
+      X-Error-Code:
+      - GatedRepo
+      X-Error-Message:
+      - Access to model meta-llama/Meta-Llama-3-8B-Instruct is restricted. You must
+        have access to it and be authenticated to access it. Please log in.
+      X-Powered-By:
+      - huggingface-moon
+      X-Request-Id:
+      - Root=1-676eed64-2d4d6a154c1b3af35925a732
+      cross-origin-opener-policy:
+      - same-origin
+    status:
+      code: 401
+      message: Unauthorized
+- request:
+    body: '{"inputs":"<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\nHello
+      World!<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n","parameters":{"stream":true,"details":true,"return_full_text":false},"stream":true}'
+    headers:
+      accept:
+      - '*/*'
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - DUMMY
+      connection:
+      - keep-alive
+      content-length:
+      - '228'
+      content-type:
+      - application/json
+      host:
+      - api-inference.huggingface.co
+      user-agent:
+      - python-httpx/0.28.1
+    method: POST
+    uri: https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct
+  response:
+    body:
+      string: 'data: {"index":1,"token":{"id":9906,"text":"Hello","logprob":-0.0009613037,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":2,"token":{"id":4435,"text":" World","logprob":-0.76416016,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":3,"token":{"id":0,"text":"!","logprob":-0.00052309036,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":4,"token":{"id":1102,"text":" It","logprob":-0.23828125,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":5,"token":{"id":596,"text":"''s","logprob":-0.0001705885,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":6,"token":{"id":6555,"text":" nice","logprob":-0.19726562,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":7,"token":{"id":311,"text":" to","logprob":-0.0000029802322,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":8,"token":{"id":3449,"text":" meet","logprob":-0.00020289421,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":9,"token":{"id":499,"text":" you","logprob":-0.0000010728836,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":10,"token":{"id":0,"text":"!","logprob":-0.07965088,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":11,"token":{"id":2209,"text":" Is","logprob":-0.016479492,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":12,"token":{"id":1070,"text":" there","logprob":-0.0000166893,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":13,"token":{"id":2555,"text":" something","logprob":-0.0016317368,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":14,"token":{"id":358,"text":" I","logprob":-0.01576233,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":15,"token":{"id":649,"text":" can","logprob":-3.5762787e-7,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":16,"token":{"id":1520,"text":" help","logprob":-0.0013160706,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":17,"token":{"id":499,"text":" you","logprob":-0.0008840561,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":18,"token":{"id":449,"text":" with","logprob":-0.0000141859055,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":19,"token":{"id":477,"text":" or","logprob":-0.6582031,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":20,"token":{"id":1053,"text":" would","logprob":-0.0008234978,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":21,"token":{"id":499,"text":" you","logprob":-0.0000013113022,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":22,"token":{"id":1093,"text":" like","logprob":-0.00037932396,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":23,"token":{"id":311,"text":" to","logprob":-0.0000047683716,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":24,"token":{"id":6369,"text":" chat","logprob":-0.005317688,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":25,"token":{"id":30,"text":"?","logprob":-0.057128906,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":26,"token":{"id":128009,"text":"<|eot_id|>","logprob":-0.0006365776,"special":true},"generated_text":"Hello
+        World! It''s nice to meet you! Is there something I can help you with or would
+        you like to chat?","details":{"finish_reason":"eos_token","generated_tokens":26,"seed":null,"input_length":14}}
+
+
+        '
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '3565'
+      Content-Type:
+      - text/event-stream
+      Date:
+      - Fri, 27 Dec 2024 18:09:41 GMT
+      access-control-allow-credentials:
+      - 'true'
+      vary:
+      - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+      x-compute-type:
+      - cache
+      x-request-id:
+      - j8VX5e3-sSX8MUHv6-NzN
+      x-sha:
+      - 5f0b02c75b57c5855da9ae460ce51323ea669d8a
+    status:
+      code: 200
+      message: OK
+version: 1

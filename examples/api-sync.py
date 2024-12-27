@@ -24,12 +24,10 @@ def list_gpus():
 
 
 def send_impact():
-    from scope3ai.api.types import ImpactRequestRow, Model
+    from scope3ai.api.types import ImpactRow, Model
 
     print("Sending impact")
-    impact = ImpactRequestRow(
-        model=Model(id="gpt_4o"), input_tokens=100, output_tokens=100
-    )
+    impact = ImpactRow(model=Model(id="gpt_4o"), input_tokens=100, output_tokens=100)
     response = client.impact(rows=[impact])
     print(response)
 

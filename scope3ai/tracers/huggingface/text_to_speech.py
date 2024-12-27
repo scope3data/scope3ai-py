@@ -45,7 +45,9 @@ def huggingface_text_to_speech_wrapper_non_stream(
     )
 
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    return TextToSpeechOutput(**asdict(response), scope3ai=scope3_ctx)
+    result = TextToSpeechOutput(**asdict(response))
+    result.scope3ai = scope3_ctx
+    return result
 
 
 def huggingface_text_to_speech_wrapper(

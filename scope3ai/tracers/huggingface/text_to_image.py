@@ -43,7 +43,9 @@ def huggingface_text_to_image_wrapper_non_stream(
     )
 
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    return TextToImageOutput(response, scope3ai=scope3_ctx)
+    result = TextToImageOutput(response)
+    result.scope3ai = scope3_ctx
+    return result
 
 
 def huggingface_text_to_image_wrapper(

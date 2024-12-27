@@ -1,0 +1,244 @@
+interactions:
+- request:
+    body: '{"inputs": "<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\nHello
+      World!<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n", "parameters":
+      {"stream": true, "details": true, "return_full_text": false}, "stream": true}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '238'
+      User-Agent:
+      - python-requests/2.32.3
+      authorization:
+      - DUMMY
+      content-type:
+      - application/json
+    method: POST
+    uri: https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct
+  response:
+    body:
+      string: 'data: {"index":1,"token":{"id":9906,"text":"Hello","logprob":-0.00095653534,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":2,"token":{"id":4435,"text":" World","logprob":-0.7558594,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":3,"token":{"id":0,"text":"!","logprob":-0.0005221367,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":4,"token":{"id":1102,"text":" It","logprob":-0.23498535,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":5,"token":{"id":596,"text":"''s","logprob":-0.00017011166,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":6,"token":{"id":6555,"text":" nice","logprob":-0.19714355,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":7,"token":{"id":311,"text":" to","logprob":-0.0000029802322,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":8,"token":{"id":3449,"text":" meet","logprob":-0.000202775,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":9,"token":{"id":499,"text":" you","logprob":-0.0000010728836,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":10,"token":{"id":0,"text":"!","logprob":-0.07965088,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":11,"token":{"id":2209,"text":" Is","logprob":-0.016738892,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":12,"token":{"id":1070,"text":" there","logprob":-0.0000166893,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":13,"token":{"id":2555,"text":" something","logprob":-0.0016059875,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":14,"token":{"id":358,"text":" I","logprob":-0.01537323,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":15,"token":{"id":649,"text":" can","logprob":-3.5762787e-7,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":16,"token":{"id":1520,"text":" help","logprob":-0.0012950897,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":17,"token":{"id":499,"text":" you","logprob":-0.0008840561,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":18,"token":{"id":449,"text":" with","logprob":-0.000014305115,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":19,"token":{"id":477,"text":" or","logprob":-0.6586914,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":20,"token":{"id":1053,"text":" would","logprob":-0.00083494186,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":21,"token":{"id":499,"text":" you","logprob":-0.0000013113022,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":22,"token":{"id":1093,"text":" like","logprob":-0.0003736019,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":23,"token":{"id":311,"text":" to","logprob":-0.0000047683716,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":24,"token":{"id":6369,"text":" chat","logprob":-0.0053977966,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":25,"token":{"id":30,"text":"?","logprob":-0.056915283,"special":false},"generated_text":null,"details":null}
+
+
+        data: {"index":26,"token":{"id":128009,"text":"<|eot_id|>","logprob":-0.0006275177,"special":true},"generated_text":"Hello
+        World! It''s nice to meet you! Is there something I can help you with or would
+        you like to chat?","details":{"finish_reason":"eos_token","generated_tokens":26,"seed":null,"input_length":14}}
+
+
+        '
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '3563'
+      Content-Type:
+      - text/event-stream
+      Date:
+      - Fri, 27 Dec 2024 18:09:39 GMT
+      access-control-allow-credentials:
+      - 'true'
+      vary:
+      - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+      x-compute-type:
+      - cache
+      x-request-id:
+      - tRlJHm6AzIJeyd6aVtqIP
+      x-sha:
+      - 5f0b02c75b57c5855da9ae460ce51323ea669d8a
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - identity
+      Connection:
+      - keep-alive
+      X-Amzn-Trace-Id:
+      - 82ed122c-2bb5-4fd1-b74c-eb218e447041
+      user-agent:
+      - unknown/None; hf_hub/0.26.5; python/3.12.8
+    method: HEAD
+    uri: https://huggingface.co/Xenova/llama-3-tokenizer/resolve/main/tokenizer.json
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Origin:
+      - https://huggingface.co
+      Access-Control-Expose-Headers:
+      - X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '87'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 27 Dec 2024 18:09:39 GMT
+      Location:
+      - /Xenova/llama3-tokenizer/resolve/main/tokenizer.json
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Vary:
+      - Origin, Accept
+      Via:
+      - 1.1 bd8c6bfe710f91c12ac92a052545fb5e.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - YfTGg3Xy1siiZv_i8E1cMJmRH9h0ZBXadpiRslqc_eBbEDFW8bjnag==
+      X-Amz-Cf-Pop:
+      - BOG50-C1
+      X-Cache:
+      - Miss from cloudfront
+      X-Powered-By:
+      - huggingface-moon
+      X-Request-Id:
+      - Root=1-676eed63-204e1eef7f364e367d877735;82ed122c-2bb5-4fd1-b74c-eb218e447041
+      cross-origin-opener-policy:
+      - same-origin
+    status:
+      code: 307
+      message: Temporary Redirect
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - identity
+      Connection:
+      - keep-alive
+      X-Amzn-Trace-Id:
+      - 4e37a423-5143-4449-9975-f9f48643f8ff
+      user-agent:
+      - unknown/None; hf_hub/0.26.5; python/3.12.8
+    method: HEAD
+    uri: https://huggingface.co/Xenova/llama3-tokenizer/resolve/main/tokenizer.json
+  response:
+    body:
+      string: ''
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - https://huggingface.co
+      Access-Control-Expose-Headers:
+      - X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline; filename*=UTF-8''tokenizer.json; filename="tokenizer.json";
+      Content-Length:
+      - '9084490'
+      Content-Security-Policy:
+      - default-src 'none'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Fri, 27 Dec 2024 18:09:39 GMT
+      ETag:
+      - '"94eacd0897072dcd7b84d1f6ff3c3f6d1933a8cc"'
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Vary:
+      - Origin
+      Via:
+      - 1.1 fd31d1c67e8343bcdb7b55426d326fe6.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - C1UDAL_SzFNJCM-q0EjSIEfS-8kDAq8tQTzl1NTyM3BngCmAYS86ug==
+      X-Amz-Cf-Pop:
+      - BOG50-C1
+      X-Cache:
+      - Miss from cloudfront
+      X-Powered-By:
+      - huggingface-moon
+      X-Repo-Commit:
+      - 72bff9ee09897a16b3b4b2b9995fecb0bfa7dbe6
+      X-Request-Id:
+      - Root=1-676eed63-041c1e4c25297ef42878372e;4e37a423-5143-4449-9975-f9f48643f8ff
+      cross-origin-opener-policy:
+      - same-origin
+    status:
+      code: 200
+      message: OK
+version: 1
