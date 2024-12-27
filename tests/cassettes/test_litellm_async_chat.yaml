@@ -1,62 +1,70 @@
 interactions:
 - request:
-    body: '{"inputs":"<|begin_of_text|><|start_header_id|>user<|end_header_id|>\n\nHello
-      World!<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n","parameters":{"details":true,"return_full_text":false},"stream":false}'
+    body: '{"model": "command-r", "chat_history": [], "message": "Hello World!"}'
     headers:
-      accept:
-      - '*/*'
-      accept-encoding:
+      Accept-Encoding:
       - gzip, deflate
-      authorization:
-      - DUMMY
-      connection:
-      - keep-alive
-      content-length:
-      - '215'
-      content-type:
-      - application/json
-      host:
-      - api-inference.huggingface.co
-      user-agent:
-      - python-httpx/0.28.1
-    method: POST
-    uri: https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct
-  response:
-    body:
-      string: '[{"generated_text":"Hello World! It''s nice to meet you! Is there something
-        I can help you with or would you like to chat?","details":{"finish_reason":"eos_token","generated_tokens":26,"seed":null,"prefill":[],"tokens":[{"id":9906,"text":"Hello","logprob":-0.00095653534,"special":false},{"id":4435,"text":"
-        World","logprob":-0.7583008,"special":false},{"id":0,"text":"!","logprob":-0.00052165985,"special":false},{"id":1102,"text":"
-        It","logprob":-0.23596191,"special":false},{"id":596,"text":"''s","logprob":-0.00017035007,"special":false},{"id":6555,"text":"
-        nice","logprob":-0.19726562,"special":false},{"id":311,"text":" to","logprob":-0.0000029802322,"special":false},{"id":3449,"text":"
-        meet","logprob":-0.000202775,"special":false},{"id":499,"text":" you","logprob":-0.0000010728836,"special":false},{"id":0,"text":"!","logprob":-0.08087158,"special":false},{"id":2209,"text":"
-        Is","logprob":-0.016571045,"special":false},{"id":1070,"text":" there","logprob":-0.0000166893,"special":false},{"id":2555,"text":"
-        something","logprob":-0.0016317368,"special":false},{"id":358,"text":" I","logprob":-0.015365601,"special":false},{"id":649,"text":"
-        can","logprob":-3.5762787e-7,"special":false},{"id":1520,"text":" help","logprob":-0.0013160706,"special":false},{"id":499,"text":"
-        you","logprob":-0.0008840561,"special":false},{"id":449,"text":" with","logprob":-0.000014305115,"special":false},{"id":477,"text":"
-        or","logprob":-0.6586914,"special":false},{"id":1053,"text":" would","logprob":-0.0008330345,"special":false},{"id":499,"text":"
-        you","logprob":-0.0000013113022,"special":false},{"id":1093,"text":" like","logprob":-0.00037932396,"special":false},{"id":311,"text":"
-        to","logprob":-0.0000047683716,"special":false},{"id":6369,"text":" chat","logprob":-0.0052833557,"special":false},{"id":30,"text":"?","logprob":-0.057128906,"special":false},{"id":128009,"text":"<|eot_id|>","logprob":-0.0006275177,"special":true}]}}]'
-    headers:
       Connection:
       - keep-alive
       Content-Length:
-      - '1930'
-      Content-Type:
+      - '69'
+      Request-Source:
+      - unspecified:litellm
+      User-Agent:
+      - python-requests/2.32.3
+      accept:
       - application/json
-      Date:
-      - Fri, 27 Dec 2024 18:09:39 GMT
-      access-control-allow-credentials:
-      - 'true'
+      authorization:
+      - DUMMY
+      content-type:
+      - application/json
+    method: POST
+    uri: https://api.cohere.ai/v1/chat
+  response:
+    body:
+      string: "{\"response_id\":\"e33dc171-063e-4d14-8fa9-1fc92d3f36bc\",\"text\":\"Hello!
+        How's it going? I hope you're having a fantastic day today! \U0001F60A\",\"generation_id\":\"15afd773-5ac1-40dd-96df-56537933c248\",\"chat_history\":[{\"role\":\"USER\",\"message\":\"Hello
+        World!\"},{\"role\":\"CHATBOT\",\"message\":\"Hello! How's it going? I hope
+        you're having a fantastic day today! \U0001F60A\"}],\"finish_reason\":\"COMPLETE\",\"meta\":{\"api_version\":{\"version\":\"1\"},\"billed_units\":{\"input_tokens\":3,\"output_tokens\":19},\"tokens\":{\"input_tokens\":69,\"output_tokens\":19}}}"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Length:
+      - '518'
+      Via:
+      - 1.1 google
+      access-control-expose-headers:
+      - X-Debug-Trace-ID
+      cache-control:
+      - no-cache, no-store, no-transform, must-revalidate, private, max-age=0
+      content-type:
+      - application/json
+      date:
+      - Fri, 27 Dec 2024 18:35:06 GMT
+      expires:
+      - Thu, 01 Jan 1970 00:00:00 UTC
+      num_chars:
+      - '430'
+      num_tokens:
+      - '22'
+      pragma:
+      - no-cache
+      server:
+      - envoy
       vary:
-      - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
-      x-compute-time:
-      - '0.525193971'
-      x-compute-type:
-      - cache
-      x-request-id:
-      - uUkncqDWfiToBmpxU_uCS
-      x-sha:
-      - 5f0b02c75b57c5855da9ae460ce51323ea669d8a
+      - Origin
+      x-accel-expires:
+      - '0'
+      x-debug-trace-id:
+      - e2debaa1e7de7fe4e007e6e250e616b4
+      x-endpoint-monthly-call-limit:
+      - '1000'
+      x-envoy-upstream-service-time:
+      - '202'
+      x-trial-endpoint-call-limit:
+      - '10'
+      x-trial-endpoint-call-remaining:
+      - '9'
     status:
       code: 200
       message: OK
