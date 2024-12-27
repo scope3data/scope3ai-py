@@ -18,15 +18,13 @@ pip install scope3ai
 | Library/SDK | Text generation | TTS | STT | Image Generation | Translation |
 |-------------|-----------------|----|-----|------------------|-----------|
 | Anthropic   | ✅              |    |     |                  |           |
-| Cohere (v1) | ✅              |    |     |                  |           |
+| Cohere      | ✅              |     |     |                  |             |
 | OpenAI      | ✅              |    |     |                  |           |
 | Huggingface | ✅              | ✅  | ✅   | ✅                | ✅        |
 | LiteLLM     | ✅              |    |     |                  |          |
 
 Roadmap:
-- Cohere (client v2)
 - Google
-- LiteLLM
 - Langchain
 
 ## Getting Started
