@@ -11,6 +11,15 @@ dependencies = [
     "pydantic>=2.10.3",
     "wrapt>=1.17.0",
 ]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research"
+]
 
 [project.optional-dependencies]
 openai = [
