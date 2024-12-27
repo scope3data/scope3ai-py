@@ -2183,7 +2183,7 @@ wheels = [
 
 [[package]]
 name = "scope3ai"
-version = "0.1.1a3"
+version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "httpx" },

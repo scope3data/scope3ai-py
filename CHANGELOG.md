@@ -1,7 +1,20 @@
 # CHANGELOG
 
 
+## v0.1.0 (2024-12-27)
+
+### Build System
+
+- Add classifiers to the project (#31) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`d09bff9`](https://github.com/scope3data/scope3ai-py/commit/d09bff979400f4c32a814cd04227208aaf7bec5f))
+
+
 ## v0.1.1-alpha.3 (2024-12-27)
+
+### Chores
+
+- **release**: 0.1.1-alpha.3 ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`7ab542b`](https://github.com/scope3data/scope3ai-py/commit/7ab542b948a025e1395fac9c5ffc1f9048a9696e))
 
 ### Documentation
 
