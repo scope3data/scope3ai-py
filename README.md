@@ -16,11 +16,12 @@ pip install scope3ai
 ## Library and SDK support Matrix
 
 | Library/SDK | Text generation | TTS | STT | Image Generation | Translation |
-|-------------|-----------------|-----|-----|------------------|-------------|
-| Anthropic   | ✅              |     |     |                  |             |
-| Cohere (v1) | ✅              |     |     |                  |             |
-| OpenAI      | ✅              |     |     |                  |             |
-| Huggingface | ✅              | ✅  | ✅  | ✅               | ✅          |
+|-------------|-----------------|----|-----|------------------|-----------|
+| Anthropic   | ✅              |    |     |                  |           |
+| Cohere (v1) | ✅              |    |     |                  |           |
+| OpenAI      | ✅              |    |     |                  |           |
+| Huggingface | ✅              | ✅  | ✅   | ✅                | ✅        |
+| LiteLLM     | ✅              |    |     |                  |          |
 
 Roadmap:
 - Cohere (client v2)
