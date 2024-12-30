@@ -13,9 +13,13 @@ def main():
             stream=True,
         )
         for event in response:
-            print(event.choices[0].delta["content"].strip())
+            if not event.choices:
+                continue
+            print(event.choices[0].delta.content, end="", flush=True)
+        print()
 
         impact = tracer.impact()
+        print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")
         print(f"Total GCO2e: {impact.total_gco2e}")
         print(f"Total MLH2O: {impact.total_mlh2o}")

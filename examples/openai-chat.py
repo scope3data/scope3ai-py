@@ -10,11 +10,11 @@ def main():
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hello!"}],
-            stream=False,
         )
-        print(response.choices[0].message["content"].strip())
+        print(response.choices[0].message.content.strip())
 
         impact = tracer.impact()
+        print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")
         print(f"Total GCO2e: {impact.total_gco2e}")
         print(f"Total MLH2O: {impact.total_mlh2o}")
