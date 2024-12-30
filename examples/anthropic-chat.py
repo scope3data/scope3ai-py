@@ -7,14 +7,15 @@ def main():
     scope3 = Scope3AI.init()
 
     with scope3.trace() as tracer:
-        response = client.chat.completions.create(
-            model="claude-v1",
+        response = client.messages.create(
+            model="claude-3-5-sonnet-latest",
             messages=[{"role": "user", "content": "Hello!"}],
-            stream=False,
+            max_tokens=100,
         )
-        print(response.choices[0].message["content"].strip())
+        print(response.content[0].text.strip())
 
         impact = tracer.impact()
+        print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")
         print(f"Total GCO2e: {impact.total_gco2e}")
         print(f"Total MLH2O: {impact.total_mlh2o}")
