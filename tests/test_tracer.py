@@ -220,7 +220,6 @@ def test_tracer_submit_impact_sync(tracer_with_sync_init):
 
 @pytest.mark.asyncio
 async def test_tracer_submit_impact_async(tracer_init):
-    # XXX non fonctional test
     from scope3ai.api.types import ImpactRow, Model
 
     # pause the background worker
@@ -235,10 +234,8 @@ async def test_tracer_submit_impact_async(tracer_init):
 
     # resume the background worker
     tracer_init._worker.resume()
-
-    # Fully block at the moment.
-    # await ctx.await_impact()
-    # assert ctx.impact is not None
+    await ctx.await_impact()
+    assert ctx.impact is not None
 
 
 @pytest.mark.asyncio

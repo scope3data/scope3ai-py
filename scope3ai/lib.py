@@ -205,19 +205,11 @@ class Scope3AI:
         Async version of Scope3AI::submit_impact.
         """
 
-        async def submit_impact(
-            impact_row: ImpactRow,
-            ctx: Scope3AIContext,
-        ) -> Optional[ImpactResponse]:
-            response = await self._async_client.impact(
-                rows=[impact_row],
-                with_response=True,
-            )
-            ctx.set_impact(response.rows[0])
-            if ctx._tracer:
-                ctx._tracer.add_impact(response.rows[0])
-                ctx._tracer._unlink_trace(ctx)
-            return response
+        if not self.sync_mode:
+            # in non sync-mode, it uses the background worker,
+            # and the background worker is not async (does not have to be).
+            # so we just redirect the call to the sync version.
+            return self.submit_impact(impact_row)
 
         tracer = self.current_tracer
         ctx = Scope3AIContext(request=impact_row)
@@ -225,12 +217,15 @@ class Scope3AI:
         if tracer:
             tracer._link_trace(ctx)
 
-        if self.sync_mode:
-            await submit_impact(impact_row, ctx=ctx)
-            return ctx
+        response = await self._async_client.impact(
+            rows=[impact_row],
+            with_response=True,
+        )
+        ctx.set_impact(response.rows[0])
+        if tracer:
+            tracer.add_impact(response.rows[0])
+            tracer._unlink_trace(ctx)
 
-        self._ensure_worker()
-        self._worker.submit(partial(submit_impact, ctx=ctx, impact_row=impact_row))
         return ctx
 
     @property
