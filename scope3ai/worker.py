@@ -13,6 +13,7 @@ class BackgroundWorker:
     STOP_WORKER = object()
 
     def __init__(self, size: int) -> None:
+        self._size = size
         self._queue = queue.Queue(maxsize=size)
         self._lock = threading.Lock()
         self._thread: Optional[threading.Thread] = None
@@ -62,6 +63,7 @@ class BackgroundWorker:
             except queue.ShutDown:
                 logger.debug("Worker already shutdown")
             self._thread = None
+            self._queue = queue.Queue(maxsize=self._size)
 
     def flush(self, timeout: float = 5) -> None:
         logger.debug("Got flush signal")
@@ -99,18 +101,19 @@ class BackgroundWorker:
             queue.all_tasks_done.release()
 
     def _run(self) -> None:
+        q = self._queue
         while True:
-            callback = self._queue.get()
+            self._pause_event.wait()
+            callback = q.get()
             try:
                 if callback is self.STOP_WORKER:
                     break
-                self._pause_event.wait()
                 try:
                     callback()
                 except Exception:
                     logger.error("Failed processing job", exc_info=True)
             finally:
-                self._queue.task_done()
+                q.task_done()
             sleep(0)
 
     def pause(self) -> None:
