@@ -44,6 +44,7 @@ jobs:
           flag-name: run-${{ join(matrix.*, '-') }}
           parallel: true
           debug: true
+          compare-ref: main
 
   finish:
     needs: pytest
