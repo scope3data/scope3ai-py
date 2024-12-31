@@ -1,22 +1,33 @@
+<div align="center">
+<a href="https://scope3.com"><img src="https://github.com/user-attachments/assets/b429d87f-68db-4d67-adde-1093cd80e9a7" alt="scope3 logo" width="200px"/></a>
+
 # Scope3AI Python SDK
+
+**Track the environmental impact of your use of AI !**
+
+The **Scope3AI Python SDK** provides an easy-to-use interface for interacting with [Scope3AI's API](https://aidocs.scope3.com/docs/overview).<br/>
+It allow you to record, trace, and analyze the impact of interactions with a focus on sustainability metrics.
 
 ![PyPI - Version](https://img.shields.io/pypi/v/scope3ai)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/scope3ai)
 [![Pytests](https://github.com/scope3data/scope3ai-py/actions/workflows/pytests.yml/badge.svg?branch=main&event=push)](https://github.com/scope3data/scope3ai-py/actions/workflows/pytests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/scope3data/scope3ai-py/badge.svg)](https://coveralls.io/github/scope3data/scope3ai-py)
 
-Track the environmental impact of your use of AI !
-The **Scope3AI Python SDK** provides an easy-to-use interface for interacting with Scope3AI's API. This library enables users to record, trace, and analyze the impact of interactions with a focus on sustainability metrics. Below are the different ways to use the SDK.
+</div>
 
-## Installation
+## 🚀 Installation
 
-To install the SDK, use pip:
-
+The package `scope3ai` SDK is published on [pypi](https://pypi.org/project/scope3ai/). You can install it using `pip`:
 ```bash
 pip install scope3ai
 ```
 
-## Library and SDK support Matrix
+We personally use [`uv`](https://github.com/astral-sh/uv):
+```bash
+uv add scope3ai
+```
+
+## 📚 Library and SDK support Matrix
 
 | Library/SDK | Text generation | TTS | STT | Image Generation | Translation |
 |-------------|-----------------|----|-----|------------------|-----------|
@@ -30,7 +41,7 @@ Roadmap:
 - Google
 - Langchain
 
-## Getting Started
+## ✨ Getting Started
 
 ### Initializing the SDK
 
@@ -118,7 +129,7 @@ print(f"Total GCO2e: {impact.total_gco2e}")
 print(f"Total MLH2O: {impact.total_mlh2o}")
 ```
 
-## Development
+## 🛠️ Development
 
 This project use conventional commits and semantic versioning.
 
