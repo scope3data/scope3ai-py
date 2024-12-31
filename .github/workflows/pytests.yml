@@ -35,13 +35,13 @@ jobs:
       - name: Tests
         run: |
           uv run --frozen --with=coveralls coverage run --source=scope3ai -m pytest -v
-          uv run --frozen --with=coveralls coveralls --output=coverage.json
 
       - name: Coveralls Parallel
         uses: coverallsapp/github-action@v2
         with:
           flag-name: run-${{ join(matrix.*, '-') }}
           parallel: true
+          debug: true
 
   finish:
     needs: pytest
@@ -53,3 +53,4 @@ jobs:
         with:
           parallel-finished: true
           carryforward: "3.12"
+          debug: true
