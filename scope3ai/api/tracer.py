@@ -1,5 +1,5 @@
 from typing import List, Optional
-from .typesgen import ImpactResponse, ModeledRow, ImpactMetrics
+from .typesgen import ImpactResponse, ModeledRow
 
 
 class Tracer:
@@ -57,52 +57,6 @@ class Tracer:
         for child in self.children:
             all_rows.extend(child.get_all_rows())
         return all_rows
-
-    def _sum_modeled_rows(self, rows: List[ModeledRow]) -> ModeledRow:
-        if not rows:
-            raise Exception("No rows to sum")
-        result = ModeledRow(
-            inference_impact=self._sum_impact_metrics(
-                [row.inference_impact for row in rows]
-            ),
-            training_impact=self._sum_impact_metrics(
-                [row.training_impact for row in rows]
-            ),
-            fine_tuning_impact=self._sum_impact_metrics(
-                [row.fine_tuning_impact for row in rows]
-            ),
-            total_impact=self._sum_impact_metrics([row.total_impact for row in rows]),
-        )
-        return result
-
-    def _sum_impact_metrics(self, metrics: List[ImpactMetrics]) -> ImpactMetrics:
-        # Initialize totals
-        total_usage_energy_wh = 0.0
-        total_usage_emissions_gco2e = 0.0
-        total_usage_water_ml = 0.0
-        total_embodied_emissions_gco2e = 0.0
-        total_embodied_water_ml = 0.0
-
-        # Aggregate values
-        for metric in metrics:
-            if not isinstance(metric, ImpactMetrics):
-                raise TypeError(
-                    "All items in the list must be instances of ImpactMetrics."
-                )
-            total_usage_energy_wh += metric.usage_energy_wh
-            total_usage_emissions_gco2e += metric.usage_emissions_gco2e
-            total_usage_water_ml += metric.usage_water_ml
-            total_embodied_emissions_gco2e += metric.embodied_emissions_gco2e
-            total_embodied_water_ml += metric.embodied_water_ml
-
-        # Return a new instance with summed values
-        return ImpactMetrics(
-            usage_energy_wh=total_usage_energy_wh,
-            usage_emissions_gco2e=total_usage_emissions_gco2e,
-            usage_water_ml=total_usage_water_ml,
-            embodied_emissions_gco2e=total_embodied_emissions_gco2e,
-            embodied_water_ml=total_embodied_water_ml,
-        )
 
     def _link_parent(self, parent: Optional["Tracer"]) -> None:
         if parent and (self not in parent.children):

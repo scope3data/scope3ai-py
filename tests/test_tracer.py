@@ -2,7 +2,8 @@ import pytest
 
 
 def test_tracer_linear():
-    from scope3ai.api.tracer import Tracer, ModeledRow, ImpactMetrics
+    from scope3ai.api.tracer import Tracer
+    from scope3ai.api.types import ModeledRow, ImpactMetrics
 
     tracer = Tracer()
     assert tracer is not None
@@ -36,7 +37,8 @@ def test_tracer_linear():
 
 
 def test_tracer_nested():
-    from scope3ai.api.tracer import Tracer, ModeledRow, ImpactMetrics
+    from scope3ai.api.tracer import Tracer
+    from scope3ai.api.types import ModeledRow, ImpactMetrics
 
     tracer = Tracer()
     tracer2 = Tracer()
