@@ -1,12 +1,38 @@
 # CHANGELOG
 
 
+## v0.2.0 (2024-12-31)
+
+### Continuous Integration
+
+- **coveralls**: Add support for coveralls (#35)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`4cddb64`](https://github.com/scope3data/scope3ai-py/commit/4cddb6439eb45759482a0eb661b0efda070a9f92))
+
+### Documentation
+
+- **openai**: Add OpenAI chat examples using chat interface (#33)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`9fcc2e5`](https://github.com/scope3data/scope3ai-py/commit/9fcc2e530468b9595d17152c430911e05d9072fb))
+
+### Features
+
+- **anthropic**: Support for messages.create(stream=True) + add chat examples (#34)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`4598bdf`](https://github.com/scope3data/scope3ai-py/commit/4598bdf7ebd5a73ca597a95fc811174f66d5b7d1))
+
+
 ## v0.1.0 (2024-12-27)
 
 ### Build System
 
 - Add classifiers to the project (#31) ([](https://github.com/scope3data/scope3ai-py/pull),
   [`d09bff9`](https://github.com/scope3data/scope3ai-py/commit/d09bff979400f4c32a814cd04227208aaf7bec5f))
+
+### Chores
+
+- **release**: 0.1.0 ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`b4f2dbc`](https://github.com/scope3data/scope3ai-py/commit/b4f2dbc8b91b7895788582f07f2a278dc9532616))
 
 
 ## v0.1.1-alpha.3 (2024-12-27)
