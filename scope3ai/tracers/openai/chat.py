@@ -80,10 +80,12 @@ def openai_chat_wrapper_stream(
         raise ValueError("stream_options include_usage must be True")
 
     stream = wrapped(*args, **kwargs)
-    for i, chunk in enumerate(stream):
+    model_requested = kwargs["model"]
+
+    for chunk in stream:
         request_latency = time.perf_counter() - timer_start
+
         if chunk.usage is not None:
-            model_requested = kwargs["model"]
             model_used = chunk.model
 
             scope3_row = ImpactRow(
@@ -155,18 +157,14 @@ async def openai_async_chat_wrapper_stream(
         raise ValueError("stream_options include_usage must be True")
 
     stream = await wrapped(*args, **kwargs)
-    i = 0
-    token_count = 0
     model_requested = kwargs["model"]
+
     async for chunk in stream:
-        if i == 0 and chunk.model == "":
-            continue
-        if i > 0 and chunk.choices[0].finish_reason is None:
-            token_count += 1
         request_latency = time.perf_counter() - timer_start
-        model_used = chunk.model
 
         if chunk.usage is not None:
+            model_used = chunk.model
+
             scope3_row = ImpactRow(
                 model=Model(id=model_requested),
                 model_used=Model(id=model_used),
@@ -181,4 +179,3 @@ async def openai_async_chat_wrapper_stream(
             yield ChatCompletionChunk(**chunk.model_dump(), scope3ai=scope3_ctx)
         else:
             yield chunk
-        i += 1
