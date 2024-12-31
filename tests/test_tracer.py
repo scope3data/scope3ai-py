@@ -138,3 +138,113 @@ async def test_tracer_openai_simple_asynchronisation(tracer_init):
     tracer_init._worker.resume()
     await response.scope3ai.await_impact()
     assert response.scope3ai.impact is not None
+
+
+@pytest.mark.vcr
+def test_tracer_context(tracer_init):
+    from openai import OpenAI
+
+    client = OpenAI()
+    with tracer_init.trace() as tracer:
+        response = client.chat.completions.create(
+            model="gpt-4", messages=[{"role": "user", "content": "Hello World!"}]
+        )
+        assert len(response.choices) > 0
+        impact = tracer.impact()
+        assert impact is not None
+        assert impact.total_energy_wh > 0
+        assert impact.total_gco2e > 0
+        assert impact.total_mlh2o > 0
+
+
+@pytest.mark.vcr
+def test_tracer_context_nested(tracer_init):
+    from openai import OpenAI
+
+    client = OpenAI()
+    with tracer_init.trace() as tracer:
+        response = client.chat.completions.create(
+            model="gpt-4", messages=[{"role": "user", "content": "Hello World!"}]
+        )
+        assert len(response.choices) > 0
+
+        with tracer_init.trace() as tracer2:
+            response = client.chat.completions.create(
+                model="gpt-4", messages=[{"role": "user", "content": "Hello World!"}]
+            )
+            assert len(response.choices) > 0
+            impact = tracer2.impact()
+            assert impact is not None
+            assert impact.total_energy_wh > 0
+            assert impact.total_gco2e > 0
+            assert impact.total_mlh2o > 0
+
+        impact2 = tracer.impact()
+        assert impact2 is not None
+        assert impact2.total_energy_wh > impact.total_energy_wh
+        assert impact2.total_gco2e > impact.total_gco2e
+        assert impact2.total_mlh2o > impact.total_mlh2o
+
+
+def test_tracer_submit_impact(tracer_init):
+    from scope3ai.api.types import ImpactRow, Model
+
+    # pause the background worker
+    tracer_init._ensure_worker()
+    tracer_init._worker.pause()
+
+    impact = ImpactRow(model=Model(id="gpt_4o"), input_tokens=100, output_tokens=100)
+    ctx = tracer_init.submit_impact(impact)
+
+    assert ctx is not None
+    assert ctx.impact is None
+
+    # resume the background worker
+    tracer_init._worker.resume()
+
+    ctx.wait_impact()
+    assert ctx.impact is not None
+
+
+def test_tracer_submit_impact_sync(tracer_with_sync_init):
+    from scope3ai.api.types import ImpactRow, Model
+
+    impact = ImpactRow(model=Model(id="gpt_4o"), input_tokens=100, output_tokens=100)
+    ctx = tracer_with_sync_init.submit_impact(impact)
+
+    assert ctx is not None
+    assert ctx.impact is not None
+
+
+@pytest.mark.asyncio
+async def test_tracer_submit_impact_async(tracer_init):
+    # XXX non fonctional test
+    from scope3ai.api.types import ImpactRow, Model
+
+    # pause the background worker
+    tracer_init._ensure_worker()
+    tracer_init._worker.pause()
+
+    impact = ImpactRow(model=Model(id="gpt_4o"), input_tokens=100, output_tokens=100)
+    ctx = await tracer_init.asubmit_impact(impact)
+
+    assert ctx is not None
+    assert ctx.impact is None
+
+    # resume the background worker
+    tracer_init._worker.resume()
+
+    # Fully block at the moment.
+    # await ctx.await_impact()
+    # assert ctx.impact is not None
+
+
+@pytest.mark.asyncio
+async def test_tracer_submit_impact_sync_async(tracer_with_sync_init):
+    from scope3ai.api.types import ImpactRow, Model
+
+    impact = ImpactRow(model=Model(id="gpt_4o"), input_tokens=100, output_tokens=100)
+    ctx = await tracer_with_sync_init.asubmit_impact(impact)
+
+    assert ctx is not None
+    assert ctx.impact is not None

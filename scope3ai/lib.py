@@ -226,7 +226,7 @@ class Scope3AI:
             tracer._link_trace(ctx)
 
         if self.sync_mode:
-            await submit_impact(impact_row)
+            await submit_impact(impact_row, ctx=ctx)
             return ctx
 
         self._ensure_worker()
