@@ -1,7 +1,6 @@
 import os
 import pytest
 import httpx
-from pytest_docker.plugin import containers_scope
 
 
 def set_envvar_if_unset(name: str, value: str):
@@ -48,10 +47,10 @@ def docker_api_info(docker_ip, docker_services):
     }
 
 
-@pytest.fixture(scope=containers_scope)
-def docker_cleanup():
-    # faster cleanup than waiting node to exit
-    return ["exec prism pkill -TERM node", "down -v"]
+# @pytest.fixture(scope=containers_scope)
+# def docker_cleanup():
+#     # faster cleanup than waiting node to exit
+#     return ["exec prism pkill -TERM node", "down -v"]
 
 
 @pytest.fixture

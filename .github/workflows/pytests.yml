@@ -33,7 +33,9 @@ jobs:
         run: uv sync --frozen --all-extras --all-groups
 
       - name: Tests
-        run: uv run --frozen --with=coveralls coverage run --source=scope3ai -m pytest -v
+        run: |
+          uv run --frozen --with=coveralls coverage run --source=scope3ai -m pytest -v
+          uv run --frozen --with=coveralls coveralls --output=coverage.json
 
       - name: Coveralls Parallel
         uses: coverallsapp/github-action@v2
