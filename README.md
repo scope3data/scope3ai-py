@@ -1,6 +1,8 @@
 # Scope3AI Python SDK
 
 ![PyPI - Version](https://img.shields.io/pypi/v/scope3ai)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/scope3ai)
+[![Pytests](https://github.com/scope3data/scope3ai-py/actions/workflows/pytests.yml/badge.svg?branch=main&event=push)](https://github.com/scope3data/scope3ai-py/actions/workflows/pytests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/scope3data/scope3ai-py/badge.svg)](https://coveralls.io/github/scope3data/scope3ai-py)
 
 Track the environmental impact of your use of AI !
