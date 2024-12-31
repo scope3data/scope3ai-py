@@ -77,3 +77,23 @@ def tracer_with_sync_init(docker_api_info):
         yield scope3
     finally:
         scope3.close()
+
+
+@pytest.fixture
+def api_client(docker_api_info):
+    from scope3ai.api.client import Client
+
+    yield Client(
+        api_key=docker_api_info["api_key"],
+        api_url=docker_api_info["api_url"],
+    )
+
+
+@pytest.fixture
+def async_api_client(docker_api_info):
+    from scope3ai.api.client import AsyncClient
+
+    yield AsyncClient(
+        api_key=docker_api_info["api_key"],
+        api_url=docker_api_info["api_url"],
+    )
