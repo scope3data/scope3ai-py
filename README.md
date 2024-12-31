@@ -1,6 +1,7 @@
 # Scope3AI Python SDK
 
 ![PyPI - Version](https://img.shields.io/pypi/v/scope3ai)
+[![Coverage Status](https://coveralls.io/repos/github/scope3data/scope3ai-py/badge.svg)](https://coveralls.io/github/scope3data/scope3ai-py)
 
 Track the environmental impact of your use of AI !
 The **Scope3AI Python SDK** provides an easy-to-use interface for interacting with Scope3AI's API. This library enables users to record, trace, and analyze the impact of interactions with a focus on sustainability metrics. Below are the different ways to use the SDK.
