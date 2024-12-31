@@ -103,11 +103,11 @@ class BackgroundWorker:
     def _run(self) -> None:
         q = self._queue
         while True:
-            self._pause_event.wait()
             callback = q.get()
             try:
                 if callback is self.STOP_WORKER:
                     break
+                self._pause_event.wait()
                 try:
                     callback()
                 except Exception:
