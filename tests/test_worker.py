@@ -140,7 +140,7 @@ def test_background_worker_pause_resume():
     assert event_run.wait(timeout=2) is True
     worker.pause()
     worker.submit(task)
-    assert event.wait(timeout=1) is False
+    assert event.wait(timeout=2) is False
     assert event.is_set() is False
     worker.resume()
     assert event.wait(timeout=2) is True
