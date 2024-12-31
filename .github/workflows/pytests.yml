@@ -35,6 +35,12 @@ jobs:
       - name: Tests
         run: uv run --frozen --with=coveralls coverage run --source=scope3ai -m pytest -v
 
+      - name: Coveralls Parallel
+        uses: coverallsapp/github-action@v2
+        with:
+          flag-name: run-${{ join(matrix.*, '-') }}
+          parallel: true
+
   finish:
     needs: pytest
     if: ${{ always() }}
