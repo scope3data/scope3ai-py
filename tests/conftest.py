@@ -65,7 +65,7 @@ def tracer_init(docker_api_info):
 
 
 @pytest.fixture
-def tracer_with_response_init(docker_api_info):
+def tracer_with_sync_init(docker_api_info):
     from scope3ai import Scope3AI
 
     scope3 = Scope3AI.init(

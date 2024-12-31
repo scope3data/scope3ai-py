@@ -16,7 +16,7 @@ def test_openai_chat(tracer_init):
 
 
 @pytest.mark.vcr
-def test_openai_chat_with_response(tracer_with_response_init):
+def test_openai_chat_with_response(tracer_with_sync_init):
     client = OpenAI()
     response = client.chat.completions.create(
         model="gpt-4", messages=[{"role": "user", "content": "Hello World!"}]

@@ -1,0 +1,201 @@
+interactions:
+- request:
+    body: '{"messages":[{"role":"user","content":"Hello World!"}],"model":"gpt-4"}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - DUMMY
+      connection:
+      - keep-alive
+      content-length:
+      - '71'
+      content-type:
+      - application/json
+      host:
+      - api.openai.com
+      user-agent:
+      - OpenAI/Python 1.57.1
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - 'false'
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.57.1
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.12.6
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//jFJNTwIxFLzvr3j2DAZEELkYD36djNGTxmxK+1gq3b6mfRtdCf/ddPlY
+        iJh46WHmzXTmtcsMQBgtJiDUXLIqve1eL2R9N3i6sdXFy+Xj7No+L3x8fL2tv+/GRnSSgqYfqHir
+        OlVUeotsyK1pFVAyJtf+xWA4Go2Ho3FDlKTRJlnhuXve7Y36g41iTkZhFBN4ywAAls2ZsjmNX2IC
+        vc4WKTFGWaCY7IYARCCbECFjNJGlY9FpSUWO0TVx79FaOoF7+gQlHTzAWgA1VcCkZX21Lww4q6JM
+        gV1l7QZf7ZJYKnygadzwO3xmnInzPKCM5NKtkcmLhl1lAO9N4+qghPCBSs850wJdMuxvCot2t0dI
+        Jpa2xc+2+IFbrpGlsXFvY0JJNUfdKtv1ykob2iOyvc6/wxzzXvc2rviPfUsohZ5R5z6gNuqwcDsW
+        MP28v8Z2O24Ci1hHxjKfGVdg8ME0f6B5ylX2AwAA//8DAATOvT36AgAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8fac38897e616dc5-MIA
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 31 Dec 2024 18:09:29 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=E71sj8BgPlfHStPndCfIdMbuz2I7IILfT6MYMR6O05c-1735668569-1.0.1.1-3QctP69wJWwTM76kRblKg8m5S16SGixo_52RMFU2__IS.TchyW.eM3sl2IeYaSnH.IcdrqDnytcozX4H_0WXgQ;
+        path=/; expires=Tue, 31-Dec-24 18:39:29 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=QWRWX1JfB5JCTGRoMGJQ2MxwzDT2PuSTW1JIp5Ne3u0-1735668569446-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      access-control-expose-headers:
+      - X-Request-ID
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-organization:
+      - user-sxsjo8cvghsvsqprrtasrxyq
+      openai-processing-ms:
+      - '780'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains; preload
+      x-ratelimit-limit-requests:
+      - '5000'
+      x-ratelimit-limit-tokens:
+      - '80000'
+      x-ratelimit-remaining-requests:
+      - '4999'
+      x-ratelimit-remaining-tokens:
+      - '79980'
+      x-ratelimit-reset-requests:
+      - 12ms
+      x-ratelimit-reset-tokens:
+      - 15ms
+      x-request-id:
+      - req_4620b0e0e7c7b2f54ba1f290bb10019f
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"messages":[{"role":"user","content":"Hello World!"}],"model":"gpt-4"}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - DUMMY
+      connection:
+      - keep-alive
+      content-length:
+      - '71'
+      content-type:
+      - application/json
+      cookie:
+      - __cf_bm=E71sj8BgPlfHStPndCfIdMbuz2I7IILfT6MYMR6O05c-1735668569-1.0.1.1-3QctP69wJWwTM76kRblKg8m5S16SGixo_52RMFU2__IS.TchyW.eM3sl2IeYaSnH.IcdrqDnytcozX4H_0WXgQ;
+        _cfuvid=QWRWX1JfB5JCTGRoMGJQ2MxwzDT2PuSTW1JIp5Ne3u0-1735668569446-0.0.1.1-604800000
+      host:
+      - api.openai.com
+      user-agent:
+      - OpenAI/Python 1.57.1
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - 'false'
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.57.1
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.12.6
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//jFLLTsMwELznKxafW0R5BOgFoV7KS3AAcUAoMvY2NXW8xt4AEeq/I6eP
+        tAIkLj7M7Ixn1v7KAITRYghCTSWrytv++Uw24/zhdET1zfuoefMfk9ur6/uTx3DZ3IleUtDLKype
+        qXYVVd4iG3ILWgWUjMl1cHxwlOcnR/lpS1Sk0SZZ6bl/2N/LBwdLxZSMwiiG8JQBAHy1Z8rmNH6K
+        Iez1VkiFMcoSxXA9BCAC2YQIGaOJLB2LXkcqcoyujTtGa2kHxvQBSjq4gIUAGqqBScvmbFMYcFJH
+        mQK72tolPl8nsVT6QC9xya/xiXEmTouAMpJLt0YmL1p2ngE8t43rrRLCB6o8F0wzdMlwsCwsut3+
+        QjKxtB2+v8K33AqNLI2NGxsTSqop6k7ZrVfW2tAGkW10/hnmN+9Fb+PK/9h3hFLoGXXhA2qjtgt3
+        YwHTz/trbL3jNrCITWSsiolxJQYfTPsH2qecZ98AAAD//wMANuZV4/oCAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8fac388f7c4f6dc5-MIA
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 31 Dec 2024 18:09:30 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      access-control-expose-headers:
+      - X-Request-ID
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-organization:
+      - user-sxsjo8cvghsvsqprrtasrxyq
+      openai-processing-ms:
+      - '695'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains; preload
+      x-ratelimit-limit-requests:
+      - '5000'
+      x-ratelimit-limit-tokens:
+      - '80000'
+      x-ratelimit-remaining-requests:
+      - '4999'
+      x-ratelimit-remaining-tokens:
+      - '79980'
+      x-ratelimit-reset-requests:
+      - 12ms
+      x-ratelimit-reset-tokens:
+      - 15ms
+      x-request-id:
+      - req_6028961ec3fdcb9d881820c1cfaab25a
+    status:
+      code: 200
+      message: OK
+version: 1
