@@ -1,7 +1,51 @@
 # CHANGELOG
 
 
+## v0.2.1 (2024-12-31)
+
+### Bug Fixes
+
+- **api**: Tests and fix unused code on api (#38)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`19ba2d4`](https://github.com/scope3data/scope3ai-py/commit/19ba2d4bef2249663f1856b1e127222f57b9808e))
+
+- **openai**: Fix async report and add unit tests (#39)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`1497a9e`](https://github.com/scope3data/scope3ai-py/commit/1497a9e6f0f2e72f8b5aef8855e44dba1f348eb1))
+
+- **tracer**: Fix tracer.asubmit_impact and add more tests (#37)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`1028ea2`](https://github.com/scope3data/scope3ai-py/commit/1028ea2aa799be6ed9fa40113ab22be7117536e7))
+
+- **tracer**: Fixes asubmit_impact that was not working + unittest (#41)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`640317c`](https://github.com/scope3data/scope3ai-py/commit/640317c96c792f13a8fa11a983e0d7780f48d6ef))
+
+- **worker**: Add more unit tests and fix some behavior of the worker (#36)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`a29101f`](https://github.com/scope3data/scope3ai-py/commit/a29101f5223f86a8c3bba12055cd895ab3a9cdad))
+
+### Chores
+
+- **tracer**: Remove dead code in tracer (#40) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`f56f06c`](https://github.com/scope3data/scope3ai-py/commit/f56f06c13723de167611a8a83c38959b9d1e9ff7))
+
+### Documentation
+
+- **readme**: Include python version and pytests status (#42)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`559188a`](https://github.com/scope3data/scope3ai-py/commit/559188ab27e1328544a080faffb83a715049afa6))
+
+- **readme**: Update README.md (#43) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`e765157`](https://github.com/scope3data/scope3ai-py/commit/e76515763830e8b2ac535f58046ac67f4bb77aca))
+
+
 ## v0.2.0 (2024-12-31)
+
+### Chores
+
+- **release**: 0.2.0 ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`99dfa7b`](https://github.com/scope3data/scope3ai-py/commit/99dfa7b8753d443fc3b8abd489f5fc6543c929f4))
 
 ### Continuous Integration
 
