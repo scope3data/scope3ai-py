@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      authorization:
+      - DUMMY
+      user-agent:
+      - unknown/None; hf_hub/0.26.5; python/3.12.8
+    method: POST
+    uri: https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct/v1/chat/completions
+  response:
+    body:
+      string: '{"object":"chat.completion","id":"","created":1735838922,"model":"meta-llama/Meta-Llama-3-8B-Instruct","system_fingerprint":"2.3.1-dev0-sha-169178b","choices":[{"index":0,"message":{"role":"assistant","content":"Hello
+        World!"},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":13,"completion_tokens":4,"total_tokens":17}}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '337'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 02 Jan 2025 17:32:52 GMT
+      Vary:
+      - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+      x-compute-time:
+      - '0.088139193'
+      x-compute-type:
+      - cache
+      x-request-id:
+      - 4_n2Eny5ye789kjsN65eX
+      x-sha:
+      - 5f0b02c75b57c5855da9ae460ce51323ea669d8a
+    status:
+      code: 200
+      message: OK
+version: 1
