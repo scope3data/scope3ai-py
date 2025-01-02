@@ -37,14 +37,6 @@ def test_huggingface_hub_translation(tracer_init):
     )
 
 
-# @pytest.mark.vcr
-# def test_huggingface_hub_text_to_speech(tracer_init):
-#     client = InferenceClient(token="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")
-#     client.text_to_speech(
-#         "Even use the service to create audiobooks", model="suno/bark-small"
-#     )
-
-
 @pytest.mark.vcr
 def test_huggingface_hub_speech_to_text(tracer_init):
     datadir = Path(__file__).parent / "data"
