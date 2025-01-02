@@ -1,9 +1,7 @@
-import pytest
 from pathlib import Path
-from huggingface_hub import InferenceClient, AsyncInferenceClient
-import os
 
-os.environ["HUGGING_FACE_HUB_TOKEN"] = "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"
+import pytest
+from huggingface_hub import InferenceClient, AsyncInferenceClient
 
 
 @pytest.mark.vcr
