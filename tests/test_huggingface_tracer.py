@@ -1,6 +1,9 @@
 import pytest
 from pathlib import Path
-from huggingface_hub import InferenceClient
+from huggingface_hub import InferenceClient, AsyncInferenceClient
+import os
+
+os.environ["HUGGING_FACE_HUB_TOKEN"] = "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"
 
 
 @pytest.mark.vcr
@@ -15,6 +18,39 @@ def test_huggingface_hub_chat(tracer_init):
     assert response.scope3ai.request.output_tokens == 4
     assert response.scope3ai.impact is None
     assert response.scope3ai.request.request_duration_ms == pytest.approx(87.5, 0.1)
+
+
+@pytest.mark.vcr
+@pytest.mark.asyncio
+async def test_huggingface_hub_async_chat(tracer_init):
+    client = AsyncInferenceClient(model="meta-llama/Meta-Llama-3-8B-Instruct")
+    response = await client.chat_completion(
+        messages=[{"role": "user", "content": "Hello World!"}], max_tokens=15
+    )
+    assert len(response.choices) > 0
+    assert getattr(response, "scope3ai") is not None
+
+
+@pytest.mark.vcr
+def test_huggingface_hub_stream_chat(tracer_init):
+    client = InferenceClient(model="meta-llama/Meta-Llama-3-8B-Instruct")
+    stream = client.chat_completion(
+        messages=[{"role": "user", "content": "Hello World!"}],
+        max_tokens=15,
+        stream=True,
+    )
+    for chunk in stream:
+        assert getattr(chunk, "scope3ai") is not None
+
+
+@pytest.mark.vcr
+@pytest.mark.asyncio
+async def test_huggingface_hub_async_stream_chat(tracer_init):
+    client = AsyncInferenceClient(model="meta-llama/Meta-Llama-3-8B-Instruct")
+    async for token in await client.chat_completion(
+        [{"role": "user", "content": "Hello World!"}], max_tokens=10, stream=True
+    ):
+        assert getattr(token, "scope3ai") is not None
 
 
 @pytest.mark.vcr
@@ -35,14 +71,6 @@ def test_huggingface_hub_translation(tracer_init):
     client.translation(
         "My name is Wolfgang and I live in Berlin", model="Helsinki-NLP/opus-mt-en-fr"
     )
-
-
-# @pytest.mark.vcr
-# def test_huggingface_hub_text_to_speech(tracer_init):
-#     client = InferenceClient(token="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")
-#     client.text_to_speech(
-#         "Even use the service to create audiobooks", model="suno/bark-small"
-#     )
 
 
 @pytest.mark.vcr
