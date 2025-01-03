@@ -35,6 +35,7 @@ class ResponseInterceptor:
     def instrument(self) -> None:
         for wrapper in self.wrapped_methods:
             if importlib.util.find_spec(wrapper["library"]) is not None:
+                print("WRAP", wrapper["module"])
                 wrap_object(
                     "{}.{}".format(wrapper["library"], wrapper["module"]),
                     wrapper["name"],

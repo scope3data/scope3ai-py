@@ -1,4 +1,4 @@
-from wrapt import FunctionWrapper, wrap_function_wrapper, wrap_object  # type: ignore[import-untyped]
+from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
 
 from scope3ai.tracers.huggingface.chat import (
     huggingface_chat_wrapper,
@@ -16,10 +16,6 @@ from scope3ai.tracers.huggingface.text_to_speech import (
 )
 from scope3ai.tracers.huggingface.translation import (
     huggingface_translation_wrapper_non_stream,
-)
-from .utils import (
-    hf_raise_for_status_enabled,
-    hf_raise_for_status_wrapper,
 )
 
 
@@ -57,12 +53,6 @@ class HuggingfaceInstrumentor:
                 "wrapper": huggingface_async_chat_wrapper,
             },
             {
-                "module": "huggingface_hub.inference._client",
-                "name": "hf_raise_for_status",
-                "wrapper": hf_raise_for_status_wrapper,
-                "enabled": hf_raise_for_status_enabled,
-            },
-            {
                 "module": "huggingface_hub.inference._generated._async_client",
                 "name": "AsyncInferenceClient.text_to_image",
                 "wrapper": huggingface_text_to_image_wrapper_async,
@@ -71,14 +61,6 @@ class HuggingfaceInstrumentor:
 
     def instrument(self) -> None:
         for wrapper in self.wrapped_methods:
-            if "enabled" in wrapper:
-                wrap_object(
-                    wrapper["module"],
-                    wrapper["name"],
-                    FunctionWrapper,
-                    (wrapper["wrapper"], wrapper["enabled"]),
-                )
-            else:
-                wrap_function_wrapper(
-                    wrapper["module"], wrapper["name"], wrapper["wrapper"]
-                )
+            wrap_function_wrapper(
+                wrapper["module"], wrapper["name"], wrapper["wrapper"]
+            )
