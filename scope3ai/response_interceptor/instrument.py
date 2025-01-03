@@ -4,8 +4,12 @@ import importlib.util
 from wrapt import wrap_object, FunctionWrapper  # type: ignore[import-untyped]
 
 from scope3ai.response_interceptor.aiohttp_interceptor import (
-    aiohttp_request_wrapper,
-    aiohttp_request_enabled,
+    aiohttp_response_wrapper,
+    aiohttp_response_enabled,
+)
+from scope3ai.response_interceptor.requests_interceptor import (
+    requests_response_wrapper,
+    requests_response_enabled,
 )
 
 
@@ -16,8 +20,15 @@ class ResponseInterceptor:
                 "library": "aiohttp",
                 "module": "client",
                 "name": "ClientSession._request",
-                "wrapper": aiohttp_request_wrapper,
-                "enabled": aiohttp_request_enabled,
+                "wrapper": aiohttp_response_wrapper,
+                "enabled": aiohttp_response_enabled,
+            },
+            {
+                "library": "requests",
+                "module": "sessions",
+                "name": "Session.send",
+                "wrapper": requests_response_wrapper,
+                "enabled": requests_response_enabled,
             },
         ]
 

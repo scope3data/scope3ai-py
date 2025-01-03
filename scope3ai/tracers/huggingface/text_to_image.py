@@ -8,7 +8,7 @@ from huggingface_hub import TextToImageOutput as _TextToImageOutput
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.api.typesgen import Task
 from scope3ai.lib import Scope3AI
-from scope3ai.response_interceptor.aiohttp_interceptor import aiohttp_requests_capture
+from scope3ai.response_interceptor.aiohttp_interceptor import aiohttp_response_capture
 from scope3ai.tracers.huggingface.utils import (
     hf_raise_for_status_capture,
 )
@@ -54,7 +54,7 @@ def huggingface_text_to_image_wrapper_non_stream(
 async def huggingface_text_to_image_wrapper_async_non_stream(
     wrapped: Callable, instance: AsyncInferenceClient, args: Any, kwargs: Any
 ) -> TextToImageOutput:
-    with aiohttp_requests_capture() as responses:
+    with aiohttp_response_capture() as responses:
         response = await wrapped(*args, **kwargs)
         http_responses = responses.get()
         if len(http_responses) > 0:
