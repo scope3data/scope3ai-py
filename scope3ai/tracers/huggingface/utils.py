@@ -28,3 +28,12 @@ def hf_raise_for_status_capture():
         yield HFRS_VALUE
     finally:
         HFRS_ENABLED.set(False)
+
+
+def get_client_session_async(wrapped, instance, args, kwargs):
+    try:
+        result = wrapped(*args, **kwargs)
+        print("session", result.__dir__())
+        return result
+    except Exception as e:
+        raise e

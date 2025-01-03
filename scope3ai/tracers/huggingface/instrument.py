@@ -4,17 +4,21 @@ from scope3ai.tracers.huggingface.chat import (
     huggingface_chat_wrapper,
     huggingface_async_chat_wrapper,
 )
+from scope3ai.tracers.huggingface.speech_to_text import (
+    huggingface_automatic_recognition_output_wrapper,
+)
 from scope3ai.tracers.huggingface.text_to_image import huggingface_text_to_image_wrapper
 from scope3ai.tracers.huggingface.text_to_speech import (
     huggingface_text_to_speech_wrapper,
 )
-from scope3ai.tracers.huggingface.speech_to_text import (
-    huggingface_automatic_recognition_output_wrapper,
-)
 from scope3ai.tracers.huggingface.translation import (
     huggingface_translation_wrapper_non_stream,
 )
-from .utils import hf_raise_for_status_enabled, hf_raise_for_status_wrapper
+from .utils import (
+    hf_raise_for_status_enabled,
+    get_client_session_async,
+    hf_raise_for_status_wrapper,
+)
 
 
 class HuggingfaceInstrumentor:
@@ -55,6 +59,11 @@ class HuggingfaceInstrumentor:
                 "name": "hf_raise_for_status",
                 "wrapper": hf_raise_for_status_wrapper,
                 "enabled": hf_raise_for_status_enabled,
+            },
+            {
+                "module": "huggingface_hub.inference._generated._async_client",
+                "name": "AsyncInferenceClient._get_client_session",
+                "wrapper": get_client_session_async,
             },
         ]
 
