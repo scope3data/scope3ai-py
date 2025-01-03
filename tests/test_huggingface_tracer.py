@@ -1,7 +1,10 @@
+import os
 from pathlib import Path
 
 import pytest
 from huggingface_hub import InferenceClient, AsyncInferenceClient
+
+os.environ["HUGGING_FACE_HUB_TOKEN"] = ""
 
 
 @pytest.mark.vcr
@@ -49,6 +52,19 @@ async def test_huggingface_hub_async_stream_chat(tracer_init):
         [{"role": "user", "content": "Hello World!"}], max_tokens=10, stream=True
     ):
         assert getattr(token, "scope3ai") is not None
+
+
+@pytest.mark.vcr
+@pytest.mark.asyncio
+async def test_huggingface_hub_image_generation_async(tracer_init):
+    client = AsyncInferenceClient()
+    response = await client.text_to_image("An astronaut riding a horse on the moon.")
+    assert response.image
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.request.input_tokens == 9
+    assert len(response.scope3ai.request.output_images) == 1
+    assert response.scope3ai.impact is None
+    assert response.scope3ai.request.request_duration_ms == pytest.approx(18850, 0.1)
 
 
 @pytest.mark.vcr
