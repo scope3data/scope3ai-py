@@ -36,6 +36,7 @@ uv add scope3ai
 | OpenAI      | ✅              |    |     |                  |           |
 | Huggingface | ✅              | ✅  | ✅   | ✅                | ✅        |
 | LiteLLM     | ✅              |    |     |                  |          |
+| MistralAi   | ✅              |    |     |                  |          |
 
 Roadmap:
 - Google
