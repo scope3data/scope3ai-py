@@ -1,6 +1,10 @@
 from wrapt import wrap_function_wrapper
 
-from scope3ai.tracers.openai.chat import openai_chat_wrapper, openai_async_chat_wrapper
+from .chat import openai_chat_wrapper, openai_async_chat_wrapper
+from .text_to_speech import (
+    openai_text_to_speech_wrapper,
+    openai_async_text_to_speech_wrapper,
+)
 
 
 class OpenAIInstrumentor:
@@ -15,6 +19,16 @@ class OpenAIInstrumentor:
                 "module": "openai.resources.chat.completions",
                 "name": "AsyncCompletions.create",
                 "wrapper": openai_async_chat_wrapper,
+            },
+            {
+                "module": "openai.resources.audio.speech",
+                "name": "Speech.create",
+                "wrapper": openai_text_to_speech_wrapper,
+            },
+            {
+                "module": "openai.resources.audio.speech",
+                "name": "AsyncSpeech.create",
+                "wrapper": openai_async_text_to_speech_wrapper,
             },
         ]
 
