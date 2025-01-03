@@ -67,6 +67,13 @@ def init_mistral_v1_instrumentor() -> None:
         instrumentor.instrument()
 
 
+def init_response_instrumentor() -> None:
+    from scope3ai.response_interceptor.instrument import ResponseInterceptor
+
+    instrumentor = ResponseInterceptor()
+    instrumentor.instrument()
+
+
 _INSTRUMENTS = {
     "anthropic": init_anthropic_instrumentor,
     "cohere": init_cohere_instrumentor,
@@ -74,6 +81,7 @@ _INSTRUMENTS = {
     "huggingface_hub": init_huggingface_hub_instrumentor,
     "litellm": init_litellm_instrumentor,
     "mistralai": init_mistral_v1_instrumentor,
+    "response": init_response_instrumentor,
 }
 
 

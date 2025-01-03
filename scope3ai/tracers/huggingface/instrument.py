@@ -20,8 +20,6 @@ from scope3ai.tracers.huggingface.translation import (
 from .utils import (
     hf_raise_for_status_enabled,
     hf_raise_for_status_wrapper,
-    hf_async_raise_for_status_enabled,
-    get_client_session_async_wrapper,
 )
 
 
@@ -63,12 +61,6 @@ class HuggingfaceInstrumentor:
                 "name": "hf_raise_for_status",
                 "wrapper": hf_raise_for_status_wrapper,
                 "enabled": hf_raise_for_status_enabled,
-            },
-            {
-                "module": "huggingface_hub.inference._generated._async_client",
-                "name": "AsyncInferenceClient._get_client_session",
-                "wrapper": get_client_session_async_wrapper,
-                "enable": hf_async_raise_for_status_enabled,
             },
             {
                 "module": "huggingface_hub.inference._generated._async_client",

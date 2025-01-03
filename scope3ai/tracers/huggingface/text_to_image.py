@@ -1,16 +1,16 @@
-import tiktoken
 from dataclasses import dataclass
 from typing import Any, Callable, Optional
 
+import tiktoken
 from huggingface_hub import InferenceClient, AsyncInferenceClient  # type: ignore[import-untyped]
 from huggingface_hub import TextToImageOutput as _TextToImageOutput
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.api.typesgen import Task
 from scope3ai.lib import Scope3AI
+from scope3ai.response_interceptor.aiohttp_interceptor import aiohttp_requests_capture
 from scope3ai.tracers.huggingface.utils import (
     hf_raise_for_status_capture,
-    hf_async_raise_for_status_capture,
 )
 
 PROVIDER = "huggingface_hub"
@@ -27,7 +27,7 @@ def huggingface_text_to_image_wrapper_non_stream(
     with hf_raise_for_status_capture() as capture_response:
         response = wrapped(*args, **kwargs)
         http_response = capture_response.get()
-    model = kwargs.get("model") or instance.get_recommended_model("text-to-speech")
+    model = kwargs.get("model") or instance.get_recommended_model("text-to-image")
     encoder = tiktoken.get_encoding("cl100k_base")
     if len(args) > 0:
         prompt = args[0]
@@ -54,10 +54,12 @@ def huggingface_text_to_image_wrapper_non_stream(
 async def huggingface_text_to_image_wrapper_async_non_stream(
     wrapped: Callable, instance: AsyncInferenceClient, args: Any, kwargs: Any
 ) -> TextToImageOutput:
-    with hf_async_raise_for_status_capture() as capture_response:
+    with aiohttp_requests_capture() as responses:
         response = await wrapped(*args, **kwargs)
-        http_response = capture_response.get()
-    model = kwargs.get("model") or instance.get_recommended_model("text-to-speech")
+        http_responses = responses.get()
+        if len(http_responses) > 0:
+            http_response = http_responses[0]
+    model = kwargs.get("model") or instance.get_recommended_model("text-to-image")
     encoder = tiktoken.get_encoding("cl100k_base")
     if len(args) > 0:
         prompt = args[0]
