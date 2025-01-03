@@ -70,8 +70,13 @@ def test_huggingface_hub_image_generation(tracer_init):
 @pytest.mark.asyncio
 async def test_huggingface_hub_image_generation_async(tracer_init):
     client = AsyncInferenceClient()
-    image = await client.text_to_image("An astronaut riding a horse on the moon.")
-    assert image
+    response = await client.text_to_image("An astronaut riding a horse on the moon.")
+    assert response.image
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.request.input_tokens == 9
+    assert len(response.scope3ai.request.output_images) == 1
+    assert response.scope3ai.impact is None
+    assert response.scope3ai.request.request_duration_ms == pytest.approx(18850, 0.1)
 
 
 @pytest.mark.vcr
