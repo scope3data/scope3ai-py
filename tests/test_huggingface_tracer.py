@@ -64,6 +64,14 @@ def test_huggingface_hub_image_generation(tracer_init):
 
 
 @pytest.mark.vcr
+@pytest.mark.asyncio
+async def test_huggingface_hub_image_generation_async(tracer_init):
+    client = AsyncInferenceClient()
+    image = await client.text_to_image("An astronaut riding a horse on the moon.")
+    assert image
+
+
+@pytest.mark.vcr
 def test_huggingface_hub_translation(tracer_init):
     client = InferenceClient()
     client.translation(
