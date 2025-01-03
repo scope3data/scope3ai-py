@@ -26,7 +26,7 @@ def mistralai_v1_chat_wrapper(
     wrapped: Callable,
     instance: Mistral,
     args: Any,
-    kwargs: Any,  # noqa: ARG001
+    kwargs: Any,
 ) -> ChatCompletionResponse:
     timer_start = time.perf_counter()
     response = wrapped(*args, **kwargs)
@@ -48,7 +48,7 @@ def mistralai_v1_chat_wrapper_stream(
     wrapped: Callable,
     instance: Mistral,
     args: Any,
-    kwargs: Any,  # noqa: ARG001
+    kwargs: Any,
 ) -> Iterable[CompletionEvent]:
     timer_start = time.perf_counter()
     stream = wrapped(*args, **kwargs)
@@ -77,7 +77,7 @@ def mistralai_v1_chat_wrapper_stream(
 
 async def mistralai_v1_async_chat_wrapper(
     wrapped: Callable,
-    instance: Mistral,  # noqa: ARG001
+    instance: Mistral,
     args: Any,
     kwargs: Any,
 ) -> ChatCompletionResponse:
@@ -122,7 +122,7 @@ async def _generator(
 
 async def mistralai_v1_async_chat_wrapper_stream(
     wrapped: Callable,
-    instance: Mistral,  # noqa: ARG001
+    instance: Mistral,
     args: Any,
     kwargs: Any,
 ) -> AsyncGenerator[CompletionEvent, None]:
