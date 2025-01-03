@@ -59,12 +59,21 @@ def init_litellm_instrumentor() -> None:
         instrumentor.instrument()
 
 
+def init_mistral_v1_instrumentor() -> None:
+    if importlib.util.find_spec("mistralai") is not None:
+        from scope3ai.tracers.mistrarlai_v1.instrument import MistralAIInstrumentor
+
+        instrumentor = MistralAIInstrumentor()
+        instrumentor.instrument()
+
+
 _INSTRUMENTS = {
     "anthropic": init_anthropic_instrumentor,
     "cohere": init_cohere_instrumentor,
     "openai": init_openai_instrumentor,
     "huggingface_hub": init_huggingface_hub_instrumentor,
     "litellm": init_litellm_instrumentor,
+    "mistralai": init_mistral_v1_instrumentor,
 }
 
 

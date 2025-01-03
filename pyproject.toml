@@ -5,7 +5,6 @@ description = "Track the environmental impact of your use of AI"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
-    "httpx>=0.28.1",
     "litellm>=1.53.3",
     "pillow>=11.0.0",
     "pydantic>=2.10.3",
@@ -29,9 +28,6 @@ litellm = [
     "litellm>=1.53.3",
     "rapidfuzz>=3.10.1",
 ]
-mistralai = [
-    "mistralai>=0.4.2",
-]
 anthropic = [
     "anthropic>=0.40.0",
 ]
@@ -43,6 +39,9 @@ huggingface-hub = [
     "huggingface-hub>=0.26.5",
     "minijinja>=2.5.0",
     "tiktoken>=0.8.0",
+]
+mistralai = [
+    "mistralai==1.2.5"
 ]
 google-generativeai = [
     "google-generativeai>=0.8.3",
