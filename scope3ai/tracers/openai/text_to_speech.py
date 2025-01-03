@@ -35,41 +35,34 @@ class HttpxBinaryResponseContent(_legacy_response.HttpxBinaryResponseContent):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def _get_audio_duration_from_response(
-    format: str, response: _legacy_response.HttpxBinaryResponseContent
-) -> Optional[float]:
+def _get_audio_duration(format: str, content: bytes) -> Optional[float]:
     try:
         mutagen_cls = MUTAGEN_MAPPING.get(format)
         if mutagen_cls is None:
             logger.error(f"Unsupported audio format: {format}")
             return None
         else:
-            mutagen_file = mutagen_cls()(io.BytesIO(response.content))
+            mutagen_file = mutagen_cls()(io.BytesIO(content))
             duration = mutagen_file.info.length
     except Exception:
-        import traceback
-
-        traceback.print_exc()
         logger.exception("Failed to estimate audio duration")
         return None
 
     if format == "wav":
         # bug in mutagen, it returns high number for wav files
-        duration = len(response.content) * 8 / mutagen_file.info.bitrate
+        duration = len(content) * 8 / mutagen_file.info.bitrate
 
     return duration
 
 
-def openai_text_to_speech_wrapper(
-    wrapped: Callable, instance: Speech, args: Any, kwargs: Any
-) -> _legacy_response.HttpxBinaryResponseContent:
-    timer_start = time.perf_counter()
-    response = wrapped(*args, **kwargs)
-    request_latency = (time.perf_counter() - timer_start) * 1000
-
+def _openai_text_to_speech_submit(
+    response: _legacy_response.HttpxBinaryResponseContent,
+    request_latency: float,
+    kwargs: Any,
+) -> HttpxBinaryResponseContent:
     # try getting duration
     response_format = kwargs["response_format"]
-    duration = _get_audio_duration_from_response(response_format, response)
+    duration = _get_audio_duration(response_format, response.content)
 
     compute_time = response.response.headers.get("openai-processing-ms")
     content_length = response.response.headers.get("content-length")
@@ -99,23 +92,19 @@ def openai_text_to_speech_wrapper(
     return wrapped_response
 
 
+def openai_text_to_speech_wrapper(
+    wrapped: Callable, instance: Speech, args: Any, kwargs: Any
+) -> HttpxBinaryResponseContent:
+    timer_start = time.perf_counter()
+    response = wrapped(*args, **kwargs)
+    request_latency = (time.perf_counter() - timer_start) * 1000
+    return _openai_text_to_speech_submit(response, request_latency, kwargs)
+
+
 async def openai_async_text_to_speech_wrapper(
     wrapped: Callable, instance: AsyncSpeech, args: Any, kwargs: Any
-) -> _legacy_response.HttpxBinaryResponseContent:
+) -> HttpxBinaryResponseContent:
     timer_start = time.perf_counter()
     response = await wrapped(*args, **kwargs)
     request_latency = time.perf_counter() - timer_start
-
-    model_requested = kwargs["model"]
-
-    scope3_row = ImpactRow(
-        model=Model(id=model_requested),
-        input_tokens=response.usage.prompt_tokens,
-        output_tokens=response.usage.completion_tokens,
-        request_duration_ms=request_latency * 1000,
-        provider=PROVIDER,
-    )
-
-    scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    response.scope3ai = scope3_ctx
-    return response
+    return _openai_text_to_speech_submit(response, request_latency, kwargs)
