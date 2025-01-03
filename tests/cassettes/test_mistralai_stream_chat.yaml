@@ -1,0 +1,147 @@
+interactions:
+- request:
+    body: '{"messages":[{"content":"Hello World!","role":"user"}],"model":"mistral-tiny","safe_prompt":false,"stream":true,"top_p":1.0}'
+    headers:
+      accept:
+      - text/event-stream
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - DUMMY
+      connection:
+      - keep-alive
+      content-length:
+      - '124'
+      content-type:
+      - application/json
+      host:
+      - api.mistral.ai
+      user-agent:
+      - mistral-client-python/1.2.5
+    method: POST
+    uri: https://api.mistral.ai/v1/chat/completions#stream
+  response:
+    body:
+      string: 'data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"role":"assistant","content":""},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"Hello"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        there"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"!"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        It"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"''"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"s"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        nice"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        to"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        meet"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        you"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"."},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        How"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        can"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        I"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        assist"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        you"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"
+        today"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":"?"},"finish_reason":null}]}
+
+
+        data: {"id":"0687886dfb4045f59ae9e817a1d4dfe1","object":"chat.completion.chunk","created":1735871117,"model":"mistral-tiny","choices":[{"index":0,"delta":{"content":""},"finish_reason":"stop"}],"usage":{"prompt_tokens":6,"total_tokens":24,"completion_tokens":18}}
+
+
+        data: [DONE]
+
+
+        '
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8fbf89915a8edaed-MIA
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/event-stream; charset=utf-8
+      Date:
+      - Fri, 03 Jan 2025 02:25:17 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      ratelimitbysize-limit:
+      - '500000'
+      ratelimitbysize-query-cost:
+      - '32003'
+      ratelimitbysize-remaining:
+      - '467997'
+      ratelimitbysize-reset:
+      - '43'
+      x-envoy-upstream-service-time:
+      - '76'
+      x-kong-proxy-latency:
+      - '4'
+      x-kong-request-id:
+      - ee0f4c550debd85688d6c047842c687d
+      x-kong-upstream-latency:
+      - '77'
+      x-ratelimitbysize-limit-minute:
+      - '500000'
+      x-ratelimitbysize-limit-month:
+      - '1000000000'
+      x-ratelimitbysize-remaining-minute:
+      - '467997'
+      x-ratelimitbysize-remaining-month:
+      - '999903991'
+    status:
+      code: 200
+      message: OK
+version: 1
