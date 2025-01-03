@@ -3,7 +3,10 @@ import importlib.util
 
 from wrapt import wrap_object, FunctionWrapper  # type: ignore[import-untyped]
 
-from scope3ai.response_interceptor.aiohttp_interceptor import aiohttp_request_wrapper
+from scope3ai.response_interceptor.aiohttp_interceptor import (
+    aiohttp_request_wrapper,
+    aiohttp_request_enabled,
+)
 
 
 class ResponseInterceptor:
@@ -14,7 +17,7 @@ class ResponseInterceptor:
                 "module": "client",
                 "name": "ClientSession._request",
                 "wrapper": aiohttp_request_wrapper,
-                "enabled": True,
+                "enabled": aiohttp_request_enabled,
             },
         ]
 

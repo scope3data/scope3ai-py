@@ -13,6 +13,10 @@ AIOHTTP_REQUESTS_VALUE = contextvars.ContextVar(
 )
 
 
+def aiohttp_request_enabled():
+    return AIOHTTP_REQUESTS_ENABLED.get() is True
+
+
 async def aiohttp_request_wrapper(
     wrapped: Callable, instance: ClientSession, args: Any, kwargs: Any
 ):
