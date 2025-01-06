@@ -3,6 +3,7 @@ import importlib.util
 import logging
 from contextlib import contextmanager
 from contextvars import ContextVar
+from enum import Enum
 from functools import partial
 from os import getenv
 from typing import Optional, List
@@ -67,14 +68,34 @@ def init_mistral_v1_instrumentor() -> None:
         instrumentor.instrument()
 
 
+def init_response_instrumentor() -> None:
+    from scope3ai.response_interceptor.instrument import ResponseInterceptor
+
+    instrumentor = ResponseInterceptor()
+    instrumentor.instrument()
+
+
+class PROVIDERS(Enum):
+    ANTROPIC = "anthropic"
+    COHERE = "cohere"
+    OPENAI = "openai"
+    HUGGINGFACE_HUB = "huggingface_hub"
+    LITELLM = "litellm"
+    MISTRALAI = "mistralai"
+    RESPONSE = "response"
+
+
 _INSTRUMENTS = {
-    "anthropic": init_anthropic_instrumentor,
-    "cohere": init_cohere_instrumentor,
-    "openai": init_openai_instrumentor,
-    "huggingface_hub": init_huggingface_hub_instrumentor,
-    "litellm": init_litellm_instrumentor,
-    "mistralai": init_mistral_v1_instrumentor,
+    PROVIDERS.ANTROPIC.value: init_anthropic_instrumentor,
+    PROVIDERS.COHERE.value: init_cohere_instrumentor,
+    PROVIDERS.OPENAI.value: init_openai_instrumentor,
+    PROVIDERS.HUGGINGFACE_HUB.value: init_huggingface_hub_instrumentor,
+    PROVIDERS.LITELLM.value: init_litellm_instrumentor,
+    PROVIDERS.MISTRALAI.value: init_mistral_v1_instrumentor,
+    PROVIDERS.RESPONSE.value: init_response_instrumentor,
 }
+
+_RE_INIT_PROVIDERS = [PROVIDERS.RESPONSE.value]
 
 
 def generate_id() -> str:
@@ -298,7 +319,7 @@ class Scope3AI:
                 raise Scope3AIError(
                     f"Could not find tracer for the `{provider}` provider."
                 )
-            if provider in self._providers:
+            if provider in self._providers and provider not in _RE_INIT_PROVIDERS:
                 # already initialized
                 continue
             init_func = _INSTRUMENTS[provider]

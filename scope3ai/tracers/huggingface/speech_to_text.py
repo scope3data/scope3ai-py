@@ -1,15 +1,16 @@
 from dataclasses import dataclass, asdict
 from typing import Any, Callable, Optional
 
-from huggingface_hub import InferenceClient  # type: ignore[import-untyped]
 from huggingface_hub import (
     AutomaticSpeechRecognitionOutput as _AutomaticSpeechRecognitionOutput,
 )
+from huggingface_hub import InferenceClient  # type: ignore[import-untyped]
+from requests import Response
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.api.typesgen import Task
 from scope3ai.lib import Scope3AI
-from .utils import hf_raise_for_status_capture
+from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
 
 PROVIDER = "huggingface_hub"
 
@@ -22,10 +23,12 @@ class AutomaticSpeechRecognitionOutput(_AutomaticSpeechRecognitionOutput):
 def huggingface_automatic_recognition_output_wrapper_non_stream(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
 ) -> AutomaticSpeechRecognitionOutput:
-    with hf_raise_for_status_capture() as capture_response:
+    http_response: Response | None = None
+    with requests_response_capture() as responses:
         response = wrapped(*args, **kwargs)
-        http_response = capture_response.get()
-
+        http_responses = responses.get()
+        if len(http_responses) > 0:
+            http_response = http_responses[0]
     compute_audio_length = http_response.headers.get("x-compute-audio-length")
     compute_time = http_response.headers.get("x-compute-time")
     model = kwargs.get("model") or instance.get_recommended_model("text-to-speech")
