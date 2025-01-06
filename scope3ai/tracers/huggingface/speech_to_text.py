@@ -5,6 +5,7 @@ from huggingface_hub import (
     AutomaticSpeechRecognitionOutput as _AutomaticSpeechRecognitionOutput,
 )
 from huggingface_hub import InferenceClient  # type: ignore[import-untyped]
+from requests import Response
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.api.typesgen import Task
@@ -22,6 +23,7 @@ class AutomaticSpeechRecognitionOutput(_AutomaticSpeechRecognitionOutput):
 def huggingface_automatic_recognition_output_wrapper_non_stream(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
 ) -> AutomaticSpeechRecognitionOutput:
+    http_response: Response | None = None
     with requests_response_capture() as responses:
         response = wrapped(*args, **kwargs)
         http_responses = responses.get()

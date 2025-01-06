@@ -7,6 +7,7 @@ import tiktoken
 from huggingface_hub import AsyncInferenceClient, InferenceClient  # type: ignore[import-untyped]
 from huggingface_hub import ChatCompletionOutput as _ChatCompletionOutput
 from huggingface_hub import ChatCompletionStreamOutput as _ChatCompletionStreamOutput
+from requests import Response
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.lib import Scope3AI
@@ -37,6 +38,7 @@ def huggingface_chat_wrapper(
 def huggingface_chat_wrapper_non_stream(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
 ) -> ChatCompletionOutput:
+    http_response: Response | None = None
     with requests_response_capture() as responses:
         response = wrapped(*args, **kwargs)
         http_responses = responses.get()

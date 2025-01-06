@@ -4,6 +4,7 @@ from typing import Any, Callable, Optional
 import tiktoken
 from huggingface_hub import InferenceClient  # type: ignore[import-untyped]
 from huggingface_hub import TranslationOutput as _TranslationOutput
+from requests import Response
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.api.typesgen import Task
@@ -21,11 +22,12 @@ class TranslationOutput(_TranslationOutput):
 def huggingface_translation_wrapper_non_stream(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
 ) -> TranslationOutput:
+    http_response: Response | None = None
     with requests_response_capture() as responses:
         response = wrapped(*args, **kwargs)
         http_responses = responses.get()
         if len(http_responses) > 0:
-            http_response = http_responses[0]
+            http_response = http_responses[-1]
     model = kwargs.get("model") or instance.get_recommended_model("text-to-speech")
     encoder = tiktoken.get_encoding("cl100k_base")
     if len(args) > 0:

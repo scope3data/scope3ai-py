@@ -1,7 +1,8 @@
 import importlib.metadata
 import importlib.util
 
-from wrapt import wrap_object, FunctionWrapper  # type: ignore[import-untyped]
+from scope3ai.wrapper import wrap_object  # type: ignore[import-untyped]
+from wrapt import FunctionWrapper
 
 from scope3ai.response_interceptor.aiohttp_interceptor import (
     aiohttp_response_wrapper,
@@ -35,7 +36,6 @@ class ResponseInterceptor:
     def instrument(self) -> None:
         for wrapper in self.wrapped_methods:
             if importlib.util.find_spec(wrapper["library"]) is not None:
-                print("WRAP", wrapper["module"])
                 wrap_object(
                     "{}.{}".format(wrapper["library"], wrapper["module"]),
                     wrapper["name"],

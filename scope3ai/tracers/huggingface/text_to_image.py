@@ -2,8 +2,10 @@ from dataclasses import dataclass
 from typing import Any, Callable, Optional
 
 import tiktoken
+from aiohttp import ClientResponse
 from huggingface_hub import InferenceClient, AsyncInferenceClient  # type: ignore[import-untyped]
 from huggingface_hub import TextToImageOutput as _TextToImageOutput
+from requests import Response
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.api.typesgen import Task
@@ -22,6 +24,7 @@ class TextToImageOutput(_TextToImageOutput):
 def huggingface_text_to_image_wrapper_non_stream(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
 ) -> TextToImageOutput:
+    http_response: Response | None = None
     with requests_response_capture() as responses:
         response = wrapped(*args, **kwargs)
         http_responses = responses.get()
@@ -54,6 +57,7 @@ def huggingface_text_to_image_wrapper_non_stream(
 async def huggingface_text_to_image_wrapper_async_non_stream(
     wrapped: Callable, instance: AsyncInferenceClient, args: Any, kwargs: Any
 ) -> TextToImageOutput:
+    http_response: ClientResponse | None = None
     with aiohttp_response_capture() as responses:
         response = await wrapped(*args, **kwargs)
         http_responses = responses.get()
