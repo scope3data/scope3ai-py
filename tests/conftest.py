@@ -13,6 +13,7 @@ def environment():
     set_envvar_if_unset("ANTHROPIC_API_KEY", "DUMMY")
     set_envvar_if_unset("COHERE_API_KEY", "DUMMY")
     set_envvar_if_unset("OPENAI_API_KEY", "DUMMY")
+    set_envvar_if_unset("LITELLM_LOCAL_MODEL_COST_MAP", "True")
 
 
 @pytest.fixture(scope="module")
