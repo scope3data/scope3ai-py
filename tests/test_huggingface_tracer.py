@@ -2,9 +2,6 @@ from pathlib import Path
 
 import pytest
 from huggingface_hub import InferenceClient, AsyncInferenceClient
-import os
-
-os.environ["HF_TOKEN"] = "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"
 
 
 @pytest.mark.vcr
