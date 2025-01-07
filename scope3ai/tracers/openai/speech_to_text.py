@@ -49,7 +49,6 @@ def _get_file_audio_duration(
             return audio.info.length
     except Exception as e:
         logger.exception(f"Failed to get audio duration: {e}")
-        print(e)
     return None
 
 
@@ -63,6 +62,8 @@ def _openai_speech_to_text_wrapper(
         output_tokens = len(encoder.encode(response.text))
     elif isinstance(response, str):
         output_tokens = len(encoder.encode(response))
+    else:
+        output_tokens = None
 
     options = {}
     duration = _get_file_audio_duration(kwargs["file"])
