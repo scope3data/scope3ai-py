@@ -5,6 +5,10 @@ from .text_to_speech import (
     openai_text_to_speech_wrapper,
     openai_async_text_to_speech_wrapper,
 )
+from .speech_to_text import (
+    openai_async_speech_to_text_wrapper,
+    openai_speech_to_text_wrapper,
+)
 
 
 class OpenAIInstrumentor:
@@ -29,6 +33,16 @@ class OpenAIInstrumentor:
                 "module": "openai.resources.audio.speech",
                 "name": "AsyncSpeech.create",
                 "wrapper": openai_async_text_to_speech_wrapper,
+            },
+            {
+                "module": "openai.resources.audio.transcriptions",
+                "name": "Transcriptions.create",
+                "wrapper": openai_speech_to_text_wrapper,
+            },
+            {
+                "module": "openai.resources.audio.transcriptions",
+                "name": "AsyncTranscriptions.create",
+                "wrapper": openai_async_speech_to_text_wrapper,
             },
         ]
 
