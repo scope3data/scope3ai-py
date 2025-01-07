@@ -7,9 +7,9 @@ from litellm.utils import CustomStreamWrapper
 
 from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
+from scope3ai.constants import PROVIDERS
 
-
-PROVIDER = "litellm"
+PROVIDER = PROVIDERS.LITELLM.value
 
 
 class ChatCompletion(ModelResponse):

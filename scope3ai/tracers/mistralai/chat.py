@@ -8,10 +8,11 @@ from mistralai.models import CompletionChunk as _CompletionChunk
 from mistralai.models import CompletionEvent
 
 from scope3ai import Scope3AI
+from scope3ai.constants import PROVIDERS
 from scope3ai.api.types import Scope3AIContext
 from scope3ai.api.typesgen import ImpactRow, Model
 
-PROVIDER = "mistralai"
+PROVIDER = PROVIDERS.MISTRALAI.value
 
 
 class ChatCompletionResponse(_ChatCompletionResponse):
@@ -22,7 +23,7 @@ class CompletionChunk(_CompletionChunk):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def mistralai_v1_chat_wrapper(
+def mistralai_chat_wrapper(
     wrapped: Callable,
     instance: Mistral,
     args: Any,
@@ -44,7 +45,7 @@ def mistralai_v1_chat_wrapper(
     return chat
 
 
-def mistralai_v1_chat_wrapper_stream(
+def mistralai_chat_wrapper_stream(
     wrapped: Callable,
     instance: Mistral,
     args: Any,
@@ -75,7 +76,7 @@ def mistralai_v1_chat_wrapper_stream(
         yield chunk
 
 
-async def mistralai_v1_async_chat_wrapper(
+async def mistralai_async_chat_wrapper(
     wrapped: Callable,
     instance: Mistral,
     args: Any,
@@ -120,7 +121,7 @@ async def _generator(
         yield chunk
 
 
-async def mistralai_v1_async_chat_wrapper_stream(
+async def mistralai_async_chat_wrapper_stream(
     wrapped: Callable,
     instance: Mistral,
     args: Any,

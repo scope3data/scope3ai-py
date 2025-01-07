@@ -3,7 +3,6 @@ import importlib.util
 import logging
 from contextlib import contextmanager
 from contextvars import ContextVar
-from enum import Enum
 from functools import partial
 from os import getenv
 from typing import Optional, List
@@ -14,6 +13,7 @@ from .api.client import Client, AsyncClient
 from .api.tracer import Tracer
 from .api.types import ImpactRow, ImpactResponse, Scope3AIContext
 from .api.defaults import DEFAULT_API_URL
+from .constants import PROVIDERS
 
 from .worker import BackgroundWorker
 
@@ -73,16 +73,6 @@ def init_response_instrumentor() -> None:
 
     instrumentor = ResponseInterceptor()
     instrumentor.instrument()
-
-
-class PROVIDERS(Enum):
-    ANTROPIC = "anthropic"
-    COHERE = "cohere"
-    OPENAI = "openai"
-    HUGGINGFACE_HUB = "huggingface_hub"
-    LITELLM = "litellm"
-    MISTRALAI = "mistralai"
-    RESPONSE = "response"
 
 
 _INSTRUMENTS = {
