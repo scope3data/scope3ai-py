@@ -98,3 +98,37 @@ def async_api_client(docker_api_info):
         api_key=docker_api_info["api_key"],
         api_url=docker_api_info["api_url"],
     )
+
+
+@pytest.fixture(autouse=True)
+def fix_vcr_binary():
+    # this handle httpx UTF-8 decoding issue
+    # https://github.com/kevin1024/vcrpy/pull/882
+
+    import warnings
+
+    import vcr  # type: ignore[import-untyped]
+    from vcr.request import Request as VcrRequest  # type: ignore[import-untyped]
+    from vcr.stubs.httpx_stubs import (  # type: ignore
+        _make_vcr_request,  # noqa: F401 this is needed for some reason so python knows this method exists
+    )
+
+    def _fixed__make_vcr_request(  # type: ignore
+        httpx_request,
+        **kwargs,  # noqa: ARG001
+    ) -> VcrRequest:
+        try:
+            body = httpx_request.read().decode("utf-8")
+        except UnicodeDecodeError as e:  # noqa: F841
+            body = httpx_request.read().decode("utf-8", errors="ignore")
+            warnings.warn(
+                f"Could not decode full request payload as UTF8, recording may have lost bytes. {e}",
+                stacklevel=2,
+            )
+        uri = str(httpx_request.url)
+        headers = dict(httpx_request.headers)
+        return VcrRequest(httpx_request.method, uri, body, headers)
+
+    vcr.stubs.httpx_stubs._make_vcr_request = _fixed__make_vcr_request
+    yield
+    vcr.stubs.httpx_stubs._make_vcr_request = _make_vcr_request

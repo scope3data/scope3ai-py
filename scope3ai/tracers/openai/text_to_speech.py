@@ -7,7 +7,7 @@ from typing import Any, Callable, Optional
 import tiktoken
 from openai.resources.audio.speech import AsyncSpeech, Speech, _legacy_response
 
-from scope3ai.api.types import ImpactRow, Model, Scope3AIContext
+from scope3ai.api.types import ImpactRow, Model, Scope3AIContext, Task
 from scope3ai.lib import Scope3AI
 
 
@@ -81,6 +81,7 @@ def _openai_text_to_speech_submit(
         request_duration_ms=request_latency,
         provider=PROVIDER,
         audio_output_seconds=duration,
+        task=Task.text_to_speech,
     )
 
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
