@@ -1,6 +1,6 @@
 import logging
 import time
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Union
 
 import openai
 import tiktoken
@@ -54,7 +54,7 @@ def _get_file_audio_duration(
 
 def _openai_speech_to_text_wrapper(
     response: Any, request_latency: float, kwargs: dict
-) -> Transcription | TranscriptionVerbose | str:
+) -> Union[Transcription, TranscriptionVerbose, str]:
     model = kwargs["model"]
     encoder = tiktoken.get_encoding("cl100k_base")
 
@@ -95,7 +95,7 @@ def _openai_speech_to_text_wrapper(
 
 def openai_speech_to_text_wrapper(
     wrapped: Callable, instance: Transcriptions, args: Any, kwargs: Any
-) -> Transcription | TranscriptionVerbose | str:
+) -> Union[Transcription, TranscriptionVerbose, str]:
     timer_start = time.perf_counter()
     response = wrapped(*args, **kwargs)
     request_latency = (time.perf_counter() - timer_start) * 1000
@@ -104,7 +104,7 @@ def openai_speech_to_text_wrapper(
 
 async def openai_async_speech_to_text_wrapper(
     wrapped: Callable, instance: AsyncTranscriptions, args: Any, kwargs: Any
-) -> Transcription | TranscriptionVerbose | str:
+) -> Union[Transcription, TranscriptionVerbose, str]:
     timer_start = time.perf_counter()
     response = await wrapped(*args, **kwargs)
     request_latency = (time.perf_counter() - timer_start) * 1000
