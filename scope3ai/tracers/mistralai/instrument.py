@@ -1,6 +1,6 @@
 from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
 
-from scope3ai.tracers.mistrarlai_v1.chat import (
+from scope3ai.tracers.mistralai.chat import (
     mistralai_v1_chat_wrapper,
     mistralai_v1_async_chat_wrapper,
     mistralai_v1_chat_wrapper_stream,

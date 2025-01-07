@@ -62,7 +62,7 @@ def init_litellm_instrumentor() -> None:
 
 def init_mistral_v1_instrumentor() -> None:
     if importlib.util.find_spec("mistralai") is not None:
-        from scope3ai.tracers.mistrarlai_v1.instrument import MistralAIInstrumentor
+        from scope3ai.tracers.mistralai.instrument import MistralAIInstrumentor
 
         instrumentor = MistralAIInstrumentor()
         instrumentor.instrument()
