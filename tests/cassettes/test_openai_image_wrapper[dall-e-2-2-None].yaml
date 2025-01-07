@@ -1,0 +1,93 @@
+interactions:
+- request:
+    body: '{"prompt": "A beautiful landscape", "model": "dall-e-2", "n": 2}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - DUMMY
+      connection:
+      - keep-alive
+      content-length:
+      - '64'
+      content-type:
+      - application/json
+      host:
+      - api.openai.com
+      user-agent:
+      - OpenAI/Python 1.57.1
+      x-stainless-arch:
+      - x64
+      x-stainless-async:
+      - 'false'
+      x-stainless-lang:
+      - python
+      x-stainless-os:
+      - Linux
+      x-stainless-package-version:
+      - 1.57.1
+      x-stainless-retry-count:
+      - '0'
+      x-stainless-runtime:
+      - CPython
+      x-stainless-runtime-version:
+      - 3.12.6
+    method: POST
+    uri: https://api.openai.com/v1/images/generations
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+yRz2+bMBiG7/krLKRwqoMDBptIaKJd0ybK1IT8aMq0g7Fd6kCA2pCsq/q/T6k0
+        rdG0+w67vPqk5z28n57XHgAW15K1UlgjMCRe4BI3pO7FCQjWMmsEvvYAAOD1PQGwOl1aI2A9tW1j
+        Ro5TMyVYWUrWqEbXwvDODLKyzga81nJwVJWoj2ZQydZptDqwVjq1zuFxKxTGm3niVens4XoWGNIh
+        j02czkgNzdbsasoP+a3ZmMVcJ6t4mXx/eXbUPoeMzgVCU9KOH3i85DeP6zrNZwkbNFX+ybSRi1wf
+        oiFEZDUkfS9G3inc1DbyjIVnrIm0bQ6nAoaIQoRto6PM1oaLSFWlquTpbiO1Z7l0miq3TVErEQkf
+        +UFABBQBH0LMEIMZ4wT6nGJGCfHDR2qbolUiYphyzvwAykAwiCmWkNEhhiGnOAx8N+OZd6p+XIlQ
+        34td9Gtl8eEF+gc0UWab4vwJlUdp6++uyvnivnLwNrib+oLH6b6477uXqsHLm4b+uFv4h1WwGQeT
+        vvfZejf9dvFvad+Jq+ZpGnizzXhJJr6m5nmq6W33X/tftJdhUqR997LCPr+tNHbY/Mt1shaznSB4
+        wty1eImXbNypgnL+W3sPgG+9t95PAAAA//8DAHPEYSIaBAAA
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8fe5dc6d7e76b3ef-MIA
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 Jan 2025 18:03:03 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=.srPYP3HYs2IUhGXyNaAS04PtVYMQl9ZB82GCzB_Kyg-1736272983-1.0.1.1-9MVf2Yq6dgfXh7niZWFiDhVyrSSvORwi_kVDPzF56zTNPh1E9pZwqqR2nxmk6DITAh8Ug0_wHLsT.P8OfkmRwA;
+        path=/; expires=Tue, 07-Jan-25 18:33:03 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=5Q9yL9E48hZUD0mObgZWVO1yg9dIP5Fbeegx98cCqew-1736272983060-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      access-control-allow-origin:
+      - '*'
+      alt-svc:
+      - h3=":443"; ma=86400
+      openai-organization:
+      - user-sxsjo8cvghsvsqprrtasrxyq
+      openai-processing-ms:
+      - '13061'
+      openai-version:
+      - '2020-10-01'
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains; preload
+      x-request-id:
+      - req_c873ef95706aa2c2e52a5284c6e1bade
+    status:
+      code: 200
+      message: OK
+version: 1
