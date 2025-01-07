@@ -8,6 +8,7 @@ import tiktoken
 from openai.resources.audio.speech import AsyncSpeech, Speech, _legacy_response
 
 from scope3ai.api.types import ImpactRow, Model, Scope3AIContext, Task
+from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 
 
@@ -19,7 +20,8 @@ def _lazy_import(module_name: str, class_name: str):
     return _imported
 
 
-PROVIDER = "openai"
+PROVIDER = PROVIDERS.OPENAI.value
+
 MUTAGEN_MAPPING = {
     "mp3": _lazy_import("mutagen.mp3", "MP3"),
     "aac": _lazy_import("mutagen.aac", "AAC"),

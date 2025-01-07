@@ -11,9 +11,10 @@ from cohere.types.streamed_chat_response_v2 import (
 )
 
 from scope3ai.api.types import ImpactRow, Model, Scope3AIContext
+from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 
-PROVIDER = "cohere"
+PROVIDER = PROVIDERS.COHERE.value
 
 
 class ChatResponse(_ChatResponse):

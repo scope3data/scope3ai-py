@@ -1,7 +1,7 @@
 import time
 from typing import Any, Callable, Optional, Union
 
-
+from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 
@@ -19,7 +19,7 @@ except ImportError:
     _ChatCompletionChunk = object()
 
 
-PROVIDER = "openai"
+PROVIDER = PROVIDERS.OPENAI.value
 
 
 class ChatCompletion(_ChatCompletion):

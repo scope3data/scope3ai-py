@@ -2,25 +2,26 @@ import time
 from collections.abc import AsyncIterator, Awaitable, Iterator
 from types import TracebackType
 from typing import Any, Callable, Generic, Optional, TypeVar, Union
-from typing_extensions import override
 
 from anthropic import Anthropic, AsyncAnthropic
 from anthropic import Stream as _Stream, AsyncStream as _AsyncStream
+from anthropic._streaming import _T
 from anthropic.lib.streaming import AsyncMessageStream as _AsyncMessageStream
 from anthropic.lib.streaming import MessageStream as _MessageStream
 from anthropic.types import Message as _Message
 from anthropic.types.message_delta_event import MessageDeltaEvent
 from anthropic.types.message_start_event import MessageStartEvent
 from anthropic.types.message_stop_event import MessageStopEvent
-from anthropic.types.raw_message_stream_event import RawMessageStreamEvent
-from anthropic.types.raw_message_start_event import RawMessageStartEvent
 from anthropic.types.raw_message_delta_event import RawMessageDeltaEvent
-from anthropic._streaming import _T
+from anthropic.types.raw_message_start_event import RawMessageStartEvent
+from anthropic.types.raw_message_stream_event import RawMessageStreamEvent
+from typing_extensions import override
 
-from scope3ai.lib import Scope3AI
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
+from scope3ai.constants import PROVIDERS
+from scope3ai.lib import Scope3AI
 
-PROVIDER = "anthropic"
+PROVIDER = PROVIDERS.ANTROPIC.value
 
 MessageStreamT = TypeVar("MessageStreamT", bound=_MessageStream)
 AsyncMessageStreamT = TypeVar("AsyncMessageStreamT", bound=_AsyncMessageStream)
