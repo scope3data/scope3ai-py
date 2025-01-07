@@ -32,11 +32,11 @@ uv add scope3ai
 | Library/SDK | Text generation | TTS | STT | Image Generation | Translation |
 |-------------|-----------------|----|-----|------------------|-----------|
 | Anthropic   | ✅              |    |     |                  |           |
-| Cohere      | ✅              |     |     |                  |             |
-| OpenAI      | ✅              |    |     |                  |           |
-| Huggingface | ✅              | ✅  | ✅   | ✅                | ✅        |
-| LiteLLM     | ✅              |    |     |                  |          |
-| MistralAi   | ✅              |    |     |                  |          |
+| Cohere      | ✅              |    |     |                  |           |
+| OpenAI      | ✅              | ✅ | ✅  |                  |           |
+| Huggingface | ✅              | ✅ | ✅  | ✅               | ✅        |
+| LiteLLM     | ✅              |    |     |                  |           |
+| MistralAi   | ✅              |    |     |                  |           |
 
 Roadmap:
 - Google
