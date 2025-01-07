@@ -5,6 +5,10 @@ from .text_to_speech import (
     openai_text_to_speech_wrapper,
     openai_async_text_to_speech_wrapper,
 )
+from .text_to_image import (
+    openai_image_wrapper,
+    openai_async_image_wrapper,
+)
 from .speech_to_text import (
     openai_async_speech_to_text_wrapper,
     openai_speech_to_text_wrapper,
@@ -43,6 +47,36 @@ class OpenAIInstrumentor:
                 "module": "openai.resources.audio.transcriptions",
                 "name": "AsyncTranscriptions.create",
                 "wrapper": openai_async_speech_to_text_wrapper,
+            },
+            {
+                "module": "openai.resources.images",
+                "name": "Images.create_variation",
+                "wrapper": openai_image_wrapper,
+            },
+            {
+                "module": "openai.resources.images",
+                "name": "Images.edit",
+                "wrapper": openai_image_wrapper,
+            },
+            {
+                "module": "openai.resources.images",
+                "name": "Images.generate",
+                "wrapper": openai_image_wrapper,
+            },
+            {
+                "module": "openai.resources.images",
+                "name": "AsyncImages.create_variation",
+                "wrapper": openai_async_image_wrapper,
+            },
+            {
+                "module": "openai.resources.images",
+                "name": "AsyncImages.edit",
+                "wrapper": openai_async_image_wrapper,
+            },
+            {
+                "module": "openai.resources.images",
+                "name": "AsyncImages.generate",
+                "wrapper": openai_async_image_wrapper,
             },
         ]
 
