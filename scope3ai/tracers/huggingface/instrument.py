@@ -16,6 +16,7 @@ from scope3ai.tracers.huggingface.text_to_speech import (
 )
 from scope3ai.tracers.huggingface.translation import (
     huggingface_translation_wrapper_non_stream,
+    huggingface_translation_wrapper_async_non_stream,
 )
 
 
@@ -36,6 +37,11 @@ class HuggingfaceInstrumentor:
                 "module": "huggingface_hub.inference._client",
                 "name": "InferenceClient.translation",
                 "wrapper": huggingface_translation_wrapper_non_stream,
+            },
+            {
+                "module": "huggingface_hub.inference._generated._async_client",
+                "name": "AsyncInferenceClient.translation",
+                "wrapper": huggingface_translation_wrapper_async_non_stream,
             },
             {
                 "module": "huggingface_hub.inference._client",

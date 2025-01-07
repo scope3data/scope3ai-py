@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: null
+    headers:
+      authorization:
+      - DUMMY
+      user-agent:
+      - unknown/None; hf_hub/0.26.5; python/3.12.8
+    method: POST
+    uri: https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-en-fr
+  response:
+    body:
+      string: '{"error":"Model Helsinki-NLP/opus-mt-en-fr is currently loading","estimated_time":20.0}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '87'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 Jan 2025 19:08:44 GMT
+      Vary:
+      - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+      x-request-id:
+      - Su6nvtXXHEXyewukRfXwn
+    status:
+      code: 503
+      message: Service Unavailable
+- request:
+    body: null
+    headers:
+      X-wait-for-model:
+      - '1'
+      authorization:
+      - DUMMY
+      user-agent:
+      - unknown/None; hf_hub/0.26.5; python/3.12.8
+    method: POST
+    uri: https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-en-fr
+  response:
+    body:
+      string: "[{\"translation_text\":\"Je m'appelle Wolfgang et je vis \xE0 Berlin.\"}]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - x-compute-type, x-compute-time
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 Jan 2025 19:08:53 GMT
+      Server:
+      - uvicorn
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+      x-compute-characters:
+      - '40'
+      x-compute-time:
+      - '0.262'
+      x-compute-type:
+      - cpu
+      x-request-id:
+      - CM71z_JrLHrX6ZxukkOHf
+      x-sha:
+      - dd7f6540a7a48a7f4db59e5c0b9c42c8eea67f18
+    status:
+      code: 200
+      message: OK
+version: 1
