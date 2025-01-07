@@ -30,7 +30,7 @@ def huggingface_translation_wrapper_non_stream(
         http_responses = responses.get()
         if len(http_responses) > 0:
             http_response = http_responses[-1]
-    model = kwargs.get("model") or instance.get_recommended_model("text-to-speech")
+    model = kwargs.get("model") or instance.get_recommended_model("translation")
     encoder = tiktoken.get_encoding("cl100k_base")
     if len(args) > 0:
         prompt = args[0]
@@ -63,7 +63,7 @@ async def huggingface_translation_wrapper_async_non_stream(
         http_responses = responses.get()
         if len(http_responses) > 0:
             http_response = http_responses[-1]
-    model = kwargs.get("model") or instance.get_recommended_model("text-to-speech")
+    model = kwargs.get("model") or instance.get_recommended_model("translation")
     encoder = tiktoken.get_encoding("cl100k_base")
     if len(args) > 0:
         prompt = args[0]
@@ -76,7 +76,7 @@ async def huggingface_translation_wrapper_async_non_stream(
         model=Model(id=model),
         task=Task.translation,
         input_tokens=input_tokens,
-        output_tokens=output_tokens,  # TODO: How we can calculate the output tokens of a translation?
+        output_tokens=output_tokens,
         request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
     )
