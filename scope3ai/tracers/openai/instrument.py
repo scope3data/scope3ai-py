@@ -13,6 +13,10 @@ from .speech_to_text import (
     openai_async_speech_to_text_wrapper,
     openai_speech_to_text_wrapper,
 )
+from .translation import (
+    openai_translation_wrapper,
+    openai_async_translation_wrapper,
+)
 
 
 class OpenAIInstrumentor:
@@ -47,6 +51,16 @@ class OpenAIInstrumentor:
                 "module": "openai.resources.audio.transcriptions",
                 "name": "AsyncTranscriptions.create",
                 "wrapper": openai_async_speech_to_text_wrapper,
+            },
+            {
+                "module": "openai.resources.audio.translations",
+                "name": "Translations.create",
+                "wrapper": openai_translation_wrapper,
+            },
+            {
+                "module": "openai.resources.audio.translations",
+                "name": "AsyncTranslations.create",
+                "wrapper": openai_async_translation_wrapper,
             },
             {
                 "module": "openai.resources.images",
