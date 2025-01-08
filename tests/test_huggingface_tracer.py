@@ -154,6 +154,7 @@ def test_huggingface_hub_image_to_image(tracer_init):
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.request_duration_ms == 2543
     assert response.scope3ai.request.output_images == [Image(root="1024x704")]
+    assert response.scope3ai.request.input_images == [Image(root="1024x704")]
 
 
 @pytest.mark.vcr
@@ -170,3 +171,4 @@ async def test_huggingface_hub_image_to_image_async(tracer_init):
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.request_duration_ms == 6467
     assert response.scope3ai.request.output_images == [Image(root="1024x1024")]
+    assert response.scope3ai.request.input_images == [Image(root="1024x1024")]

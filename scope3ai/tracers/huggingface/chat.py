@@ -39,6 +39,7 @@ def huggingface_chat_wrapper(
 def huggingface_chat_wrapper_non_stream(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
 ) -> ChatCompletionOutput:
+    timer_start = time.perf_counter()
     http_response: Response | None = None
     with requests_response_capture() as responses:
         response = wrapped(*args, **kwargs)
@@ -48,7 +49,10 @@ def huggingface_chat_wrapper_non_stream(
     model = (
         instance.model or kwargs.get("model") or instance.get_recommended_model("chat")
     )
-    compute_time = http_response.headers.get("x-compute-time")
+    if http_response:
+        compute_time = http_response.headers.get("x-compute-time")
+    else:
+        compute_time = time.perf_counter() - timer_start
     scope3_row = ImpactRow(
         model=Model(id=model),
         input_tokens=response.usage.prompt_tokens,
