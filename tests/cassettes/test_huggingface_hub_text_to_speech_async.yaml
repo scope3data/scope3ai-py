@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       X-Amzn-Trace-Id:
-      - 2ecca6bf-e909-4b72-afd2-4afb49a7091f
+      - ea4124f7-e8c5-4971-b819-f2748d11b7ee
       authorization:
       - DUMMY
       user-agent:
@@ -722,7 +722,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 08 Jan 2025 20:27:44 GMT
+      - Wed, 08 Jan 2025 20:28:54 GMT
       ETag:
       - W/"1244d-rY02FKAQRZwcoD2xI/AqH93OPBg"
       Referrer-Policy:
@@ -730,9 +730,9 @@ interactions:
       Vary:
       - Origin
       Via:
-      - 1.1 58e580cc043cb16a24dd53c7ad22b8d4.cloudfront.net (CloudFront)
+      - 1.1 c261294b728c8520b22fc1dd217247ea.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - wfEZdJSvD0a7pWCQjbXEUhsnNa6VnZ_UBCucn4-wNtLy7b6XvPuIwg==
+      - I8tDpnx_EaxBMWqFHWsIGrxyaHNgLPC6vDnRPInVGQ9m6DQQRftIWA==
       X-Amz-Cf-Pop:
       - BOG50-C1
       X-Cache:
@@ -740,27 +740,15 @@ interactions:
       X-Powered-By:
       - huggingface-moon
       X-Request-Id:
-      - Root=1-677edfc0-62f61b9119f4f98a4c7cc712;2ecca6bf-e909-4b72-afd2-4afb49a7091f
+      - Root=1-677ee006-73badc995591b31557a7df40;ea4124f7-e8c5-4971-b819-f2748d11b7ee
       cross-origin-opener-policy:
       - same-origin
     status:
       code: 200
       message: OK
 - request:
-    body: '{"inputs": "Hello World!"}'
+    body: null
     headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '26'
-      Content-Type:
-      - application/json
-      X-Amzn-Trace-Id:
-      - f767d17f-042a-4aeb-9c29-125060f7c5c4
       authorization:
       - DUMMY
       user-agent:
@@ -2177,30 +2165,24 @@ interactions:
         6YCRthFiZewJRQRFG5++kGu4a+5NJ/z2XZLqlZ2mCDw8xTHHjb/6Zb7Ir3OSEY5XVi0Kkw7QvRyn
         6Qaz2dYWbL69MPE6yhC/Fo/vh83Ksb8UZPLGqma0k/37YjuOo7pHMSNc3Mbf
     headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
       Connection:
       - keep-alive
+      Content-Length:
+      - '80130'
       Content-Type:
       - audio/flac
       Date:
-      - Wed, 08 Jan 2025 20:27:50 GMT
-      Transfer-Encoding:
-      - chunked
-      access-control-allow-credentials:
-      - 'true'
-      access-control-expose-headers:
-      - x-compute-type, x-compute-time
-      server:
-      - uvicorn
-      vary:
+      - Wed, 08 Jan 2025 20:28:54 GMT
+      Vary:
       - Origin, Access-Control-Request-Method, Access-Control-Request-Headers
-      x-compute-characters:
-      - '12'
       x-compute-time:
       - '5.332'
       x-compute-type:
-      - gpu
+      - cache
       x-request-id:
-      - ZhtHIKtroPSCvWVrKJbmd
+      - CM2sajUOJb-vLmlqs1TC7
       x-sha:
       - 70a8a7d34168586dc5d028fa9666aceade177992
     status:
