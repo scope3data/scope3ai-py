@@ -3,10 +3,10 @@ import time
 from typing import Any, Callable, Optional, Union
 
 import tiktoken
-from openai.resources.audio.transcriptions import AsyncTranscriptions, Transcriptions
-from openai.types.audio.transcription import Transcription as _Transcription
-from openai.types.audio.transcription_verbose import (
-    TranscriptionVerbose as _TranscriptionVerbose,
+from openai.resources.audio.translations import AsyncTranslations, Translations
+from openai.types.audio.translation import Translation as _Translation
+from openai.types.audio.translation_verbose import (
+    TranslationVerbose as _TranslationVerbose,
 )
 
 from scope3ai.api.types import ImpactRow, Model, Scope3AIContext, Task
@@ -17,28 +17,28 @@ from .utils import _get_file_audio_duration
 
 PROVIDER = PROVIDERS.OPENAI.value
 
-logger = logging.getLogger("scope3.tracers.openai.speech_to_text")
+logger = logging.getLogger(__name__)
 
 
 class AnnotatedStr(str):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-class Transcription(_Transcription):
+class Translation(_Translation):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-class TranscriptionVerbose(_TranscriptionVerbose):
+class TranslationVerbose(_TranslationVerbose):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def _openai_speech_to_text_wrapper(
+def _openai_translation_wrapper(
     response: Any, request_latency: float, kwargs: dict
-) -> Union[Transcription, TranscriptionVerbose, str]:
+) -> Union[Translation, TranslationVerbose, AnnotatedStr]:
     model = kwargs["model"]
     encoder = tiktoken.get_encoding("cl100k_base")
 
-    if isinstance(response, (_Transcription, _TranscriptionVerbose)):
+    if isinstance(response, (_Translation, _TranslationVerbose)):
         output_tokens = len(encoder.encode(response.text))
     elif isinstance(response, str):
         output_tokens = len(encoder.encode(response))
@@ -55,17 +55,17 @@ def _openai_speech_to_text_wrapper(
         provider=PROVIDER,
         output_tokens=output_tokens,
         request_duration_ms=request_latency,
-        task=Task.speech_to_text,
+        task=Task.translation,
         **options,
     )
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
 
-    if isinstance(response, _Transcription):
-        result = Transcription.model_construct(**response.model_dump())
-    elif isinstance(response, _TranscriptionVerbose):
-        result = TranscriptionVerbose.model_construct(**response.model_dump())
+    if isinstance(response, _Translation):
+        result = Translation.model_construct(**response.model_dump())
+    elif isinstance(response, _TranslationVerbose):
+        result = TranslationVerbose.model_construct(**response.model_dump())
     elif isinstance(response, str):
-        result = AnnotatedStr(response)
+        result = AnnotatedStr(str)
     else:
         logger.error(f"Unexpected response type: {type(response)}")
         return response
@@ -73,19 +73,19 @@ def _openai_speech_to_text_wrapper(
     return result
 
 
-def openai_speech_to_text_wrapper(
-    wrapped: Callable, instance: Transcriptions, args: Any, kwargs: Any
-) -> Union[Transcription, TranscriptionVerbose, str]:
+def openai_translation_wrapper(
+    wrapped: Callable, instance: Translations, args: Any, kwargs: Any
+) -> Union[Translation, TranslationVerbose, AnnotatedStr]:
     timer_start = time.perf_counter()
     response = wrapped(*args, **kwargs)
     request_latency = (time.perf_counter() - timer_start) * 1000
-    return _openai_speech_to_text_wrapper(response, request_latency, kwargs)
+    return _openai_translation_wrapper(response, request_latency, kwargs)
 
 
-async def openai_async_speech_to_text_wrapper(
-    wrapped: Callable, instance: AsyncTranscriptions, args: Any, kwargs: Any
-) -> Union[Transcription, TranscriptionVerbose, str]:
+async def openai_async_translation_wrapper(
+    wrapped: Callable, instance: AsyncTranslations, args: Any, kwargs: Any
+) -> Union[Translation, TranslationVerbose, AnnotatedStr]:
     timer_start = time.perf_counter()
     response = await wrapped(*args, **kwargs)
     request_latency = (time.perf_counter() - timer_start) * 1000
-    return _openai_speech_to_text_wrapper(response, request_latency, kwargs)
+    return _openai_translation_wrapper(response, request_latency, kwargs)
