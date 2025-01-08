@@ -10,8 +10,9 @@ from mistralai.models import CompletionEvent
 from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext
 from scope3ai.api.typesgen import ImpactRow, Model
+from scope3ai.constants import PROVIDERS
 
-PROVIDER = "mistralai"
+PROVIDER = PROVIDERS.MISTRALAI.value
 
 
 class ChatCompletionResponse(_ChatCompletionResponse):

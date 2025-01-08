@@ -9,9 +9,10 @@ from requests import Response
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
 from scope3ai.api.typesgen import Task
+from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 
-PROVIDER = "huggingface_hub"
+PROVIDER = PROVIDERS.HUGGINGFACE_HUB.value
 
 
 @dataclass

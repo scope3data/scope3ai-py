@@ -16,9 +16,10 @@ from openai.resources.audio.transcriptions import (
 )
 
 from scope3ai.api.types import ImpactRow, Model, Scope3AIContext, Task
+from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 
-PROVIDER = "openai"
+PROVIDER = PROVIDERS.OPENAI.value
 
 logger = logging.getLogger("scope3.tracers.openai.speech_to_text")
 
