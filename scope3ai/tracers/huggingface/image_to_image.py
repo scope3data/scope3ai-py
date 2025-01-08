@@ -40,8 +40,15 @@ def _hugging_face_image_to_image_wrapper(
         encoder = tiktoken.get_encoding("cl100k_base")
         prompt = args[1] if len(args) > 1 else kwargs.get("prompt", "")
         input_tokens = len(encoder.encode(prompt)) if prompt != "" else 0
-    input_image = Image.open(args[0] if len(args) > 0 else kwargs["image"])
-    input_width, input_height = input_image.size
+    input_images = None
+    try:
+        input_image = Image.open(args[0] if len(args) > 0 else kwargs["image"])
+        input_width, input_height = input_image.size
+        input_images = [
+            ("{width}x{height}".format(width=input_width, height=input_height))
+        ]
+    finally:
+        pass
     output_width, output_height = response.size
     scope3_row = ImpactRow(
         model=Model(id=model),
@@ -52,9 +59,7 @@ def _hugging_face_image_to_image_wrapper(
         output_images=[
             "{width}x{height}".format(width=output_width, height=output_height)
         ],
-        input_images=[
-            "{width}x{height}".format(width=input_width, height=input_height)
-        ],
+        input_images=input_images,
     )
 
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
