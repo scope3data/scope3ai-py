@@ -47,7 +47,7 @@ def _hugging_face_image_to_image_wrapper(
         input_images = [
             ("{width}x{height}".format(width=input_width, height=input_height))
         ]
-    finally:
+    except Exception:
         pass
     output_width, output_height = response.size
     scope3_row = ImpactRow(
