@@ -15,6 +15,7 @@ from scope3ai.lib import Scope3AI
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
 
 PROVIDER = PROVIDERS.HUGGINGFACE_HUB.value
+HUGGING_FACE_CHAT_TASK = "chat"
 
 
 @dataclass
@@ -47,7 +48,9 @@ def huggingface_chat_wrapper_non_stream(
         if len(http_responses) > 0:
             http_response = http_responses[0]
     model = (
-        instance.model or kwargs.get("model") or instance.get_recommended_model("chat")
+        instance.model
+        or kwargs.get("model")
+        or instance.get_recommended_model(HUGGING_FACE_CHAT_TASK)
     )
     if http_response:
         compute_time = http_response.headers.get("x-compute-time")
@@ -73,7 +76,9 @@ def huggingface_chat_wrapper_stream(
     stream = wrapped(*args, **kwargs)
     token_count = 0
     model = (
-        instance.model or kwargs.get("model") or instance.get_recommended_model("chat")
+        instance.model
+        or kwargs.get("model")
+        or instance.get_recommended_model(HUGGING_FACE_CHAT_TASK)
     )
     for chunk in stream:
         token_count += 1

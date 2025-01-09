@@ -16,6 +16,7 @@ from scope3ai.response_interceptor.aiohttp_interceptor import aiohttp_response_c
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
 
 PROVIDER = PROVIDERS.HUGGINGFACE_HUB.value
+HUGGING_FACE_TEXT_TO_SPEECH_TASK = "text-to-speech"
 
 
 @dataclass
@@ -66,7 +67,9 @@ def huggingface_text_to_speech_wrapper(
         http_responses = responses.get()
         if len(http_responses) > 0:
             http_response = http_responses[-1]
-    model = kwargs.get("model") or instance.get_recommended_model("text-to-speech")
+    model = kwargs.get("model") or instance.get_recommended_model(
+        HUGGING_FACE_TEXT_TO_SPEECH_TASK
+    )
     return _hugging_face_text_to_speech_wrapper(
         timer_start, model, response, http_response, args, kwargs
     )
@@ -82,7 +85,9 @@ async def huggingface_text_to_speech_wrapper_async(
         http_responses = responses.get()
         if len(http_responses) > 0:
             http_response = http_responses[-1]
-    model = kwargs.get("model") or instance.get_recommended_model("text-to-speech")
+    model = kwargs.get("model") or instance.get_recommended_model(
+        HUGGING_FACE_TEXT_TO_SPEECH_TASK
+    )
     return _hugging_face_text_to_speech_wrapper(
         timer_start, model, response, http_response, args, kwargs
     )

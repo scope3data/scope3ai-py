@@ -16,6 +16,7 @@ from scope3ai.lib import Scope3AI
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
 
 PROVIDER = PROVIDERS.HUGGINGFACE_HUB.value
+HUGGING_FACE_SPEECH_TO_TEXT_TASK = "automatic-speech-recognition"
 
 
 @dataclass
@@ -63,7 +64,7 @@ def huggingface_automatic_recognition_output_wrapper(
         if len(http_responses) > 0:
             http_response = http_responses[-1]
     model = kwargs.get("model") or instance.get_recommended_model(
-        "automatic-speech-recognition"
+        HUGGING_FACE_SPEECH_TO_TEXT_TASK
     )
     return _hugging_face_automatic_recognition_wrapper(
         timer_start, model, response, http_response, args, kwargs
