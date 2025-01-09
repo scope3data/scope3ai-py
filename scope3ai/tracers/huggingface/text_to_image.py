@@ -16,6 +16,7 @@ from scope3ai.response_interceptor.aiohttp_interceptor import aiohttp_response_c
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
 
 PROVIDER = PROVIDERS.HUGGINGFACE_HUB.value
+HUGGING_FACE_TEXT_TO_IMAGE_TASK = "text-to-image"
 
 
 @dataclass
@@ -67,7 +68,9 @@ def huggingface_text_to_image_wrapper(
         http_responses = responses.get()
         if len(http_responses) > 0:
             http_response = http_responses[-1]
-    model = kwargs.get("model") or instance.get_recommended_model("text-to-image")
+    model = kwargs.get("model") or instance.get_recommended_model(
+        HUGGING_FACE_TEXT_TO_IMAGE_TASK
+    )
     return _hugging_face_text_to_image_wrapper(
         timer_start, model, response, http_response, args, kwargs
     )
@@ -83,7 +86,9 @@ async def huggingface_text_to_image_wrapper_async(
         http_responses = responses.get()
         if len(http_responses) > 0:
             http_response = http_responses[-1]
-    model = kwargs.get("model") or instance.get_recommended_model("text-to-image")
+    model = kwargs.get("model") or instance.get_recommended_model(
+        HUGGING_FACE_TEXT_TO_IMAGE_TASK
+    )
     return _hugging_face_text_to_image_wrapper(
         timer_start, model, response, http_response, args, kwargs
     )

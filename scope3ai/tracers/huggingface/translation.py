@@ -16,6 +16,7 @@ from scope3ai.response_interceptor.aiohttp_interceptor import aiohttp_response_c
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
 
 PROVIDER = PROVIDERS.HUGGINGFACE_HUB.value
+HUGGING_FACE_TRANSLATION_TASK = "translation"
 
 
 @dataclass
@@ -67,7 +68,9 @@ async def huggingface_translation_wrapper_async_non_stream(
         http_responses = responses.get()
         if len(http_responses) > 0:
             http_response = http_responses[-1]
-    model = kwargs.get("model") or instance.get_recommended_model("translation")
+    model = kwargs.get("model") or instance.get_recommended_model(
+        HUGGING_FACE_TRANSLATION_TASK
+    )
     return _hugging_face_translation_wrapper(
         timer_start, model, response, http_response, args, kwargs
     )
@@ -83,7 +86,9 @@ def huggingface_translation_wrapper_non_stream(
         http_responses = responses.get()
         if len(http_responses) > 0:
             http_response = http_responses[-1]
-    model = kwargs.get("model") or instance.get_recommended_model("translation")
+    model = kwargs.get("model") or instance.get_recommended_model(
+        HUGGING_FACE_TRANSLATION_TASK
+    )
     return _hugging_face_translation_wrapper(
         timer_start, model, response, http_response, args, kwargs
     )
