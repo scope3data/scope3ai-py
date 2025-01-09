@@ -1,6 +1,57 @@
 # CHANGELOG
 
 
+## v0.3.0-rc.1 (2025-01-09)
+
+### Bug Fixes
+
+- Directory clean to use constants (#54) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`948e214`](https://github.com/scope3data/scope3ai-py/commit/948e21431b729e4ba33754c8844ab7dffcc6763b))
+
+- Hugging face async coverage (#44) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`4b41096`](https://github.com/scope3data/scope3ai-py/commit/4b41096d7c022b5657f435bd9ca9fb392e103b0a))
+
+- Use local model cost for tests (#49) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`5a572e8`](https://github.com/scope3data/scope3ai-py/commit/5a572e8fdb8c2d85d5120cfdf252774afbfe1d2c))
+
+### Documentation
+
+- Update README for openai support (#51) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`e2cef38`](https://github.com/scope3data/scope3ai-py/commit/e2cef381dcfbc7d4ffe82ee91629dd8f781b74b7))
+
+### Features
+
+- Response interceptor aiohttp / requests (#48) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`6a3806b`](https://github.com/scope3data/scope3ai-py/commit/6a3806b9d19736c09070e6f8687c973a319bb4ea))
+
+- **huggingface**: Add support for image-to-image/ text-to-speech (#56)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`4bcd2dd`](https://github.com/scope3data/scope3ai-py/commit/4bcd2dd7dfca6dc7d0290a82111c83e75de8c511))
+
+- **huggingface**: Support for async translation (#52)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`c7946de`](https://github.com/scope3data/scope3ai-py/commit/c7946de6196425f5bd9ce0aa3d3379a860925bf2))
+
+- **mistralai**: Support for mistralai v1 chat (#46)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`e9ebd28`](https://github.com/scope3data/scope3ai-py/commit/e9ebd28ceb79b9e489727d841e3ed86d31ea14b0))
+
+- **openai**: Add support for speech to text (#50)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`05c1947`](https://github.com/scope3data/scope3ai-py/commit/05c19478b4cbd491f5dc478f5d12dd38b5b94783))
+
+- **openai**: Add support for speech translation (#57)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`5ada606`](https://github.com/scope3data/scope3ai-py/commit/5ada606b7dcced3c58b9023e554d693db7a50bae))
+
+- **openai**: Support for image generation (#55)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`7f6277b`](https://github.com/scope3data/scope3ai-py/commit/7f6277b7e33070344911c9ea51eac31de0edc18c))
+
+- **openai**: Support for text-to-speech (#45) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`3f7a316`](https://github.com/scope3data/scope3ai-py/commit/3f7a316e4d8e873d053664cdb642bda307728694))
+
+
 ## v0.2.1 (2024-12-31)
 
 ### Bug Fixes
@@ -26,6 +77,9 @@
   [`a29101f`](https://github.com/scope3data/scope3ai-py/commit/a29101f5223f86a8c3bba12055cd895ab3a9cdad))
 
 ### Chores
+
+- **release**: 0.2.1 ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`11d0204`](https://github.com/scope3data/scope3ai-py/commit/11d02043e26dc26df3ce62f0281a755c32f200df))
 
 - **tracer**: Remove dead code in tracer (#40) ([](https://github.com/scope3data/scope3ai-py/pull),
   [`f56f06c`](https://github.com/scope3data/scope3ai-py/commit/f56f06c13723de167611a8a83c38959b9d1e9ff7))
