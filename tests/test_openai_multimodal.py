@@ -131,7 +131,49 @@ def test_openai_multimodal_audio(tracer_init):
 
     assert response.scope3ai.request.input_tokens == 29
     assert response.scope3ai.request.output_tokens == 15
-    assert response.scope3ai.request.input_audio_seconds > 0
+    assert response.scope3ai.request.input_audio_seconds > 1
+    assert response.scope3ai.impact is None
+
+
+@pytest.mark.vcr
+def test_openai_multimodal_audio_2(tracer_init):
+    from openai import OpenAI
+
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4o-audio-preview",
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "What's the audio about ?",
+                    },
+                    {
+                        "type": "input_audio",
+                        "input_audio": {
+                            "data": file_as_b64str(TEST_AUDIO_MP3),
+                            "format": "mp3",
+                        },
+                    },
+                    {
+                        "type": "input_audio",
+                        "input_audio": {
+                            "data": file_as_b64str(TEST_AUDIO_WAV),
+                            "format": "wav",
+                        },
+                    },
+                ],
+            },
+        ],
+    )
+    assert len(response.choices) > 0
+    assert getattr(response, "scope3ai") is not None
+
+    assert response.scope3ai.request.input_tokens == 46
+    assert response.scope3ai.request.output_tokens == 17
+    assert response.scope3ai.request.input_audio_seconds > 2
     assert response.scope3ai.impact is None
 
 
