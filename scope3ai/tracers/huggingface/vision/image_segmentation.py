@@ -1,13 +1,13 @@
 import time
 from dataclasses import dataclass
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional, Union, List
 
-import tiktoken
 from aiohttp import ClientResponse
-from huggingface_hub import InferenceClient, AsyncInferenceClient  # type: ignore[import-untyped]
 from huggingface_hub import (
-    ImageSegmentationOutputElement as _ImageSegmentationOutputElement,
-)
+    InferenceClient,
+    AsyncInferenceClient,
+    ImageSegmentationOutputElement,
+)  # type: ignore[import-untyped]
 from requests import Response
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
@@ -22,7 +22,8 @@ HUGGING_FACE_IMAGE_SEGMENTATION_TASK = "image-segmentation"
 
 
 @dataclass
-class ImageSegmentationOutputElement(_ImageSegmentationOutputElement):
+class ImageSegmentationOutput:
+    elements: List[ImageSegmentationOutputElement] = None
     scope3ai: Optional[Scope3AIContext] = None
 
 
@@ -33,36 +34,30 @@ def _hugging_face_image_segmentation_wrapper(
     http_response: Union[ClientResponse, Response],
     args: Any,
     kwargs: Any,
-) -> ImageSegmentationOutputElement:
-    input_tokens = None
+) -> ImageSegmentationOutput:
+    input_tokens = 0
     if http_response:
         compute_time = http_response.headers.get("x-compute-time")
-        input_tokens = http_response.headers.get("x-compute-characters")
     else:
         compute_time = time.perf_counter() - timer_start
-    if not input_tokens:
-        encoder = tiktoken.get_encoding("cl100k_base")
-        prompt = args[0] if len(args) > 0 else kwargs.get("prompt", "")
-        input_tokens = len(encoder.encode(prompt)) if prompt != "" else 0
 
     scope3_row = ImpactRow(
         model=Model(id=model),
         input_tokens=input_tokens,
         task=Task.image_segmentation,
-        output_images=[],  # Image segmentation might not have fixed dimensions for output.
         request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
     )
-
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    result = ImageSegmentationOutputElement(response)
+    result = ImageSegmentationOutput()
+    result.elements = response
     result.scope3ai = scope3_ctx
     return result
 
 
 def huggingface_image_segmentation_wrapper(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
-) -> ImageSegmentationOutputElement:
+) -> ImageSegmentationOutput:
     timer_start = time.perf_counter()
     http_response: Response | None = None
     with requests_response_capture() as responses:
@@ -80,7 +75,7 @@ def huggingface_image_segmentation_wrapper(
 
 async def huggingface_image_segmentation_wrapper_async(
     wrapped: Callable, instance: AsyncInferenceClient, args: Any, kwargs: Any
-) -> ImageSegmentationOutputElement:
+) -> ImageSegmentationOutput:
     timer_start = time.perf_counter()
     http_response: ClientResponse | None = None
     with aiohttp_response_capture() as responses:

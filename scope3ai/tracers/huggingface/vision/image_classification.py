@@ -1,13 +1,13 @@
 import time
 from dataclasses import dataclass
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional, Union, List
 
-import tiktoken
 from aiohttp import ClientResponse
-from huggingface_hub import InferenceClient, AsyncInferenceClient  # type: ignore[import-untyped]
 from huggingface_hub import (
-    ImageClassificationOutputElement as _ImageClassificationOutputElement,
-)
+    InferenceClient,
+    AsyncInferenceClient,
+    ImageClassificationOutputElement,
+)  # type: ignore[import-untyped]
 from requests import Response
 
 from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
@@ -22,7 +22,8 @@ HUGGING_FACE_IMAGE_CLASSIFICATION_TASK = "image-classification"
 
 
 @dataclass
-class ImageClassificationOutputElement(_ImageClassificationOutputElement):
+class ImageClassificationOutput:
+    elements: List[ImageClassificationOutputElement] = None
     scope3ai: Optional[Scope3AIContext] = None
 
 
@@ -33,18 +34,12 @@ def _hugging_face_image_classification_wrapper(
     http_response: Union[ClientResponse, Response],
     args: Any,
     kwargs: Any,
-) -> ImageClassificationOutputElement:
-    input_tokens = None
+) -> ImageClassificationOutput:
+    input_tokens = 0
     if http_response:
         compute_time = http_response.headers.get("x-compute-time")
-        input_tokens = http_response.headers.get("x-compute-characters")
     else:
         compute_time = time.perf_counter() - timer_start
-    if not input_tokens:
-        encoder = tiktoken.get_encoding("cl100k_base")
-        input_data = args[0] if len(args) > 0 else kwargs.get("inputs", "")
-        input_tokens = len(encoder.encode(input_data)) if input_data != "" else 0
-
     scope3_row = ImpactRow(
         model=Model(id=model),
         input_tokens=input_tokens,
@@ -55,14 +50,15 @@ def _hugging_face_image_classification_wrapper(
     )
 
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    result = ImageClassificationOutputElement(response)
+    result = ImageClassificationOutput()
+    result.elements = response
     result.scope3ai = scope3_ctx
     return result
 
 
 def huggingface_image_classification_wrapper(
     wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
-) -> ImageClassificationOutputElement:
+) -> ImageClassificationOutput:
     timer_start = time.perf_counter()
     http_response: Response | None = None
     with requests_response_capture() as responses:
@@ -80,7 +76,7 @@ def huggingface_image_classification_wrapper(
 
 async def huggingface_image_classification_wrapper_async(
     wrapped: Callable, instance: AsyncInferenceClient, args: Any, kwargs: Any
-) -> ImageClassificationOutputElement:
+) -> ImageClassificationOutput:
     timer_start = time.perf_counter()
     http_response: ClientResponse | None = None
     with aiohttp_response_capture() as responses:

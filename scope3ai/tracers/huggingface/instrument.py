@@ -23,6 +23,18 @@ from scope3ai.tracers.huggingface.translation import (
     huggingface_translation_wrapper_non_stream,
     huggingface_translation_wrapper_async_non_stream,
 )
+from scope3ai.tracers.huggingface.vision.image_classification import (
+    huggingface_image_classification_wrapper,
+    huggingface_image_classification_wrapper_async,
+)
+from scope3ai.tracers.huggingface.vision.image_segmentation import (
+    huggingface_image_segmentation_wrapper,
+    huggingface_image_segmentation_wrapper_async,
+)
+from scope3ai.tracers.huggingface.vision.object_detection import (
+    huggingface_object_detection_wrapper,
+    huggingface_object_detection_wrapper_async,
+)
 
 
 class HuggingfaceInstrumentor:
@@ -82,6 +94,36 @@ class HuggingfaceInstrumentor:
                 "module": "huggingface_hub.inference._generated._async_client",
                 "name": "AsyncInferenceClient.image_to_image",
                 "wrapper": huggingface_image_to_image_wrapper_async,
+            },
+            {
+                "module": "huggingface_hub.inference._client",
+                "name": "InferenceClient.image_classification",
+                "wrapper": huggingface_image_classification_wrapper,
+            },
+            {
+                "module": "huggingface_hub.inference._generated._async_client",
+                "name": "AsyncInferenceClient.image_classification",
+                "wrapper": huggingface_image_classification_wrapper_async,
+            },
+            {
+                "module": "huggingface_hub.inference._client",
+                "name": "InferenceClient.image_segmentation",
+                "wrapper": huggingface_image_segmentation_wrapper,
+            },
+            {
+                "module": "huggingface_hub.inference._generated._async_client",
+                "name": "AsyncInferenceClient.image_segmentation",
+                "wrapper": huggingface_image_segmentation_wrapper_async,
+            },
+            {
+                "module": "huggingface_hub.inference._client",
+                "name": "InferenceClient.object_detection",
+                "wrapper": huggingface_object_detection_wrapper,
+            },
+            {
+                "module": "huggingface_hub.inference._generated._async_client",
+                "name": "AsyncInferenceClient.object_detection",
+                "wrapper": huggingface_object_detection_wrapper_async,
             },
         ]
 
