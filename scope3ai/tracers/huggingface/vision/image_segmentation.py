@@ -1,6 +1,8 @@
+import io
 import time
 from dataclasses import dataclass
 from typing import Any, Callable, Optional, Union, List
+from PIL import Image
 
 from aiohttp import ClientResponse
 from huggingface_hub import (
@@ -40,13 +42,26 @@ def _hugging_face_image_segmentation_wrapper(
         compute_time = http_response.headers.get("x-compute-time")
     else:
         compute_time = time.perf_counter() - timer_start
-
+    input_images = None
+    try:
+        image_param = args[0] if len(args) > 0 else kwargs["image"]
+        if type(image_param) is str:
+            input_image = Image.open(args[0] if len(args) > 0 else kwargs["image"])
+        else:
+            input_image = Image.open(io.BytesIO(image_param))
+        input_width, input_height = input_image.size
+        input_images = [
+            ("{width}x{height}".format(width=input_width, height=input_height))
+        ]
+    except Exception:
+        pass
     scope3_row = ImpactRow(
         model=Model(id=model),
         input_tokens=input_tokens,
         task=Task.image_segmentation,
         request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
+        input_images=input_images,
     )
     scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
     result = ImageSegmentationOutput()

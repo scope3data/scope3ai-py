@@ -1,3 +1,4 @@
+import io
 import time
 from dataclasses import dataclass
 from typing import Any, Callable, Optional, Union
@@ -41,9 +42,12 @@ def _hugging_face_image_to_image_wrapper(
         encoder = tiktoken.get_encoding("cl100k_base")
         prompt = args[1] if len(args) > 1 else kwargs.get("prompt", "")
         input_tokens = len(encoder.encode(prompt)) if prompt != "" else 0
-    input_images = None
     try:
-        input_image = Image.open(args[0] if len(args) > 0 else kwargs["image"])
+        image_param = args[0] if len(args) > 0 else kwargs["image"]
+        if type(image_param) is str:
+            input_image = Image.open(args[0] if len(args) > 0 else kwargs["image"])
+        else:
+            input_image = Image.open(io.BytesIO(image_param))
         input_width, input_height = input_image.size
         input_images = [
             ("{width}x{height}".format(width=input_width, height=input_height))

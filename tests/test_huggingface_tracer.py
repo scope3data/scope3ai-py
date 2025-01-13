@@ -182,9 +182,9 @@ async def test_huggingface_hub_object_detection_async(tracer_init):
     response = await client.object_detection(street_scene_image_bytes)
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.impact is None
-    # assert getattr(response, "scope3ai") is not None
-    # assert response.scope3ai.request.request_duration_ms == 1234  # Example duration
-    # assert response.scope3ai.request.input_images == [Image(root="800x600")]  # Example dimensions
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
+    assert response.scope3ai.request.request_duration_ms == 657
 
 
 @pytest.mark.vcr
@@ -194,9 +194,8 @@ def test_huggingface_hub_object_detection(tracer_init):
     response = client.object_detection((datadir / "street_scene.png").as_posix())
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.impact is None
-    # assert getattr(response, "scope3ai") is not None
-    # assert response.scope3ai.request.request_duration_ms == 1234  # Example duration
-    # assert response.scope3ai.request.input_images == [Image(root="800x600")]  # Example dimensions
+    assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
+    assert response.scope3ai.request.request_duration_ms == 657
 
 
 @pytest.mark.vcr
@@ -209,9 +208,8 @@ async def test_huggingface_hub_image_segmentation_async(tracer_init):
     response = await client.image_segmentation(dog_image_bytes)
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.impact is None
-    # assert getattr(response, "scope3ai") is not None
-    # assert response.scope3ai.request.request_duration_ms == 5678  # Example duration
-    # assert response.scope3ai.request.input_images == [Image(root="512x512")]  # Example dimensions
+    assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
+    assert response.scope3ai.request.request_duration_ms == 686
 
 
 @pytest.mark.vcr
@@ -221,9 +219,9 @@ def test_huggingface_hub_image_segmentation(tracer_init):
     response = client.image_segmentation((datadir / "dog.png").as_posix())
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.impact is None
-    # assert getattr(response, "scope3ai") is not None
-    # assert response.scope3ai.request.request_duration_ms == 5678  # Example duration
-    # assert response.scope3ai.request.input_images == [Image(root="512x512")]  # Example dimensions
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
+    assert response.scope3ai.request.request_duration_ms == 686
 
 
 @pytest.mark.vcr
@@ -236,9 +234,9 @@ async def test_huggingface_hub_image_classification_async(tracer_init):
     response = await client.image_classification(cat_image_bytes)
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.impact is None
-    # assert getattr(response, "scope3ai") is not None
-    # assert response.scope3ai.request.request_duration_ms == 3456  # Example duration
-    # assert response.scope3ai.request.input_images == [Image(root="224x224")]  # Example dimensions
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.request.input_images == [Image(root="1024x704")]
+    assert response.scope3ai.request.request_duration_ms == 226
 
 
 @pytest.mark.vcr
@@ -248,6 +246,6 @@ def test_huggingface_hub_image_classification(tracer_init):
     response = client.image_classification((datadir / "cat.png").as_posix())
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.impact is None
-    # assert getattr(response, "scope3ai") is not None
-    # assert response.scope3ai.request.request_duration_ms == 3456  # Example duration
-    # assert response.scope3ai.request.input_images == [Image(root="224x224")]  # Example dimensions
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.request.input_images == [Image(root="1024x704")]
+    assert response.scope3ai.request.request_duration_ms == 226
