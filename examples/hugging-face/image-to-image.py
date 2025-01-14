@@ -1,18 +1,20 @@
 import asyncio
+import argparse
 
 from huggingface_hub import InferenceClient
 from scope3ai import Scope3AI
 from scope3ai.tracers.huggingface.image_to_image import HUGGING_FACE_IMAGE_TO_IMAGE_TASK
 
 
-async def main():
+async def main(image_path, model):
     client = InferenceClient()
     scope3 = Scope3AI.init()
-    model = client.get_recommended_model(HUGGING_FACE_IMAGE_TO_IMAGE_TASK)
+
+    # Use recommended model if none is provided
+    if not model:
+        model = client.get_recommended_model(HUGGING_FACE_IMAGE_TO_IMAGE_TASK)
 
     with scope3.trace() as tracer:
-        # Replace `image_path` with the path to your image file
-        image_path = "path/to/your/image.jpg"
         with open(image_path, "rb") as f:
             response = client.image_to_image(
                 model=model,
@@ -28,4 +30,16 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    parser = argparse.ArgumentParser(
+        description="Run image-to-image transformation with environmental impact tracing."
+    )
+    parser.add_argument("--image-path", type=str, help="Path to the input image file.")
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Hugging Face model to use. Defaults to the recommended model.",
+    )
+    args = parser.parse_args()
+
+    asyncio.run(main(args.image_path, args.model))

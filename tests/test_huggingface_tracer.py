@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 import pytest
 from huggingface_hub import InferenceClient, AsyncInferenceClient
 
@@ -80,7 +79,6 @@ async def test_huggingface_hub_image_generation_async(tracer_init):
 
 
 @pytest.mark.vcr
-@pytest.mark.asyncio
 def test_huggingface_hub_translation(tracer_init):
     client = InferenceClient()
     client.translation(
@@ -172,3 +170,82 @@ async def test_huggingface_hub_image_to_image_async(tracer_init):
     assert response.scope3ai.request.request_duration_ms == 6467
     assert response.scope3ai.request.output_images == [Image(root="1024x1024")]
     assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
+
+
+@pytest.mark.vcr
+@pytest.mark.asyncio
+async def test_huggingface_hub_object_detection_async(tracer_init):
+    client = AsyncInferenceClient()
+    datadir = Path(__file__).parent / "data"
+    street_scene_image = open((datadir / "street_scene.png").as_posix(), "rb")
+    street_scene_image_bytes = street_scene_image.read()
+    response = await client.object_detection(street_scene_image_bytes)
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.impact is None
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
+    assert response.scope3ai.request.request_duration_ms == 657
+
+
+@pytest.mark.vcr
+def test_huggingface_hub_object_detection(tracer_init):
+    client = InferenceClient()
+    datadir = Path(__file__).parent / "data"
+    response = client.object_detection((datadir / "street_scene.png").as_posix())
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.impact is None
+    assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
+    assert response.scope3ai.request.request_duration_ms == 657
+
+
+@pytest.mark.vcr
+@pytest.mark.asyncio
+async def test_huggingface_hub_image_segmentation_async(tracer_init):
+    client = AsyncInferenceClient()
+    datadir = Path(__file__).parent / "data"
+    dog_image = open((datadir / "dog.png").as_posix(), "rb")
+    dog_image_bytes = dog_image.read()
+    response = await client.image_segmentation(dog_image_bytes)
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.impact is None
+    assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
+    assert response.scope3ai.request.request_duration_ms == 686
+
+
+@pytest.mark.vcr
+def test_huggingface_hub_image_segmentation(tracer_init):
+    client = InferenceClient()
+    datadir = Path(__file__).parent / "data"
+    response = client.image_segmentation((datadir / "dog.png").as_posix())
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.impact is None
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
+    assert response.scope3ai.request.request_duration_ms == 686
+
+
+@pytest.mark.vcr
+@pytest.mark.asyncio
+async def test_huggingface_hub_image_classification_async(tracer_init):
+    client = AsyncInferenceClient()
+    datadir = Path(__file__).parent / "data"
+    cat_image = open((datadir / "cat.png").as_posix(), "rb")
+    cat_image_bytes = cat_image.read()
+    response = await client.image_classification(cat_image_bytes)
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.impact is None
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.request.input_images == [Image(root="1024x704")]
+    assert response.scope3ai.request.request_duration_ms == 226
+
+
+@pytest.mark.vcr
+def test_huggingface_hub_image_classification(tracer_init):
+    client = InferenceClient()
+    datadir = Path(__file__).parent / "data"
+    response = client.image_classification((datadir / "cat.png").as_posix())
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.impact is None
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.request.input_images == [Image(root="1024x704")]
+    assert response.scope3ai.request.request_duration_ms == 226

@@ -1,3 +1,4 @@
+import argparse
 import asyncio
 
 from huggingface_hub import InferenceClient
@@ -5,14 +6,14 @@ from scope3ai import Scope3AI
 from scope3ai.tracers.huggingface.speech_to_text import HUGGING_FACE_SPEECH_TO_TEXT_TASK
 
 
-async def main():
+async def main(audio_path, model):
     client = InferenceClient()
     scope3 = Scope3AI.init()
-    model = client.get_recommended_model(HUGGING_FACE_SPEECH_TO_TEXT_TASK)
+    if not model:
+        model = client.get_recommended_model(HUGGING_FACE_SPEECH_TO_TEXT_TASK)
 
     with scope3.trace() as tracer:
         # Replace `audio_path` with the path to your audio file
-        audio_path = "path/to/your/audio.wav"
         with open(audio_path, "rb") as f:
             response = client.automatic_speech_recognition(
                 model=model,
@@ -27,4 +28,16 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    parser = argparse.ArgumentParser(
+        description="Run speech-to-text transformation with environmental impact tracing."
+    )
+    parser.add_argument("--audio_path", type=str, help="Path to the input audio file.")
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Hugging Face model to use. Defaults to the recommended model.",
+    )
+    args = parser.parse_args()
+
+    asyncio.run(main(args.audio_path, args.model))
