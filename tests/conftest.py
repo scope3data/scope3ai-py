@@ -1,6 +1,7 @@
 import os
-import pytest
+
 import httpx
+import pytest
 
 
 def set_envvar_if_unset(name: str, value: str):
