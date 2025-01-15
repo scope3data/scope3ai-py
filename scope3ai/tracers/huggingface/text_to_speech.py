@@ -8,7 +8,7 @@ from huggingface_hub import InferenceClient, AsyncInferenceClient  # type: ignor
 from huggingface_hub import TextToSpeechOutput as _TextToSpeechOutput
 from requests import Response
 
-from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
+from scope3ai.api.types import Scope3AIContext, ImpactRow
 from scope3ai.api.typesgen import Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
@@ -44,7 +44,7 @@ def _hugging_face_text_to_speech_wrapper(
         input_tokens = len(encoder.encode(prompt)) if prompt != "" else 0
 
     scope3_row = ImpactRow(
-        model=Model(id=model),
+        model=model,
         input_tokens=input_tokens,
         task=Task.text_to_speech,
         request_duration_ms=float(compute_time) * 1000,

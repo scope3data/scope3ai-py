@@ -9,7 +9,7 @@ from openai.resources.chat import AsyncCompletions, Completions
 from openai.types.chat import ChatCompletion as _ChatCompletion
 from openai.types.chat import ChatCompletionChunk as _ChatCompletionChunk
 
-from scope3ai.api.types import ImpactRow, Model, Scope3AIContext
+from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 
@@ -94,8 +94,8 @@ def _openai_chat_wrapper(
     model_used = response.model
 
     scope3_row = ImpactRow(
-        model=Model(id=model_requested),
-        model_used=Model(id=model_used),
+        model=model_requested,
+        model_used=model_used,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
         request_duration_ms=request_latency * 1000,
@@ -147,8 +147,8 @@ def openai_chat_wrapper_stream(
             model_used = chunk.model
 
             scope3_row = ImpactRow(
-                model=Model(id=model_requested),
-                model_used=Model(id=model_used),
+                model=model_requested,
+                model_used=model_used,
                 input_tokens=chunk.usage.prompt_tokens,
                 output_tokens=chunk.usage.completion_tokens,
                 request_duration_ms=request_latency
@@ -198,8 +198,8 @@ async def openai_async_chat_wrapper_stream(
             model_used = chunk.model
 
             scope3_row = ImpactRow(
-                model=Model(id=model_requested),
-                model_used=Model(id=model_used),
+                model=model_requested,
+                model_used=model_used,
                 input_tokens=chunk.usage.prompt_tokens,
                 output_tokens=chunk.usage.completion_tokens,
                 request_duration_ms=request_latency

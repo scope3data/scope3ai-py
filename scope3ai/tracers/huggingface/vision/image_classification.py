@@ -11,7 +11,7 @@ from huggingface_hub import (
 )  # type: ignore[import-untyped]
 from requests import Response
 
-from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
+from scope3ai.api.types import Scope3AIContext, ImpactRow
 from scope3ai.api.typesgen import Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
@@ -54,7 +54,7 @@ def _hugging_face_image_classification_wrapper(
     except Exception:
         pass
     scope3_row = ImpactRow(
-        model=Model(id=model),
+        model=model,
         input_tokens=input_tokens,
         task=Task.image_classification,
         output_images=[],  # No images to output in classification

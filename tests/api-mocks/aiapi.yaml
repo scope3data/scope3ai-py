@@ -809,6 +809,8 @@ components:
     Model:
       title: Model
       type: object
+      required:
+      - id
       additionalProperties: false
       properties:
         id:
@@ -1089,6 +1091,14 @@ components:
 
     GPU:
       type: object
+      required:
+      - id
+      - max_power_w
+      - embodied_emissions_kgco2e
+      - embodied_water_mlh2o
+      - performance_ratio_to_h200
+      - ols_intercept
+      - ols_coefficient_gpu_count
       additionalProperties: false
       properties:
         name:
@@ -1126,16 +1136,7 @@ components:
     Image:
       type: string
       example: "1024x1024"
-      pattern: '^\d{1,4}x\d{1,4}$'
-
-    CloudProvider:
-      type: string
-      enum:
-        - aws
-        - azure
-        - gcp
-        - oracle
-        - ibm
+      pattern: ^(\d{1,4})x(\d{1,4})$
 
     Task:
       type: string

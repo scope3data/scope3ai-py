@@ -9,7 +9,7 @@ from openai.types.audio.translation_verbose import (
     TranslationVerbose as _TranslationVerbose,
 )
 
-from scope3ai.api.types import ImpactRow, Model, Scope3AIContext, Task
+from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 
@@ -51,7 +51,7 @@ def _openai_translation_wrapper(
         options["input_audio_seconds"] = int(duration)
 
     scope3_row = ImpactRow(
-        model=Model(id=model),
+        model=model,
         provider=PROVIDER,
         output_tokens=output_tokens,
         request_duration_ms=request_latency,

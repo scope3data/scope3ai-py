@@ -10,7 +10,7 @@ from huggingface_hub import (
 from huggingface_hub import InferenceClient  # type: ignore[import-untyped]
 from requests import Response
 
-from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
+from scope3ai.api.types import Scope3AIContext, ImpactRow
 from scope3ai.api.typesgen import Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
@@ -43,7 +43,7 @@ def _hugging_face_automatic_recognition_wrapper(
     if not compute_audio_length:
         compute_audio_length = 0
     scope3_row = ImpactRow(
-        model=Model(id=model),
+        model=model,
         task=Task.text_to_speech,
         input_audio_seconds=int(float(compute_audio_length)),
         request_duration_ms=float(compute_time) * 1000,

@@ -10,7 +10,7 @@ from huggingface_hub import ImageToImageOutput as _ImageToImageOutput
 from huggingface_hub import InferenceClient, AsyncInferenceClient  # type: ignore[import-untyped]
 from requests import Response
 
-from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
+from scope3ai.api.types import Scope3AIContext, ImpactRow
 from scope3ai.api.typesgen import Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
@@ -56,7 +56,7 @@ def _hugging_face_image_to_image_wrapper(
         pass
     output_width, output_height = response.size
     scope3_row = ImpactRow(
-        model=Model(id=model),
+        model=model,
         input_tokens=input_tokens,
         task=Task.image_generation,
         request_duration_ms=float(compute_time) * 1000,

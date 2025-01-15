@@ -5,7 +5,7 @@ from typing import Any, Callable, Optional
 import tiktoken
 from openai.resources.audio.speech import AsyncSpeech, Speech, _legacy_response
 
-from scope3ai.api.types import ImpactRow, Model, Scope3AIContext, Task
+from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 
@@ -41,7 +41,7 @@ def _openai_text_to_speech_submit(
     input_tokens = len(encoder.encode(kwargs["input"]))
 
     scope3_row = ImpactRow(
-        model=Model(id=model_requested),
+        model=model_requested,
         input_tokens=input_tokens,
         request_duration_ms=request_latency,
         provider=PROVIDER,
