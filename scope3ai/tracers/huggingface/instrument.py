@@ -10,6 +10,7 @@ from scope3ai.tracers.huggingface.image_to_image import (
 )
 from scope3ai.tracers.huggingface.speech_to_text import (
     huggingface_automatic_recognition_output_wrapper,
+    huggingface_automatic_recognition_output_wrapper_async,
 )
 from scope3ai.tracers.huggingface.text_to_image import (
     huggingface_text_to_image_wrapper,
@@ -74,6 +75,11 @@ class HuggingfaceInstrumentor:
                 "module": "huggingface_hub.inference._client",
                 "name": "InferenceClient.automatic_speech_recognition",
                 "wrapper": huggingface_automatic_recognition_output_wrapper,
+            },
+            {
+                "module": "huggingface_hub.inference._generated._async_client",
+                "name": "AsyncInferenceClient.automatic_speech_recognition",
+                "wrapper": huggingface_automatic_recognition_output_wrapper_async,
             },
             {
                 "module": "huggingface_hub.inference._generated._async_client",

@@ -105,18 +105,25 @@ def test_huggingface_hub_speech_to_text(tracer_init):
         audio=(datadir / "hello_there.mp3").as_posix()
     )
     assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.impact is None
+    assert response.scope3ai.request.request_duration_ms == 385.0
+    assert response.scope3ai.request.input_audio_seconds == 0
 
 
-# TODO: Find a way to make it works with vcr
-# @pytest.mark.vcr
-# @pytest.mark.asyncio
-# async def test_huggingface_hub_speech_to_text_async(tracer_init):
-#     datadir = Path(__file__).parent / "data"
-#     client = AsyncInferenceClient()
-#     response = await client.automatic_speech_recognition(
-#         audio=(datadir / "hello_there.mp3").as_posix(),
-#         model="jonatasgrosman/wav2vec2-large-xlsr-53-english"
-#     )
+@pytest.mark.vcr
+@pytest.mark.asyncio
+async def test_huggingface_hub_speech_to_text_async(tracer_init):
+    client = AsyncInferenceClient()
+    datadir = Path(__file__).parent / "data"
+    hello_there_audio = open((datadir / "hello_there.mp3").as_posix(), "rb")
+    hello_there_audio_bytes = hello_there_audio.read()
+    response = await client.automatic_speech_recognition(
+        audio=hello_there_audio_bytes,
+    )
+    assert getattr(response, "scope3ai") is not None
+    assert response.scope3ai.impact is None
+    assert response.scope3ai.request.request_duration_ms == 385.0
+    assert response.scope3ai.request.input_audio_seconds == 0
 
 
 @pytest.mark.vcr
