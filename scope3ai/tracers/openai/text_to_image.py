@@ -18,9 +18,9 @@ class ImageResponse(_ImageResponse):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def _openai_image_wrapper(
+def _openai_image_get_impact_row(
     response: _ImageResponse, request_latency: float, **kwargs: Any
-) -> ImageResponse:
+) -> (ImageResponse, ImpactRow):
     model = kwargs.get("model", DEFAULT_MODEL)
     size = RootImage(root=kwargs.get("size", DEFAULT_SIZE))
     n = kwargs.get("n", DEFAULT_N)
@@ -33,10 +33,8 @@ def _openai_image_wrapper(
         managed_service_id=PROVIDER,
     )
 
-    scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
     result = ImageResponse.model_construct(**response.model_dump())
-    result.scope3ai = scope3ai_ctx
-    return result
+    return result, scope3_row
 
 
 def openai_image_wrapper(
@@ -45,7 +43,12 @@ def openai_image_wrapper(
     timer_start = time.perf_counter()
     response = wrapped(*args, **kwargs)
     request_latency = time.perf_counter() - timer_start
-    return _openai_image_wrapper(response, request_latency, **kwargs)
+    result, impact_row = _openai_image_get_impact_row(
+        response, request_latency, **kwargs
+    )
+    scope3_ctx = Scope3AI.get_instance().submit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result
 
 
 async def openai_async_image_wrapper(
@@ -54,4 +57,9 @@ async def openai_async_image_wrapper(
     timer_start = time.perf_counter()
     response = await wrapped(*args, **kwargs)
     request_latency = time.perf_counter() - timer_start
-    return _openai_image_wrapper(response, request_latency, **kwargs)
+    result, impact_row = _openai_image_get_impact_row(
+        response, request_latency, **kwargs
+    )
+    scope3_ctx = await Scope3AI.get_instance().asubmit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result

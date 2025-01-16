@@ -27,7 +27,7 @@ def load_image_b64(path: Path) -> str:
 
 
 @pytest.mark.vcr
-def test_openai_multimodal_vision(tracer_init):
+def test_openai_multimodal_vision(tracer_with_sync_init):
     from openai import OpenAI
 
     from scope3ai.api.typesgen import Image
@@ -55,15 +55,20 @@ def test_openai_multimodal_vision(tracer_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-
     assert response.scope3ai.request.input_tokens == 872
     assert response.scope3ai.request.output_tokens == 57
     assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
-    assert response.scope3ai.impact is None
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
-def test_openai_multimodal_vision_2_images(tracer_init):
+def test_openai_multimodal_vision_2_images(tracer_with_sync_init):
     from openai import OpenAI
 
     from scope3ai.api.typesgen import Image
@@ -97,18 +102,23 @@ def test_openai_multimodal_vision_2_images(tracer_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-
     assert response.scope3ai.request.input_tokens == 34016
     assert response.scope3ai.request.output_tokens == 47
     assert response.scope3ai.request.input_images == [
         Image(root="512x512"),
         Image(root="1024x1024"),
     ]
-    assert response.scope3ai.impact is None
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
-def test_openai_multimodal_audio(tracer_init):
+def test_openai_multimodal_audio(tracer_with_sync_init):
     from openai import OpenAI
 
     client = OpenAI()
@@ -135,15 +145,20 @@ def test_openai_multimodal_audio(tracer_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-
     assert response.scope3ai.request.input_tokens == 29
     assert response.scope3ai.request.output_tokens == 15
-    assert response.scope3ai.request.input_audio_seconds > 1
-    assert response.scope3ai.impact is None
+    assert response.scope3ai.request.input_audio_seconds >= 1
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
-def test_openai_multimodal_audio_2(tracer_init):
+def test_openai_multimodal_audio_2(tracer_with_sync_init):
     from openai import OpenAI
 
     client = OpenAI()
@@ -177,11 +192,16 @@ def test_openai_multimodal_audio_2(tracer_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-
     assert response.scope3ai.request.input_tokens == 46
     assert response.scope3ai.request.output_tokens == 17
-    assert response.scope3ai.request.input_audio_seconds > 2
-    assert response.scope3ai.impact is None
+    assert response.scope3ai.request.input_audio_seconds >= 1
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 # XXX openai does not support audio and image yet.
@@ -189,7 +209,7 @@ def test_openai_multimodal_audio_2(tracer_init):
 # and the model gpt-4o does not support input_audio
 # not even o1 support audio and image and text.
 # @pytest.mark.vcr
-# def test_openai_multimodal_audio_and_image(tracer_init):
+# def test_openai_multimodal_audio_and_image(tracer_with_sync_init):
 #     from openai import OpenAI
 #
 #     client = OpenAI()
@@ -222,9 +242,14 @@ def test_openai_multimodal_audio_2(tracer_init):
 #     )
 #     assert len(response.choices) > 0
 #     assert getattr(response, "scope3ai") is not None
-
 #     assert response.scope3ai.request.input_tokens == 29
 #     assert response.scope3ai.request.output_tokens == 15
 #     assert response.scope3ai.request.input_images == "512x512"
 #     assert response.scope3ai.request.input_audio_seconds > 0
-#     assert response.scope3ai.impact is None
+#     assert response.scope3ai.impact is not None
+#     assert response.scope3ai.impact.total_impact is not None
+#     assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+#     assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+#     assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+#     assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+#     assert response.scope3ai.impact.total_impact.embodied_water_ml > 0

@@ -108,7 +108,7 @@ class AsyncMessageStream(_AsyncMessageStream):
                 request_duration_ms=requests_latency * 1000,
                 managed_service_id=PROVIDER,
             )
-            self.scope3ai = Scope3AI.get_instance().submit_impact(scope3_row)
+            self.scope3ai = await Scope3AI.get_instance().asubmit_impact(scope3_row)
 
     def __init__(self, parent) -> None:  # noqa: ANN001
         super().__init__(
@@ -212,7 +212,7 @@ class AsyncStream(_AsyncStream[_T]):
             request_duration_ms=request_latency * 1000,
             managed_service_id=PROVIDER,
         )
-        self.scope3ai = Scope3AI.get_instance().submit_impact(scope3_row)
+        self.scope3ai = await Scope3AI.get_instance().asubmit_impact(scope3_row)
 
     def __init__(self, parent) -> None:  # noqa: ANN001
         super().__init__(
@@ -265,7 +265,7 @@ async def _anthropic_async_chat_wrapper(
         request_duration_ms=request_latency * 1000,
         managed_service_id=PROVIDER,
     )
-    scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+    scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
     if scope3ai_ctx is not None:
         return Message(**response.model_dump(), scope3ai=scope3ai_ctx)
     else:

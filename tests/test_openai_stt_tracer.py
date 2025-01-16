@@ -10,7 +10,7 @@ TEST_MP3 = pathlib.Path(__file__).parent / "data" / "hello_there.mp3"
     "response_format", ["json", "text", "srt", "verbose_json", "vtt"]
 )
 @pytest.mark.parametrize("model", ["whisper-1"])
-def test_openai_stt_wrapper(tracer_init, response_format, model):
+def test_openai_stt_wrapper(tracer_with_sync_init, response_format, model):
     from openai import OpenAI
 
     client = OpenAI()
@@ -23,6 +23,13 @@ def test_openai_stt_wrapper(tracer_init, response_format, model):
     assert response.scope3ai is not None
     assert response.scope3ai.request.output_tokens > 0
     assert response.scope3ai.request.request_duration_ms > 0
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
@@ -31,7 +38,7 @@ def test_openai_stt_wrapper(tracer_init, response_format, model):
     "response_format", ["json", "text", "srt", "verbose_json", "vtt"]
 )
 @pytest.mark.parametrize("model", ["whisper-1"])
-async def test_openai_stt_wrapper_async(tracer_init, response_format, model):
+async def test_openai_stt_wrapper_async(tracer_with_sync_init, response_format, model):
     from openai import AsyncOpenAI
 
     client = AsyncOpenAI()
@@ -44,6 +51,13 @@ async def test_openai_stt_wrapper_async(tracer_init, response_format, model):
     assert response.scope3ai is not None
     assert response.scope3ai.request.output_tokens > 0
     assert response.scope3ai.request.request_duration_ms > 0
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
@@ -58,7 +72,7 @@ async def test_openai_stt_wrapper_async(tracer_init, response_format, model):
     ],
 )
 @pytest.mark.parametrize("model", ["whisper-1"])
-def test_openai_stt_wrapper_file_duration(tracer_init, model, pathtype):
+def test_openai_stt_wrapper_file_duration(tracer_with_sync_init, model, pathtype):
     from openai import OpenAI
 
     client = OpenAI()
@@ -88,3 +102,10 @@ def test_openai_stt_wrapper_file_duration(tracer_init, model, pathtype):
     assert response.scope3ai.request.output_tokens > 0
     assert response.scope3ai.request.request_duration_ms > 0
     assert response.scope3ai.request.input_audio_seconds > 0
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0

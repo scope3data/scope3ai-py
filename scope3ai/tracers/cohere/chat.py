@@ -70,7 +70,7 @@ async def cohere_async_chat_wrapper(
         request_duration_ms=request_latency * 1000,
         managed_service_id=PROVIDER,
     )
-    scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+    scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
     return NonStreamedChatResponse(**response.dict(), scope3ai=scope3ai_ctx)
 
 
@@ -122,7 +122,7 @@ async def cohere_async_stream_chat_wrapper(
                 request_duration_ms=request_latency * 1000,
                 managed_service_id=PROVIDER,
             )
-            scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+            scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
             yield StreamEndStreamedChatResponse(**event.dict(), scope3ai=scope3ai_ctx)
         else:
             yield event

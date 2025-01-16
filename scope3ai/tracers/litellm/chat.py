@@ -114,7 +114,7 @@ async def litellm_async_chat_wrapper_base(
         request_duration_ms=float(request_latency) * 1000,
         managed_service_id=PROVIDER,
     )
-    scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+    scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
     if scope3ai_ctx is not None:
         return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
     else:
@@ -143,7 +143,7 @@ async def litellm_async_chat_wrapper_stream(  # type: ignore[misc]
                 request_duration_ms=float(request_latency) * 1000,
                 managed_service_id=PROVIDER,
             )
-            scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+            scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
             if scope3ai_ctx is not None:
                 yield ChatCompletionChunk(**chunk.model_dump(), scope3ai=scope3ai_ctx)
             else:

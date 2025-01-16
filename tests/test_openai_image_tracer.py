@@ -9,7 +9,7 @@ TEST_MASK = pathlib.Path(__file__).parent / "data" / "mask_1024.png"
 @pytest.mark.parametrize("image_size", ["256x256", "512x512", None])
 @pytest.mark.parametrize("n", [1, 2])
 @pytest.mark.parametrize("model", ["dall-e-2", None])
-def test_openai_image_wrapper(tracer_init, image_size, n, model):
+def test_openai_image_wrapper(tracer_with_sync_init, image_size, n, model):
     from openai import OpenAI
 
     kwargs = {}
@@ -29,12 +29,19 @@ def test_openai_image_wrapper(tracer_init, image_size, n, model):
     assert response.scope3ai is not None
     assert response.scope3ai.request.output_images is not None
     assert len(response.scope3ai.request.output_images) == n
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
 @pytest.mark.parametrize("n", [1, 2])
 @pytest.mark.parametrize("model", ["dall-e-2", None])
-def test_openai_image_create_variation_wrapper(tracer_init, n, model):
+def test_openai_image_create_variation_wrapper(tracer_with_sync_init, n, model):
     from openai import OpenAI
 
     kwargs = {}
@@ -52,12 +59,19 @@ def test_openai_image_create_variation_wrapper(tracer_init, n, model):
     assert response.scope3ai is not None
     assert response.scope3ai.request.output_images is not None
     assert len(response.scope3ai.request.output_images) == n
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
 @pytest.mark.parametrize("n", [1, 2])
 @pytest.mark.parametrize("model", ["dall-e-2", None])
-def test_openai_image_edit_wrapper(tracer_init, n, model):
+def test_openai_image_edit_wrapper(tracer_with_sync_init, n, model):
     from openai import OpenAI
 
     kwargs = {}
@@ -77,13 +91,20 @@ def test_openai_image_edit_wrapper(tracer_init, n, model):
     assert response.scope3ai is not None
     assert response.scope3ai.request.output_images is not None
     assert len(response.scope3ai.request.output_images) == n
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
 @pytest.mark.parametrize("n", [1, 2])
 @pytest.mark.parametrize("model", ["dall-e-2", None])
-async def test_openai_image_generate_wrapper_async(tracer_init, n, model):
+async def test_openai_image_generate_wrapper_async(tracer_with_sync_init, n, model):
     from openai import AsyncOpenAI
 
     kwargs = {}
@@ -101,13 +122,22 @@ async def test_openai_image_generate_wrapper_async(tracer_init, n, model):
     assert response.scope3ai is not None
     assert response.scope3ai.request.output_images is not None
     assert len(response.scope3ai.request.output_images) == n
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
 @pytest.mark.parametrize("n", [1, 2])
 @pytest.mark.parametrize("model", ["dall-e-2", None])
-async def test_openai_image_create_variation_wrapper_async(tracer_init, n, model):
+async def test_openai_image_create_variation_wrapper_async(
+    tracer_with_sync_init, n, model
+):
     from openai import AsyncOpenAI
 
     kwargs = {}
@@ -125,13 +155,20 @@ async def test_openai_image_create_variation_wrapper_async(tracer_init, n, model
     assert response.scope3ai is not None
     assert response.scope3ai.request.output_images is not None
     assert len(response.scope3ai.request.output_images) == n
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
 @pytest.mark.parametrize("n", [1, 2])
 @pytest.mark.parametrize("model", ["dall-e-2", None])
-async def test_openai_image_edit_wrapper_async(tracer_init, n, model):
+async def test_openai_image_edit_wrapper_async(tracer_with_sync_init, n, model):
     from openai import AsyncOpenAI
 
     kwargs = {}
@@ -151,3 +188,10 @@ async def test_openai_image_edit_wrapper_async(tracer_init, n, model):
     assert response.scope3ai is not None
     assert response.scope3ai.request.output_images is not None
     assert len(response.scope3ai.request.output_images) == n
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0

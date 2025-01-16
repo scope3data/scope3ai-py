@@ -1,6 +1,6 @@
 import logging
 import time
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional, Union, Tuple
 
 import tiktoken
 from openai.resources.audio.translations import AsyncTranslations, Translations
@@ -32,9 +32,9 @@ class TranslationVerbose(_TranslationVerbose):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def _openai_translation_wrapper(
+def _openai_translation_get_impact_row(
     response: Any, request_latency: float, kwargs: dict
-) -> Union[Translation, TranslationVerbose, AnnotatedStr]:
+) -> Tuple[Union[Translation, TranslationVerbose, AnnotatedStr], ImpactRow]:
     model = kwargs["model"]
     encoder = tiktoken.get_encoding("cl100k_base")
 
@@ -58,7 +58,6 @@ def _openai_translation_wrapper(
         task=Task.translation,
         **options,
     )
-    scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
 
     if isinstance(response, _Translation):
         result = Translation.model_construct(**response.model_dump())
@@ -68,9 +67,8 @@ def _openai_translation_wrapper(
         result = AnnotatedStr(str)
     else:
         logger.error(f"Unexpected response type: {type(response)}")
-        return response
-    result.scope3ai = scope3_ctx
-    return result
+        return response, scope3_row
+    return result, scope3_row
 
 
 def openai_translation_wrapper(
@@ -79,7 +77,12 @@ def openai_translation_wrapper(
     timer_start = time.perf_counter()
     response = wrapped(*args, **kwargs)
     request_latency = (time.perf_counter() - timer_start) * 1000
-    return _openai_translation_wrapper(response, request_latency, kwargs)
+    result, impact_row = _openai_translation_get_impact_row(
+        response, request_latency, kwargs
+    )
+    scope3_ctx = Scope3AI.get_instance().submit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result
 
 
 async def openai_async_translation_wrapper(
@@ -88,4 +91,9 @@ async def openai_async_translation_wrapper(
     timer_start = time.perf_counter()
     response = await wrapped(*args, **kwargs)
     request_latency = (time.perf_counter() - timer_start) * 1000
-    return _openai_translation_wrapper(response, request_latency, kwargs)
+    result, impact_row = _openai_translation_get_impact_row(
+        response, request_latency, kwargs
+    )
+    scope3_ctx = await Scope3AI.get_instance().asubmit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result

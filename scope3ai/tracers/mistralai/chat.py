@@ -65,7 +65,7 @@ def mistralai_v1_chat_wrapper_stream(
                 input_tokens=token_count,
                 output_tokens=chunk.data.usage.completion_tokens
                 if chunk.data.usage
-                else None,
+                else 0,
                 request_duration_ms=request_latency * 1000,
                 managed_service_id=PROVIDER,
             )
@@ -92,7 +92,7 @@ async def mistralai_v1_async_chat_wrapper(
         request_duration_ms=request_latency * 1000,
         managed_service_id=PROVIDER,
     )
-    scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+    scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
     chat = ChatCompletionResponse(**response.model_dump())
     chat.scope3ai = scope3ai_ctx
     return chat
@@ -110,13 +110,11 @@ async def _generator(
         scope3_row = ImpactRow(
             model_id=model_name,
             input_tokens=token_count,
-            output_tokens=chunk.data.usage.completion_tokens
-            if chunk.data.usage
-            else None,
+            output_tokens=chunk.data.usage.completion_tokens if chunk.data.usage else 0,
             request_duration_ms=request_latency * 1000,
             managed_service_id=PROVIDER,
         )
-        scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+        scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
         chunk.data = CompletionChunk(**chunk.data.model_dump(), scope3ai=scope3ai_ctx)
         yield chunk
 
