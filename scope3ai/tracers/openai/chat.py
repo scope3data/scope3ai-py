@@ -10,6 +10,7 @@ from openai.types.chat import ChatCompletion as _ChatCompletion
 from openai.types.chat import ChatCompletionChunk as _ChatCompletionChunk
 
 from scope3ai.api.types import ImpactRow, Scope3AIContext
+from scope3ai.api.typesgen import Image as RootImage
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 
@@ -38,7 +39,7 @@ def _openai_aggregate_multimodal_image(content: dict, row: ImpactRow) -> None:
         image_data = BytesIO(base64.b64decode(data))
         image = Image.open(image_data)
         width, height = image.size
-        size = f"{width}x{height}"
+        size = RootImage(root=f"{width}x{height}")
 
         if row.input_images is None:
             row.input_images = [size]
