@@ -57,7 +57,7 @@ def huggingface_chat_wrapper_non_stream(
     else:
         compute_time = time.perf_counter() - timer_start
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
         request_duration_ms=float(compute_time) * 1000,
@@ -84,7 +84,7 @@ def huggingface_chat_wrapper_stream(
         token_count += 1
         request_latency = time.perf_counter() - timer_start
         scope3_row = ImpactRow(
-            model=model,
+            model_id=model,
             output_tokens=token_count,
             request_duration_ms=request_latency * 1000,
             managed_service_id=PROVIDER,
@@ -120,7 +120,7 @@ async def huggingface_async_chat_wrapper_non_stream(
     encoder = tiktoken.get_encoding("cl100k_base")
     output_tokens = len(encoder.encode(response.choices[0].message.content))
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=output_tokens,
         request_duration_ms=request_latency * 1000,
@@ -145,7 +145,7 @@ async def huggingface_async_chat_wrapper_stream(
         token_count += 1
         request_latency = time.perf_counter() - timer_start
         scope3_row = ImpactRow(
-            model=model,
+            model_id=model,
             output_tokens=token_count,
             request_duration_ms=request_latency
             * 1000,  # TODO: can we get the header that has the processing time

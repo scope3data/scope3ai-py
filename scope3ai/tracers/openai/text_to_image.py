@@ -25,7 +25,7 @@ def _openai_image_wrapper(
     n = kwargs.get("n", DEFAULT_N)
 
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         task=Task.text_to_image,
         output_images=[size] * n,
         request_duration_ms=request_latency * 1000,

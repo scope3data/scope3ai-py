@@ -56,7 +56,7 @@ def _hugging_face_image_segmentation_wrapper(
     except Exception:
         pass
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         input_tokens=input_tokens,
         task=Task.image_segmentation,
         request_duration_ms=float(compute_time) * 1000,

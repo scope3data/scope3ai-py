@@ -46,7 +46,7 @@ def cohere_chat_v2_wrapper(
     request_latency = time.perf_counter() - timer_start
     model_name = kwargs["model"]
     scope3_row = ImpactRow(
-        model=model_name,
+        model_id=model_name,
         input_tokens=response.usage.tokens.input_tokens,
         output_tokens=response.usage.tokens.output_tokens,
         request_duration_ms=request_latency * 1000,
@@ -67,7 +67,7 @@ async def cohere_async_chat_v2_wrapper(
     request_latency = time.perf_counter() - timer_start
     model_name = kwargs["model"]
     scope3_row = ImpactRow(
-        model=model_name,
+        model_id=model_name,
         input_tokens=response.usage.tokens.input_tokens,
         output_tokens=response.usage.tokens.output_tokens,
         request_duration_ms=request_latency * 1000,
@@ -93,7 +93,7 @@ def cohere_stream_chat_v2_wrapper(
             input_tokens = event.delta.usage.tokens.input_tokens
             output_tokens = event.delta.usage.tokens.output_tokens
             scope3_row = ImpactRow(
-                model=model_name,
+                model_id=model_name,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
                 request_duration_ms=request_latency * 1000,
@@ -119,7 +119,7 @@ async def cohere_async_stream_chat_v2_wrapper(
             input_tokens = event.delta.usage.tokens.input_tokens
             output_tokens = event.delta.usage.tokens.output_tokens
             scope3_row = ImpactRow(
-                model=model_name,
+                model_id=model_name,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
                 request_duration_ms=request_latency * 1000,

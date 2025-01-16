@@ -44,7 +44,7 @@ def _hugging_face_text_to_image_wrapper(
         input_tokens = len(encoder.encode(prompt)) if prompt != "" else 0
     width, height = response.size
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         input_tokens=input_tokens,
         task=Task.text_to_image,
         output_images=["{width}x{height}".format(width=width, height=height)],

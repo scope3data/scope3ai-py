@@ -54,7 +54,7 @@ def _hugging_face_image_classification_wrapper(
     except Exception:
         pass
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         input_tokens=input_tokens,
         task=Task.image_classification,
         output_images=[],  # No images to output in classification

@@ -44,7 +44,7 @@ def _hugging_face_translation_wrapper(
         input_tokens = len(encoder.encode(prompt)) if prompt != "" else 0
     output_tokens = len(encoder.encode(response.translation_text))
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         task=Task.translation,
         input_tokens=input_tokens,
         output_tokens=output_tokens,

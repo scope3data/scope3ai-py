@@ -59,7 +59,7 @@ class MessageStream(_MessageStream):
         requests_latency = time.perf_counter() - timer_start
         if model_name is not None:
             scope3_row = ImpactRow(
-                model=model_name,
+                model_id=model_name,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
                 request_duration_ms=requests_latency * 1000,
@@ -102,7 +102,7 @@ class AsyncMessageStream(_AsyncMessageStream):
         requests_latency = time.perf_counter() - timer_start
         if model_name is not None:
             scope3_row = ImpactRow(
-                model=model_name,
+                model_id=model_name,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
                 request_duration_ms=requests_latency * 1000,
@@ -173,7 +173,7 @@ class Stream(_Stream[_T]):
                 request_latency = time.perf_counter() - timer_start
 
         scope3_row = ImpactRow(
-            model=model,
+            model_id=model,
             input_tokens=input_tokens,
             output_tokens=output_tokens,
             request_duration_ms=request_latency * 1000,
@@ -206,7 +206,7 @@ class AsyncStream(_AsyncStream[_T]):
                 request_latency = time.perf_counter() - timer_start
 
         scope3_row = ImpactRow(
-            model=model,
+            model_id=model,
             input_tokens=input_tokens,
             output_tokens=output_tokens,
             request_duration_ms=request_latency * 1000,
@@ -225,7 +225,7 @@ class AsyncStream(_AsyncStream[_T]):
 def _anthropic_chat_wrapper(response: Message, request_latency: float) -> Message:
     model_name = response.model
     scope3_row = ImpactRow(
-        model=model_name,
+        model_id=model_name,
         input_tokens=response.usage.input_tokens,
         output_tokens=response.usage.output_tokens,
         request_duration_ms=request_latency * 1000,
@@ -259,7 +259,7 @@ async def _anthropic_async_chat_wrapper(
 ) -> Message:
     model_name = response.model
     scope3_row = ImpactRow(
-        model=model_name,
+        model_id=model_name,
         input_tokens=response.usage.input_tokens,
         output_tokens=response.usage.output_tokens,
         request_duration_ms=request_latency * 1000,

@@ -41,7 +41,7 @@ def _openai_text_to_speech_submit(
     input_tokens = len(encoder.encode(kwargs["input"]))
 
     scope3_row = ImpactRow(
-        model=model_requested,
+        model_id=model_requested,
         input_tokens=input_tokens,
         request_duration_ms=request_latency,
         provider=PROVIDER,

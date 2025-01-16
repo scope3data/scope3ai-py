@@ -56,7 +56,7 @@ def _hugging_face_image_to_image_wrapper(
         pass
     output_width, output_height = response.size
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         input_tokens=input_tokens,
         task=Task.image_generation,
         request_duration_ms=float(compute_time) * 1000,

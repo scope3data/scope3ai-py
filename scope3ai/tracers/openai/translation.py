@@ -51,7 +51,7 @@ def _openai_translation_wrapper(
         options["input_audio_seconds"] = int(duration)
 
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         provider=PROVIDER,
         output_tokens=output_tokens,
         request_duration_ms=request_latency,

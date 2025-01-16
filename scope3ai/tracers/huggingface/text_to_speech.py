@@ -44,7 +44,7 @@ def _hugging_face_text_to_speech_wrapper(
         input_tokens = len(encoder.encode(prompt)) if prompt != "" else 0
 
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         input_tokens=input_tokens,
         task=Task.text_to_speech,
         request_duration_ms=float(compute_time) * 1000,

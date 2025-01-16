@@ -46,7 +46,7 @@ def litellm_chat_wrapper_stream(  # type: ignore[misc]
         model = chunk.model
         if model is not None:
             scope3_row = ImpactRow(
-                model=model,
+                model_id=model,
                 output_tokens=token_count,
                 request_duration_ms=float(request_latency) * 1000,
                 managed_service_id=PROVIDER,
@@ -73,7 +73,7 @@ def litellm_chat_wrapper_non_stream(
     if model is None:
         return response
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.total_tokens,
         request_duration_ms=float(request_latency) * 1000,
@@ -108,7 +108,7 @@ async def litellm_async_chat_wrapper_base(
     if model is None:
         return response
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.total_tokens,
         request_duration_ms=float(request_latency) * 1000,
@@ -138,7 +138,7 @@ async def litellm_async_chat_wrapper_stream(  # type: ignore[misc]
         model = chunk.model
         if model is not None:
             scope3_row = ImpactRow(
-                model=model,
+                model_id=model,
                 output_tokens=token_count,
                 request_duration_ms=float(request_latency) * 1000,
                 managed_service_id=PROVIDER,

@@ -43,7 +43,7 @@ def _hugging_face_automatic_recognition_wrapper(
     if not compute_audio_length:
         compute_audio_length = 0
     scope3_row = ImpactRow(
-        model=model,
+        model_id=model,
         task=Task.text_to_speech,
         input_audio_seconds=int(float(compute_audio_length)),
         request_duration_ms=float(compute_time) * 1000,
