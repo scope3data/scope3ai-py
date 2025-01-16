@@ -130,7 +130,7 @@ async def huggingface_async_chat_wrapper_non_stream(
         managed_service_id=PROVIDER,
     )
 
-    scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+    scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
     chat = ChatCompletionOutput(**asdict(response))
     chat.scope3ai = scope3ai_ctx
     return chat
@@ -154,7 +154,7 @@ async def huggingface_async_chat_wrapper_stream(
             * 1000,  # TODO: can we get the header that has the processing time
             managed_service_id=PROVIDER,
         )
-        scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+        scope3_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
         chunk_data = ChatCompletionStreamOutput(**asdict(chunk))
         if scope3_ctx is not None:
             chunk_data.scope3ai = scope3_ctx

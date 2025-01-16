@@ -27,14 +27,14 @@ class TranslationOutput(_TranslationOutput):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def _hugging_face_translation_wrapper(
+def _hugging_face_translation_get_impact_row(
     timer_start: Any,
     model: Any,
     response: Any,
     http_response: Optional[Union[ClientResponse, Response]],
     args: Any,
     kwargs: Any,
-) -> TranslationOutput:
+) -> (TranslationOutput, ImpactRow):
     encoder = tiktoken.get_encoding("cl100k_base")
     input_tokens = 0
     compute_time = time.perf_counter() - timer_start
@@ -53,9 +53,27 @@ def _hugging_face_translation_wrapper(
         request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
     )
-
-    scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
     result = TranslationOutput(**asdict(response))
+    return result, scope3_row
+
+
+def huggingface_translation_wrapper_non_stream(
+    wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
+) -> TranslationOutput:
+    timer_start = time.perf_counter()
+    http_response: Response | None = None
+    with requests_response_capture() as responses:
+        response = wrapped(*args, **kwargs)
+        http_responses = responses.get()
+        if http_responses:
+            http_response = http_responses[-1]
+    model = kwargs.get("model") or instance.get_recommended_model(
+        HUGGING_FACE_TRANSLATION_TASK
+    )
+    result, impact_row = _hugging_face_translation_get_impact_row(
+        timer_start, model, response, http_response, args, kwargs
+    )
+    scope3_ctx = Scope3AI.get_instance().submit_impact(impact_row)
     result.scope3ai = scope3_ctx
     return result
 
@@ -73,24 +91,9 @@ async def huggingface_translation_wrapper_async_non_stream(
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_TRANSLATION_TASK
     )
-    return _hugging_face_translation_wrapper(
+    result, impact_row = _hugging_face_translation_get_impact_row(
         timer_start, model, response, http_response, args, kwargs
     )
-
-
-def huggingface_translation_wrapper_non_stream(
-    wrapped: Callable, instance: InferenceClient, args: Any, kwargs: Any
-) -> TranslationOutput:
-    timer_start = time.perf_counter()
-    http_response: Response | None = None
-    with requests_response_capture() as responses:
-        response = wrapped(*args, **kwargs)
-        http_responses = responses.get()
-        if http_responses:
-            http_response = http_responses[-1]
-    model = kwargs.get("model") or instance.get_recommended_model(
-        HUGGING_FACE_TRANSLATION_TASK
-    )
-    return _hugging_face_translation_wrapper(
-        timer_start, model, response, http_response, args, kwargs
-    )
+    scope3_ctx = await Scope3AI.get_instance().asubmit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result

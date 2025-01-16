@@ -30,15 +30,14 @@ class ImageClassificationOutput:
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def _hugging_face_image_classification_wrapper(
+def _hugging_face_image_classification_get_impact_row(
     timer_start: Any,
     model: Any,
     response: Any,
     http_response: Optional[Union[ClientResponse, Response]],
     args: Any,
     kwargs: Any,
-) -> ImageClassificationOutput:
-    input_tokens = 0
+) -> (ImageClassificationOutput, ImpactRow):
     compute_time = time.perf_counter() - timer_start
     input_images = []
     if http_response:
@@ -55,19 +54,15 @@ def _hugging_face_image_classification_wrapper(
         pass
     scope3_row = ImpactRow(
         model_id=model,
-        input_tokens=input_tokens,
+        input_tokens=0,  # No tokens in image classification
         task=Task.image_classification,
         output_images=[],  # No images to output in classification
         request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
         input_images=input_images,
     )
-
-    scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    result = ImageClassificationOutput()
-    result.elements = response
-    result.scope3ai = scope3_ctx
-    return result
+    result = ImageClassificationOutput(elements=response)
+    return result, scope3_row
 
 
 def huggingface_image_classification_wrapper(
@@ -83,9 +78,12 @@ def huggingface_image_classification_wrapper(
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_IMAGE_CLASSIFICATION_TASK
     )
-    return _hugging_face_image_classification_wrapper(
+    result, impact_row = _hugging_face_image_classification_get_impact_row(
         timer_start, model, response, http_response, args, kwargs
     )
+    scope3_ctx = Scope3AI.get_instance().submit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result
 
 
 async def huggingface_image_classification_wrapper_async(
@@ -101,6 +99,9 @@ async def huggingface_image_classification_wrapper_async(
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_IMAGE_CLASSIFICATION_TASK
     )
-    return _hugging_face_image_classification_wrapper(
+    result, impact_row = _hugging_face_image_classification_get_impact_row(
         timer_start, model, response, http_response, args, kwargs
     )
+    scope3_ctx = await Scope3AI.get_instance().asubmit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result

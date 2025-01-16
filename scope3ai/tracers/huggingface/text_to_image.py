@@ -28,14 +28,14 @@ class TextToImageOutput(_TextToImageOutput):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def _hugging_face_text_to_image_wrapper(
+def _hugging_face_text_to_image_get_impact_row(
     timer_start: Any,
     model: Any,
     response: Any,
     http_response: Optional[Union[ClientResponse, Response]],
     args: Any,
     kwargs: Any,
-) -> TextToImageOutput:
+) -> (TextToImageOutput, ImpactRow):
     input_tokens = 0
     compute_time = time.perf_counter() - timer_start
     if http_response:
@@ -55,10 +55,8 @@ def _hugging_face_text_to_image_wrapper(
         managed_service_id=PROVIDER,
     )
 
-    scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
     result = TextToImageOutput(response)
-    result.scope3ai = scope3_ctx
-    return result
+    return result, scope3_row
 
 
 def huggingface_text_to_image_wrapper(
@@ -74,9 +72,12 @@ def huggingface_text_to_image_wrapper(
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_TEXT_TO_IMAGE_TASK
     )
-    return _hugging_face_text_to_image_wrapper(
+
+    result, impact_row = _hugging_face_text_to_image_get_impact_row(
         timer_start, model, response, http_response, args, kwargs
     )
+    result.scope3ai = Scope3AI.get_instance().submit_impact(impact_row)
+    return result
 
 
 async def huggingface_text_to_image_wrapper_async(
@@ -92,6 +93,8 @@ async def huggingface_text_to_image_wrapper_async(
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_TEXT_TO_IMAGE_TASK
     )
-    return _hugging_face_text_to_image_wrapper(
+    result, impact_row = _hugging_face_text_to_image_get_impact_row(
         timer_start, model, response, http_response, args, kwargs
     )
+    result.scope3ai = await Scope3AI.get_instance().asubmit_impact(impact_row)
+    return result
