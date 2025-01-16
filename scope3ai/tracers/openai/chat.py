@@ -208,7 +208,7 @@ async def openai_async_chat_wrapper_stream(
                 managed_service_id=PROVIDER,
             )
 
-            scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+            scope3_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
             yield ChatCompletionChunk(**chunk.model_dump(), scope3ai=scope3_ctx)
         else:
             yield chunk

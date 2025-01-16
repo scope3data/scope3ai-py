@@ -32,9 +32,9 @@ class TranscriptionVerbose(_TranscriptionVerbose):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def _openai_speech_to_text_wrapper(
+def _openai_speech_to_text_get_impact_row(
     response: Any, request_latency: float, kwargs: dict
-) -> Union[Transcription, TranscriptionVerbose, str]:
+) -> (Union[Transcription, TranscriptionVerbose, str], ImpactRow):
     model = kwargs["model"]
     encoder = tiktoken.get_encoding("cl100k_base")
 
@@ -58,7 +58,6 @@ def _openai_speech_to_text_wrapper(
         task=Task.speech_to_text,
         **options,
     )
-    scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
 
     if isinstance(response, _Transcription):
         result = Transcription.model_construct(**response.model_dump())
@@ -69,8 +68,7 @@ def _openai_speech_to_text_wrapper(
     else:
         logger.error(f"Unexpected response type: {type(response)}")
         return response
-    result.scope3ai = scope3_ctx
-    return result
+    return result, scope3_row
 
 
 def openai_speech_to_text_wrapper(
@@ -79,7 +77,12 @@ def openai_speech_to_text_wrapper(
     timer_start = time.perf_counter()
     response = wrapped(*args, **kwargs)
     request_latency = (time.perf_counter() - timer_start) * 1000
-    return _openai_speech_to_text_wrapper(response, request_latency, kwargs)
+    result, impact_row = _openai_speech_to_text_get_impact_row(
+        response, request_latency, kwargs
+    )
+    scope3_ctx = Scope3AI.get_instance().submit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result
 
 
 async def openai_async_speech_to_text_wrapper(
@@ -88,4 +91,9 @@ async def openai_async_speech_to_text_wrapper(
     timer_start = time.perf_counter()
     response = await wrapped(*args, **kwargs)
     request_latency = (time.perf_counter() - timer_start) * 1000
-    return _openai_speech_to_text_wrapper(response, request_latency, kwargs)
+    result, impact_row = _openai_speech_to_text_get_impact_row(
+        response, request_latency, kwargs
+    )
+    scope3_ctx = await Scope3AI.get_instance().asubmit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result
