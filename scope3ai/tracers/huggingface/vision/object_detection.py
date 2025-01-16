@@ -1,18 +1,19 @@
 import io
 import time
 from dataclasses import dataclass
-from typing import Any, Callable, Optional, Union, List
+from typing import Any, Callable, List, Optional, Union
 
-from PIL import Image
 from aiohttp import ClientResponse
 from huggingface_hub import (
-    InferenceClient,
     AsyncInferenceClient,
+    InferenceClient,
     ObjectDetectionOutputElement,
 )  # type: ignore[import-untyped]
+from PIL import Image
 from requests import Response
 
-from scope3ai.api.types import Scope3AIContext, ImpactRow
+from scope3ai.api.types import ImpactRow, Scope3AIContext
+from scope3ai.api.typesgen import Image as RootImage
 from scope3ai.api.typesgen import Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
@@ -25,7 +26,7 @@ HUGGING_FACE_OBJECT_DETECTION_TASK = "object-detection"
 
 @dataclass
 class ObjectDetectionOutput:
-    elements: List[ObjectDetectionOutputElement] = None
+    elements: Optional[List[ObjectDetectionOutputElement]] = None
     scope3ai: Optional[Scope3AIContext] = None
 
 
@@ -33,15 +34,15 @@ def _hugging_face_object_detection_wrapper(
     timer_start: Any,
     model: Any,
     response: Any,
-    http_response: Union[ClientResponse, Response],
+    http_response: Optional[Union[ClientResponse, Response]],
     args: Any,
     kwargs: Any,
 ) -> ObjectDetectionOutput:
     input_tokens = 0
+    compute_time = time.perf_counter() - timer_start
+    input_images = []
     if http_response:
-        compute_time = http_response.headers.get("x-compute-time")
-    else:
-        compute_time = time.perf_counter() - timer_start
+        compute_time = http_response.headers.get("x-compute-time") or compute_time
     try:
         image_param = args[0] if len(args) > 0 else kwargs["image"]
         if type(image_param) is str:
@@ -49,9 +50,7 @@ def _hugging_face_object_detection_wrapper(
         else:
             input_image = Image.open(io.BytesIO(image_param))
         input_width, input_height = input_image.size
-        input_images = [
-            ("{width}x{height}".format(width=input_width, height=input_height))
-        ]
+        input_images = [RootImage(root=f"{input_width}x{input_height}")]
     except Exception:
         pass
     scope3_row = ImpactRow(
@@ -78,7 +77,7 @@ def huggingface_object_detection_wrapper(
     with requests_response_capture() as responses:
         response = wrapped(*args, **kwargs)
         http_responses = responses.get()
-        if len(http_responses) > 0:
+        if http_responses:
             http_response = http_responses[-1]
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_OBJECT_DETECTION_TASK
@@ -96,7 +95,7 @@ async def huggingface_object_detection_wrapper_async(
     with aiohttp_response_capture() as responses:
         response = await wrapped(*args, **kwargs)
         http_responses = responses.get()
-        if len(http_responses) > 0:
+        if http_responses:
             http_response = http_responses[-1]
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_OBJECT_DETECTION_TASK
