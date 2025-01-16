@@ -72,7 +72,11 @@ def run_code_generation() -> None:
                 "--output-model-type",
                 "pydantic_v2.BaseModel",
                 "--use-schema-description",
-                "--allow-extra-fields",
+                # If we have a field like `x:  Optional[str] = Field(None, ...)
+                # And if not passed in the constructor, pyright will give back an issue
+                # saying that x is missing. But it's optional ! See
+                # https://github.com/pydantic/pydantic/discussions/7379
+                "--use-annotated",
             ],
             check=True,
         )
