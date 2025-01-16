@@ -230,7 +230,6 @@ class Scope3AI:
             # and the background worker is not async (does not have to be).
             # so we just redirect the call to the sync version.
             return self.submit_impact(impact_row)
-
         tracer = self.current_tracer
         ctx = Scope3AIContext(request=impact_row)
         ctx._tracer = tracer

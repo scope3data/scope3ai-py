@@ -28,14 +28,14 @@ class AutomaticSpeechRecognitionOutput(_AutomaticSpeechRecognitionOutput):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def _hugging_face_automatic_recognition_wrapper(
+def _hugging_face_automatic_recognition_get_impact_row(
     timer_start: Any,
     model: Any,
     response: Any,
     http_response: Optional[Union[ClientResponse, Response]],
     args: Any,
     kwargs: Any,
-) -> AutomaticSpeechRecognitionOutput:
+) -> (AutomaticSpeechRecognitionOutput, ImpactRow):
     compute_audio_length = None
     if http_response:
         compute_audio_length = http_response.headers.get("x-compute-audio-length")
@@ -51,11 +51,8 @@ def _hugging_face_automatic_recognition_wrapper(
         request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
     )
-
-    scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
     result = AutomaticSpeechRecognitionOutput(**asdict(response))
-    result.scope3ai = scope3_ctx
-    return result
+    return result, scope3_row
 
 
 def huggingface_automatic_recognition_output_wrapper(
@@ -71,9 +68,12 @@ def huggingface_automatic_recognition_output_wrapper(
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_SPEECH_TO_TEXT_TASK
     )
-    return _hugging_face_automatic_recognition_wrapper(
+    result, impact_row = _hugging_face_automatic_recognition_get_impact_row(
         timer_start, model, response, http_response, args, kwargs
     )
+    scope3_ctx = Scope3AI.get_instance().submit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result
 
 
 async def huggingface_automatic_recognition_output_wrapper_async(
@@ -89,6 +89,9 @@ async def huggingface_automatic_recognition_output_wrapper_async(
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_SPEECH_TO_TEXT_TASK
     )
-    return _hugging_face_automatic_recognition_wrapper(
+    result, impact_row = _hugging_face_automatic_recognition_get_impact_row(
         timer_start, model, response, http_response, args, kwargs
     )
+    scope3_ctx = await Scope3AI.get_instance().asubmit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result

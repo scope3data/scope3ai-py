@@ -30,23 +30,22 @@ class ImageSegmentationOutput:
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def _hugging_face_image_segmentation_wrapper(
+def _hugging_face_image_segmentation_get_impact_row(
     timer_start: Any,
     model: Any,
     response: Any,
     http_response: Optional[Union[ClientResponse, Response]],
     args: Any,
     kwargs: Any,
-) -> ImageSegmentationOutput:
-    input_tokens = 0
+) -> (ImageSegmentationOutput, ImpactRow):
     compute_time = time.perf_counter() - timer_start
     if http_response:
         compute_time = http_response.headers.get("x-compute-time") or compute_time
     input_images = []
     try:
         image_param = args[0] if len(args) > 0 else kwargs["image"]
-        if type(image_param) is str:
-            input_image = Image.open(args[0] if len(args) > 0 else kwargs["image"])
+        if isinstance(image_param, str):
+            input_image = Image.open(image_param)
         else:
             input_image = Image.open(io.BytesIO(image_param))
         input_width, input_height = input_image.size
@@ -55,17 +54,15 @@ def _hugging_face_image_segmentation_wrapper(
         pass
     scope3_row = ImpactRow(
         model_id=model,
-        input_tokens=input_tokens,
+        input_tokens=0,
         task=Task.image_segmentation,
         request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
         input_images=input_images,
     )
-    scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
     result = ImageSegmentationOutput()
     result.elements = response
-    result.scope3ai = scope3_ctx
-    return result
+    return result, scope3_row
 
 
 def huggingface_image_segmentation_wrapper(
@@ -81,9 +78,12 @@ def huggingface_image_segmentation_wrapper(
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_IMAGE_SEGMENTATION_TASK
     )
-    return _hugging_face_image_segmentation_wrapper(
+    result, impact_row = _hugging_face_image_segmentation_get_impact_row(
         timer_start, model, response, http_response, args, kwargs
     )
+    scope3_ctx = Scope3AI.get_instance().submit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result
 
 
 async def huggingface_image_segmentation_wrapper_async(
@@ -99,6 +99,9 @@ async def huggingface_image_segmentation_wrapper_async(
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_IMAGE_SEGMENTATION_TASK
     )
-    return _hugging_face_image_segmentation_wrapper(
+    result, impact_row = _hugging_face_image_segmentation_get_impact_row(
         timer_start, model, response, http_response, args, kwargs
     )
+    scope3_ctx = await Scope3AI.get_instance().asubmit_impact(impact_row)
+    result.scope3ai = scope3_ctx
+    return result
