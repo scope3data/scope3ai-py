@@ -4,12 +4,15 @@ from dataclasses import asdict, dataclass
 from typing import Any, Callable, Optional, Union
 
 import tiktoken
-from huggingface_hub import AsyncInferenceClient, InferenceClient  # type: ignore[import-untyped]
+from huggingface_hub import (  # type: ignore[import-untyped]
+    AsyncInferenceClient,
+    InferenceClient,
+)
 from huggingface_hub import ChatCompletionOutput as _ChatCompletionOutput
 from huggingface_hub import ChatCompletionStreamOutput as _ChatCompletionStreamOutput
 from requests import Response
 
-from scope3ai.api.types import Scope3AIContext, ImpactRow
+from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
@@ -45,7 +48,7 @@ def huggingface_chat_wrapper_non_stream(
     with requests_response_capture() as responses:
         response = wrapped(*args, **kwargs)
         http_responses = responses.get()
-        if len(http_responses) > 0:
+        if http_responses:
             http_response = http_responses[0]
     model = (
         instance.model

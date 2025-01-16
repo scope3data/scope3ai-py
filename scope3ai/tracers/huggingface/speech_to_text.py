@@ -1,16 +1,18 @@
 import time
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from typing import Any, Callable, Optional, Union
 
 from aiohttp import ClientResponse
 from huggingface_hub import (
-    AutomaticSpeechRecognitionOutput as _AutomaticSpeechRecognitionOutput,
     AsyncInferenceClient,
+    InferenceClient,  # type: ignore[import-untyped]
 )
-from huggingface_hub import InferenceClient  # type: ignore[import-untyped]
+from huggingface_hub import (
+    AutomaticSpeechRecognitionOutput as _AutomaticSpeechRecognitionOutput,
+)
 from requests import Response
 
-from scope3ai.api.types import Scope3AIContext, ImpactRow
+from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.api.typesgen import Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
@@ -30,7 +32,7 @@ def _hugging_face_automatic_recognition_wrapper(
     timer_start: Any,
     model: Any,
     response: Any,
-    http_response: Union[ClientResponse, Response],
+    http_response: Optional[Union[ClientResponse, Response]],
     args: Any,
     kwargs: Any,
 ) -> AutomaticSpeechRecognitionOutput:
@@ -64,7 +66,7 @@ def huggingface_automatic_recognition_output_wrapper(
     with requests_response_capture() as responses:
         response = wrapped(*args, **kwargs)
         http_responses = responses.get()
-        if len(http_responses) > 0:
+        if http_responses:
             http_response = http_responses[-1]
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_SPEECH_TO_TEXT_TASK
@@ -82,7 +84,7 @@ async def huggingface_automatic_recognition_output_wrapper_async(
     with aiohttp_response_capture() as responses:
         response = await wrapped(*args, **kwargs)
         http_responses = responses.get()
-        if len(http_responses) > 0:
+        if http_responses:
             http_response = http_responses[-1]
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_SPEECH_TO_TEXT_TASK
