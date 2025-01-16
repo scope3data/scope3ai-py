@@ -52,7 +52,7 @@ def _openai_translation_wrapper(
 
     scope3_row = ImpactRow(
         model_id=model,
-        provider=PROVIDER,
+        managed_service_id=PROVIDER,
         output_tokens=output_tokens,
         request_duration_ms=request_latency,
         task=Task.translation,

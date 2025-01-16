@@ -44,8 +44,8 @@ def _openai_text_to_speech_submit(
         model_id=model_requested,
         input_tokens=input_tokens,
         request_duration_ms=request_latency,
-        provider=PROVIDER,
-        audio_output_seconds=duration,
+        managed_service_id=PROVIDER,
+        output_audio_seconds=duration,
         task=Task.text_to_speech,
     )
 

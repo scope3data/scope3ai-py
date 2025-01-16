@@ -56,7 +56,7 @@ def test_openai_multimodal_vision(tracer_init):
 
     assert response.scope3ai.request.input_tokens == 872
     assert response.scope3ai.request.output_tokens == 57
-    assert response.scope3ai.request.input_images == "1024x1024"
+    assert response.scope3ai.request.input_images == ["1024x1024"]
     assert response.scope3ai.impact is None
 
 
@@ -96,7 +96,7 @@ def test_openai_multimodal_vision_2_images(tracer_init):
 
     assert response.scope3ai.request.input_tokens == 34016
     assert response.scope3ai.request.output_tokens == 47
-    assert response.scope3ai.request.input_images == "512x512,1024x1024"
+    assert response.scope3ai.request.input_images == ["512x512", "1024x1024"]
     assert response.scope3ai.impact is None
 
 
