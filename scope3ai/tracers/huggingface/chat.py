@@ -4,12 +4,15 @@ from dataclasses import asdict, dataclass
 from typing import Any, Callable, Optional, Union
 
 import tiktoken
-from huggingface_hub import AsyncInferenceClient, InferenceClient  # type: ignore[import-untyped]
+from huggingface_hub import (  # type: ignore[import-untyped]
+    AsyncInferenceClient,
+    InferenceClient,
+)
 from huggingface_hub import ChatCompletionOutput as _ChatCompletionOutput
 from huggingface_hub import ChatCompletionStreamOutput as _ChatCompletionStreamOutput
 from requests import Response
 
-from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
+from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
@@ -45,7 +48,7 @@ def huggingface_chat_wrapper_non_stream(
     with requests_response_capture() as responses:
         response = wrapped(*args, **kwargs)
         http_responses = responses.get()
-        if len(http_responses) > 0:
+        if http_responses:
             http_response = http_responses[0]
     model = (
         instance.model
@@ -57,7 +60,7 @@ def huggingface_chat_wrapper_non_stream(
     else:
         compute_time = time.perf_counter() - timer_start
     scope3_row = ImpactRow(
-        model=Model(id=model),
+        model_id=model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
         request_duration_ms=float(compute_time) * 1000,
@@ -84,7 +87,7 @@ def huggingface_chat_wrapper_stream(
         token_count += 1
         request_latency = time.perf_counter() - timer_start
         scope3_row = ImpactRow(
-            model=Model(id=model),
+            model_id=model,
             output_tokens=token_count,
             request_duration_ms=request_latency * 1000,
             managed_service_id=PROVIDER,
@@ -120,7 +123,7 @@ async def huggingface_async_chat_wrapper_non_stream(
     encoder = tiktoken.get_encoding("cl100k_base")
     output_tokens = len(encoder.encode(response.choices[0].message.content))
     scope3_row = ImpactRow(
-        model=Model(id=model),
+        model_id=model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=output_tokens,
         request_duration_ms=request_latency * 1000,
@@ -140,12 +143,12 @@ async def huggingface_async_chat_wrapper_stream(
     timer_start = time.perf_counter()
     stream = await wrapped(*args, **kwargs)
     token_count = 0
-    model_used = instance.model or kwargs["model"]
+    model = instance.model or kwargs["model"]
     async for chunk in stream:
         token_count += 1
         request_latency = time.perf_counter() - timer_start
         scope3_row = ImpactRow(
-            model=Model(id=model_used),
+            model_id=model,
             output_tokens=token_count,
             request_duration_ms=request_latency
             * 1000,  # TODO: can we get the header that has the processing time

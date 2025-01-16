@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 from .typesgen import ImpactResponse, ModeledRow
 
 

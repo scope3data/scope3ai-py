@@ -19,9 +19,9 @@ def test_openai_tts_wrapper(tracer_init, audio_format, model):
 
     assert response is not None
     assert response.scope3ai is not None
-    assert response.scope3ai.request.audio_output_seconds is not None
-    assert response.scope3ai.request.audio_output_seconds > 0.5
-    assert response.scope3ai.request.audio_output_seconds < 3
+    assert response.scope3ai.request.output_audio_seconds is not None
+    assert response.scope3ai.request.output_audio_seconds > 0.5
+    assert response.scope3ai.request.output_audio_seconds < 3
 
 
 @pytest.mark.vcr
@@ -41,6 +41,6 @@ async def test_openai_tts_wrapper_async(tracer_init, audio_format, model):
 
     assert response is not None
     assert response.scope3ai is not None
-    assert response.scope3ai.request.audio_output_seconds is not None
-    assert response.scope3ai.request.audio_output_seconds > 0.5
-    assert response.scope3ai.request.audio_output_seconds < 3
+    assert response.scope3ai.request.output_audio_seconds is not None
+    assert response.scope3ai.request.output_audio_seconds > 0.5
+    assert response.scope3ai.request.output_audio_seconds < 3

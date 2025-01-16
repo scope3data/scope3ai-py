@@ -4,13 +4,17 @@ from dataclasses import dataclass
 from typing import Any, Callable, Optional, Union
 
 import tiktoken
-from PIL import Image
 from aiohttp import ClientResponse
+from huggingface_hub import (  # type: ignore[import-untyped]
+    AsyncInferenceClient,
+    InferenceClient,
+)
 from huggingface_hub import ImageToImageOutput as _ImageToImageOutput
-from huggingface_hub import InferenceClient, AsyncInferenceClient  # type: ignore[import-untyped]
+from PIL import Image
 from requests import Response
 
-from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
+from scope3ai.api.types import ImpactRow, Scope3AIContext
+from scope3ai.api.typesgen import Image as RootImage
 from scope3ai.api.typesgen import Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
@@ -30,15 +34,16 @@ def _hugging_face_image_to_image_wrapper(
     timer_start: Any,
     model: Any,
     response: Any,
-    http_response: Union[ClientResponse, Response],
+    http_response: Optional[Union[ClientResponse, Response]],
     args: Any,
     kwargs: Any,
 ) -> ImageToImageOutput:
+    compute_time = time.perf_counter() - timer_start
+    input_tokens = 0
     if http_response:
-        compute_time = http_response.headers.get("x-compute-time")
+        compute_time = http_response.headers.get("x-compute-time") or compute_time
         input_tokens = http_response.headers.get("x-compute-characters")
-    else:
-        compute_time = time.perf_counter() - timer_start
+    if not input_tokens:
         encoder = tiktoken.get_encoding("cl100k_base")
         prompt = args[1] if len(args) > 1 else kwargs.get("prompt", "")
         input_tokens = len(encoder.encode(prompt)) if prompt != "" else 0
@@ -49,21 +54,18 @@ def _hugging_face_image_to_image_wrapper(
         else:
             input_image = Image.open(io.BytesIO(image_param))
         input_width, input_height = input_image.size
-        input_images = [
-            ("{width}x{height}".format(width=input_width, height=input_height))
-        ]
+        input_images = [RootImage(root=f"{input_width}x{input_height}")]
     except Exception:
+        input_images = []
         pass
     output_width, output_height = response.size
     scope3_row = ImpactRow(
-        model=Model(id=model),
-        input_tokens=input_tokens,
+        model_id=model,
+        input_tokens=int(input_tokens),
         task=Task.image_generation,
         request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
-        output_images=[
-            "{width}x{height}".format(width=output_width, height=output_height)
-        ],
+        output_images=[RootImage(root=f"{output_width}x{output_height}")],
         input_images=input_images,
     )
 
@@ -81,7 +83,7 @@ def huggingface_image_to_image_wrapper(
     with requests_response_capture() as responses:
         response = wrapped(*args, **kwargs)
         http_responses = responses.get()
-        if len(http_responses) > 0:
+        if http_responses:
             http_response = http_responses[-1]
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_IMAGE_TO_IMAGE_TASK
@@ -99,7 +101,7 @@ async def huggingface_image_to_image_wrapper_async(
     with aiohttp_response_capture() as responses:
         response = await wrapped(*args, **kwargs)
         http_responses = responses.get()
-        if len(http_responses) > 0:
+        if http_responses:
             http_response = http_responses[-1]
     model = kwargs.get("model") or instance.get_recommended_model(
         HUGGING_FACE_IMAGE_TO_IMAGE_TASK

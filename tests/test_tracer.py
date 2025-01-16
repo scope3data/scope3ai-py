@@ -189,13 +189,13 @@ def test_tracer_context_nested(tracer_init):
 
 
 def test_tracer_submit_impact(tracer_init):
-    from scope3ai.api.types import ImpactRow, Model
+    from scope3ai.api.types import ImpactRow
 
     # pause the background worker
     tracer_init._ensure_worker()
     tracer_init._worker.pause()
 
-    impact = ImpactRow(model=Model(id="gpt_4o"), input_tokens=100, output_tokens=100)
+    impact = ImpactRow(model_id="gpt_4o", input_tokens=100, output_tokens=100)
     ctx = tracer_init.submit_impact(impact)
 
     assert ctx is not None
@@ -209,9 +209,9 @@ def test_tracer_submit_impact(tracer_init):
 
 
 def test_tracer_submit_impact_sync(tracer_with_sync_init):
-    from scope3ai.api.types import ImpactRow, Model
+    from scope3ai.api.types import ImpactRow
 
-    impact = ImpactRow(model=Model(id="gpt_4o"), input_tokens=100, output_tokens=100)
+    impact = ImpactRow(model_id="gpt_4o", input_tokens=100, output_tokens=100)
     ctx = tracer_with_sync_init.submit_impact(impact)
 
     assert ctx is not None
@@ -220,13 +220,13 @@ def test_tracer_submit_impact_sync(tracer_with_sync_init):
 
 @pytest.mark.asyncio
 async def test_tracer_submit_impact_async(tracer_init):
-    from scope3ai.api.types import ImpactRow, Model
+    from scope3ai.api.types import ImpactRow
 
     # pause the background worker
     tracer_init._ensure_worker()
     tracer_init._worker.pause()
 
-    impact = ImpactRow(model=Model(id="gpt_4o"), input_tokens=100, output_tokens=100)
+    impact = ImpactRow(model_id="gpt_4o", input_tokens=100, output_tokens=100)
     ctx = await tracer_init.asubmit_impact(impact)
 
     assert ctx is not None
@@ -240,9 +240,9 @@ async def test_tracer_submit_impact_async(tracer_init):
 
 @pytest.mark.asyncio
 async def test_tracer_submit_impact_sync_async(tracer_with_sync_init):
-    from scope3ai.api.types import ImpactRow, Model
+    from scope3ai.api.types import ImpactRow
 
-    impact = ImpactRow(model=Model(id="gpt_4o"), input_tokens=100, output_tokens=100)
+    impact = ImpactRow(model_id="gpt_4o", input_tokens=100, output_tokens=100)
     ctx = await tracer_with_sync_init.asubmit_impact(impact)
 
     assert ctx is not None

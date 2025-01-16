@@ -9,7 +9,7 @@ from openai.types.audio.transcription_verbose import (
     TranscriptionVerbose as _TranscriptionVerbose,
 )
 
-from scope3ai.api.types import ImpactRow, Model, Scope3AIContext, Task
+from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 
@@ -51,8 +51,8 @@ def _openai_speech_to_text_wrapper(
         options["input_audio_seconds"] = int(duration)
 
     scope3_row = ImpactRow(
-        model=Model(id=model),
-        provider=PROVIDER,
+        model_id=model,
+        managed_service_id=PROVIDER,
         output_tokens=output_tokens,
         request_duration_ms=request_latency,
         task=Task.speech_to_text,

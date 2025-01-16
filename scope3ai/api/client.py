@@ -6,15 +6,13 @@ from pydantic import BaseModel
 
 from .defaults import DEFAULT_API_URL
 from .types import (
-    GPU,
-    ImpactRequest,
-    ImpactRow,
-    ImpactResponse,
     Family,
+    GPUResponse,
+    ImpactRequest,
+    ImpactResponse,
+    ImpactRow,
     ModelResponse,
-    CloudProvider,
     NodeResponse,
-    ManagedServiceProvider,
 )
 
 
@@ -73,31 +71,40 @@ class ClientCommands:
     def gpu(
         self,
         with_response: Optional[bool] = True,
-    ) -> GPU:
+    ) -> GPUResponse:
         """
         List GPUs
         """
         return self.execute_request(
             "/gpu",
             method="GET",
-            response_model=GPU,
+            response_model=GPUResponse,
             with_response=with_response,
         )
 
     def node(
         self,
-        service: Optional[ManagedServiceProvider] = None,
-        cloud: Optional[CloudProvider] = None,
+        service: Optional[str] = None,
+        cloud: Optional[str] = None,
+        custom: Optional[bool] = None,
+        gpu: Optional[str] = None,
+        instance: Optional[str] = None,
         with_response: Optional[bool] = True,
     ) -> NodeResponse:
         """
         List nodes
         """
         params = {}
-        if service:
-            params["service"] = service.value
-        if cloud:
-            params["cloud"] = cloud.value
+        if service is not None:
+            params["service"] = service
+        if cloud is not None:
+            params["cloud"] = cloud
+        if custom is not None:
+            params["custom"] = custom
+        if gpu is not None:
+            params["gpu"] = gpu
+        if instance is not None:
+            params["instance"] = instance
         return self.execute_request(
             "/node",
             method="GET",

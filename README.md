@@ -157,13 +157,10 @@ $ uv run python -m examples.openai-sync-chat
 
 ## Update typesgen.py
 
+The `typesgen.py` script is derivated from the `aiapi.yaml`.
+This script will download the latest YAML file, patch it if necessary
+and generate the `typesgen.py` file.
+
 ```bash
-$ uv run datamodel-codegen \
-    --input tests/api-mocks/aiapi.yaml \
-    --input-file-type openapi \
-    --output scope3ai/api/typesgen.py \
-    --output-model-type pydantic_v2.BaseModel \
-    --use-schema-description \
-    --allow-extra-fields \
-    && uv run ruff format scope3ai/api/typesgen.py
+$ uv run tools/sync-api.py
 ```

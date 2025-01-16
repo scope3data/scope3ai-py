@@ -13,7 +13,7 @@ from cohere.types.streamed_chat_response import (
 
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
-from scope3ai.api.types import Scope3AIContext, Model, ImpactRow
+from scope3ai.api.types import Scope3AIContext, ImpactRow
 
 PROVIDER = PROVIDERS.COHERE.value
 
@@ -43,7 +43,7 @@ def cohere_chat_wrapper(
     request_latency = time.perf_counter() - timer_start
     model_name = kwargs.get("model", "command-r")
     scope3_row = ImpactRow(
-        model=Model(id=model_name),
+        model_id=model_name,
         input_tokens=response.meta.tokens.input_tokens,
         output_tokens=response.meta.tokens.output_tokens,
         request_duration_ms=request_latency * 1000,
@@ -64,7 +64,7 @@ async def cohere_async_chat_wrapper(
     request_latency = time.perf_counter() - timer_start
     model_name = kwargs.get("model", "command-r")
     scope3_row = ImpactRow(
-        model=Model(id=model_name),
+        model_id=model_name,
         input_tokens=response.meta.tokens.input_tokens,
         output_tokens=response.meta.tokens.output_tokens,
         request_duration_ms=request_latency * 1000,
@@ -89,7 +89,7 @@ def cohere_stream_chat_wrapper(
             input_tokens = event.response.meta.tokens.input_tokens
             output_tokens = event.response.meta.tokens.output_tokens
             scope3_row = ImpactRow(
-                model=Model(id=model_name),
+                model_id=model_name,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
                 request_duration_ms=request_latency * 1000,
@@ -116,7 +116,7 @@ async def cohere_async_stream_chat_wrapper(
             input_tokens = event.response.meta.tokens.input_tokens
             output_tokens = event.response.meta.tokens.output_tokens
             scope3_row = ImpactRow(
-                model=Model(id=model_name),
+                model_id=model_name,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
                 request_duration_ms=request_latency * 1000,

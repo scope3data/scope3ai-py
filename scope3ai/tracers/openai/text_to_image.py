@@ -4,7 +4,8 @@ from typing import Any, Callable, Optional
 from openai.resources.images import AsyncImages, Images
 from openai.types.images_response import ImagesResponse as _ImageResponse
 
-from scope3ai.api.types import ImpactRow, Model, Scope3AIContext, Task
+from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
+from scope3ai.api.typesgen import Image as RootImage
 from scope3ai.lib import Scope3AI
 
 PROVIDER = "openai"
@@ -21,11 +22,11 @@ def _openai_image_wrapper(
     response: _ImageResponse, request_latency: float, **kwargs: Any
 ) -> ImageResponse:
     model = kwargs.get("model", DEFAULT_MODEL)
-    size = kwargs.get("size", DEFAULT_SIZE)
+    size = RootImage(root=kwargs.get("size", DEFAULT_SIZE))
     n = kwargs.get("n", DEFAULT_N)
 
     scope3_row = ImpactRow(
-        model=Model(id=model),
+        model_id=model,
         task=Task.text_to_image,
         output_images=[size] * n,
         request_duration_ms=request_latency * 1000,
