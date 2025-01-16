@@ -60,7 +60,8 @@ def _openai_aggregate_multimodal_audio(content: dict, row: ImpactRow) -> None:
 
     # decode the base64 data
     audio_data = base64.b64decode(b64data)
-    duration = _get_audio_duration(format, audio_data)
+    # TODO: accept audio duration as float in AiApi
+    duration = int(_get_audio_duration(format, audio_data))
 
     if row.input_audio_seconds is None:
         row.input_audio_seconds = duration
@@ -107,7 +108,6 @@ def _openai_chat_wrapper(
     messages = kwargs.get("messages", [])
     for message in messages:
         _openai_aggregate_multimodal(message, scope3_row)
-
     scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
     return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
 

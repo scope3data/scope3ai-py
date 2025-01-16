@@ -3,7 +3,7 @@ from anthropic import Anthropic, AsyncAnthropic
 
 
 @pytest.mark.vcr
-def test_anthropic_chat(tracer_init):
+def test_anthropic_chat(tracer_with_sync_init):
     client = Anthropic()
     response = client.messages.create(
         max_tokens=100,
@@ -14,12 +14,18 @@ def test_anthropic_chat(tracer_init):
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_tokens == 10
     assert response.scope3ai.request.output_tokens == 37
-    assert response.scope3ai.impact is None
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
-async def test_anthropic_async_chat(tracer_init):
+async def test_anthropic_async_chat(tracer_with_sync_init):
     client = AsyncAnthropic()
     response = await client.messages.create(
         max_tokens=100,
@@ -30,11 +36,17 @@ async def test_anthropic_async_chat(tracer_init):
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_tokens == 10
     assert response.scope3ai.request.output_tokens == 43
-    assert response.scope3ai.impact is None
+    assert response.scope3ai.impact is not None
+    assert response.scope3ai.impact.total_impact is not None
+    assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert response.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
-def test_anthropic_stream_chat(tracer_init):
+def test_anthropic_stream_chat(tracer_with_sync_init):
     client = Anthropic()
 
     text_response = ""
@@ -49,14 +61,20 @@ def test_anthropic_stream_chat(tracer_init):
         assert getattr(stream, "scope3ai") is not None
         assert stream.scope3ai.request.input_tokens == 10
         assert stream.scope3ai.request.output_tokens == 45
-        assert stream.scope3ai.impact is None
+        assert stream.scope3ai.impact is not None
+        assert stream.scope3ai.impact.total_impact is not None
+        assert stream.scope3ai.impact.total_impact.usage_energy_wh > 0
+        assert stream.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+        assert stream.scope3ai.impact.total_impact.usage_water_ml > 0
+        assert stream.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+        assert stream.scope3ai.impact.total_impact.embodied_water_ml > 0
 
     assert len(text_response) > 0
 
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
-async def test_anthropic_async_stream_chat(tracer_init):
+async def test_anthropic_async_stream_chat(tracer_with_sync_init):
     client = AsyncAnthropic()
 
     text_response = ""
@@ -71,13 +89,19 @@ async def test_anthropic_async_stream_chat(tracer_init):
         assert getattr(stream, "scope3ai") is not None
         assert stream.scope3ai.request.input_tokens == 10
         assert stream.scope3ai.request.output_tokens == 44
-        assert stream.scope3ai.impact is None
+        assert stream.scope3ai.impact is not None
+        assert stream.scope3ai.impact.total_impact is not None
+        assert stream.scope3ai.impact.total_impact.usage_energy_wh > 0
+        assert stream.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+        assert stream.scope3ai.impact.total_impact.usage_water_ml > 0
+        assert stream.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+        assert stream.scope3ai.impact.total_impact.embodied_water_ml > 0
 
     assert len(text_response) > 0
 
 
 @pytest.mark.vcr
-def test_anthropic_stream_chat_from_create_context(tracer_init):
+def test_anthropic_stream_chat_from_create_context(tracer_with_sync_init):
     client = Anthropic()
 
     with client.messages.create(
@@ -94,11 +118,17 @@ def test_anthropic_stream_chat_from_create_context(tracer_init):
         assert getattr(stream, "scope3ai") is not None
         assert stream.scope3ai.request.input_tokens == 10
         assert stream.scope3ai.request.output_tokens == 31
-        assert stream.scope3ai.impact is None
+        assert stream.scope3ai.impact is not None
+        assert stream.scope3ai.impact.total_impact is not None
+        assert stream.scope3ai.impact.total_impact.usage_energy_wh > 0
+        assert stream.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+        assert stream.scope3ai.impact.total_impact.usage_water_ml > 0
+        assert stream.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+        assert stream.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
-def test_anthropic_stream_chat_from_create_linear(tracer_init):
+def test_anthropic_stream_chat_from_create_linear(tracer_with_sync_init):
     client = Anthropic()
 
     stream = client.messages.create(
@@ -115,12 +145,18 @@ def test_anthropic_stream_chat_from_create_linear(tracer_init):
     assert getattr(stream, "scope3ai") is not None
     assert stream.scope3ai.request.input_tokens == 10
     assert stream.scope3ai.request.output_tokens == 37
-    assert stream.scope3ai.impact is None
+    assert stream.scope3ai.impact is not None
+    assert stream.scope3ai.impact.total_impact is not None
+    assert stream.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert stream.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert stream.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert stream.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert stream.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
-async def test_anthropic_stream_async_chat_from_create_linear(tracer_init):
+async def test_anthropic_stream_async_chat_from_create_linear(tracer_with_sync_init):
     client = AsyncAnthropic()
 
     stream = await client.messages.create(
@@ -137,4 +173,10 @@ async def test_anthropic_stream_async_chat_from_create_linear(tracer_init):
     assert getattr(stream, "scope3ai") is not None
     assert stream.scope3ai.request.input_tokens == 10
     assert stream.scope3ai.request.output_tokens == 31
-    assert stream.scope3ai.impact is None
+    assert stream.scope3ai.impact is not None
+    assert stream.scope3ai.impact.total_impact is not None
+    assert stream.scope3ai.impact.total_impact.usage_energy_wh > 0
+    assert stream.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
+    assert stream.scope3ai.impact.total_impact.usage_water_ml > 0
+    assert stream.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
+    assert stream.scope3ai.impact.total_impact.embodied_water_ml > 0
