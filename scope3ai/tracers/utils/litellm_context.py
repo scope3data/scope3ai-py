@@ -1,3 +1,4 @@
+import contextlib
 import contextvars
 
 LITELLM_RESPONSE_BASEKEY = "scope3ai__litellm_interceptor"
@@ -10,5 +11,10 @@ def litellm_response_enabled() -> bool:
     return LITELLM_ENABLED.get() is True
 
 
-def litellm_switch():
-    LITELLM_ENABLED.set(not litellm_response_enabled())
+@contextlib.contextmanager
+def litellm_active():
+    try:
+        LITELLM_ENABLED.set(True)
+        yield LITELLM_ENABLED
+    finally:
+        LITELLM_ENABLED.set(False)
