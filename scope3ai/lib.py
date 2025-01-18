@@ -1,3 +1,4 @@
+import atexit
 import importlib.metadata
 import importlib.util
 import logging
@@ -5,16 +6,14 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from functools import partial
 from os import getenv
-from typing import Optional, List
+from typing import List, Optional
 from uuid import uuid4
-import atexit
 
-from .api.client import Client, AsyncClient
-from .api.tracer import Tracer
-from .api.types import ImpactRow, ImpactResponse, Scope3AIContext
+from .api.client import AsyncClient, Client
 from .api.defaults import DEFAULT_API_URL
+from .api.tracer import Tracer
+from .api.types import ImpactResponse, ImpactRow, Scope3AIContext
 from .constants import PROVIDERS
-
 from .worker import BackgroundWorker
 
 logger = logging.getLogger("scope3ai.lib")
@@ -114,15 +113,22 @@ class Scope3AI:
             cls._instance = super(Scope3AI, cls).__new__(cls)
         return cls._instance
 
+    def __init__(self):
+        self.api_key: Optional[str] = None
+        self.api_url: Optional[str] = None
+        self.sync_mode: bool = False
+        self._sync_client: Optional[Client] = None
+        self._async_client: Optional[AsyncClient] = None
+
     @classmethod
     def init(
         cls,
-        api_key: str = None,
-        api_url: str = None,
+        api_key: Optional[str] = None,
+        api_url: Optional[str] = None,
         sync_mode: bool = False,
         enable_debug_logging: bool = False,
         providers: Optional[List[str]] = None,
-    ) -> None:
+    ) -> "Scope3AI":
         if cls._instance is not None:
             raise Scope3AIError("Scope3AI is already initialized")
         cls._instance = self = Scope3AI()
