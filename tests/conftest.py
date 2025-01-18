@@ -102,13 +102,14 @@ def async_api_client(docker_api_info):
 
 
 @pytest.fixture(autouse=True)
-def fix_vcr_binary():
+def fix_vcr_binary_utf8_decoding():
     # this handle httpx UTF-8 decoding issue
     # https://github.com/kevin1024/vcrpy/pull/882
 
     import warnings
 
     import vcr  # type: ignore[import-untyped]
+    import vcr.stubs.httpx_stubs
     from vcr.request import Request as VcrRequest  # type: ignore[import-untyped]
     from vcr.stubs.httpx_stubs import (  # type: ignore
         _make_vcr_request,  # noqa: F401 this is needed for some reason so python knows this method exists
@@ -133,3 +134,23 @@ def fix_vcr_binary():
     vcr.stubs.httpx_stubs._make_vcr_request = _fixed__make_vcr_request
     yield
     vcr.stubs.httpx_stubs._make_vcr_request = _make_vcr_request
+
+
+@pytest.fixture(autouse=True)
+def fix_vcr_body_read_missing_seek():
+    # if the body is a file or bufferedio with aiohttp used
+    # the body will be read by the vcr.Request, and the next body.read()
+    # done by aiohttp will be empty.
+    # IMO it is missing a seek(0) in the vcr.Request constructor after the read()
+    import vcr.request
+
+    request_init_orig = vcr.request.Request.__init__
+
+    def _fixed__request_init(self, method, uri, body, headers):
+        request_init_orig(self, method, uri, body, headers)
+        if self._was_file:
+            body.seek(0)
+
+    vcr.request.Request.__init__ = _fixed__request_init
+    yield
+    vcr.request.Request.__init__ = request_init_orig
