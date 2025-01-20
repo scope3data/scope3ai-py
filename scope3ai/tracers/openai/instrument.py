@@ -1,3 +1,4 @@
+from scope3ai.base_tracer import BaseTracer
 from .chat import openai_chat_wrapper, openai_async_chat_wrapper
 from .speech_to_text import (
     openai_async_speech_to_text_wrapper,
@@ -15,7 +16,6 @@ from .translation import (
     openai_translation_wrapper,
     openai_async_translation_wrapper,
 )
-from ...base_tracer import BaseTracer
 
 
 class OpenAIInstrumentor(BaseTracer):

@@ -9,7 +9,6 @@ from litellm.utils import CustomStreamWrapper
 from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext, ImpactRow
 from scope3ai.constants import PROVIDERS
-from scope3ai.tracers.utils.litellm_context import litellm_active
 from scope3ai.tracers.utils.multimodal import aggregate_multimodal
 
 PROVIDER = PROVIDERS.LITELLM.value
@@ -72,8 +71,13 @@ def litellm_chat_wrapper_non_stream(
     kwargs: Any,
 ) -> ChatCompletion:
     timer_start = time.perf_counter()
-    with litellm_active():
+    with Scope3AI.get_instance().trace() as trace:
         response = wrapped(*args, **kwargs)
+        if trace.rows:
+            # TODO: How we can extract the Scope3ai_ctx to do the next line
+            scope3ai_ctx = None
+            setattr(response, "scope3ai", scope3ai_ctx)
+            return response
     request_latency = time.perf_counter() - timer_start
     model = response.model
     if model is None:
