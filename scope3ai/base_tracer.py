@@ -7,10 +7,10 @@ from scope3ai.tracers.utils.litellm_context import is_litellm_active
 
 def is_using_lite_llm_decorator(func):
     def wrapper(wrapped: Callable, instance: any, args: any, kwargs: any):
-        if not is_litellm_active():
+        if is_litellm_active():
             return wrapped(*args, **kwargs)
         else:
-            return func(wrapped, instance, args, kwargs)
+            return func(wrapped, instance, *args, **kwargs)
 
     return wrapper
 
