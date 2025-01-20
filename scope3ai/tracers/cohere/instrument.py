@@ -1,4 +1,6 @@
 from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
+
+from scope3ai.base_tracer import BaseTracer
 from .chat import (
     cohere_chat_wrapper,
     cohere_async_chat_wrapper,
@@ -13,7 +15,7 @@ from .chat_v2 import (
 )
 
 
-class CohereInstrumentor:
+class CohereInstrumentor(BaseTracer):
     def __init__(self) -> None:
         self.wrapped_methods = [
             {

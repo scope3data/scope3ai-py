@@ -1,17 +1,16 @@
-from wrapt import wrap_function_wrapper
-
+from scope3ai.base_tracer import BaseTracer
 from .chat import openai_chat_wrapper, openai_async_chat_wrapper
-from .text_to_speech import (
-    openai_text_to_speech_wrapper,
-    openai_async_text_to_speech_wrapper,
+from .speech_to_text import (
+    openai_async_speech_to_text_wrapper,
+    openai_speech_to_text_wrapper,
 )
 from .text_to_image import (
     openai_image_wrapper,
     openai_async_image_wrapper,
 )
-from .speech_to_text import (
-    openai_async_speech_to_text_wrapper,
-    openai_speech_to_text_wrapper,
+from .text_to_speech import (
+    openai_text_to_speech_wrapper,
+    openai_async_text_to_speech_wrapper,
 )
 from .translation import (
     openai_translation_wrapper,
@@ -19,7 +18,7 @@ from .translation import (
 )
 
 
-class OpenAIInstrumentor:
+class OpenAIInstrumentor(BaseTracer):
     def __init__(self) -> None:
         self.wrapped_methods = [
             {
@@ -93,9 +92,3 @@ class OpenAIInstrumentor:
                 "wrapper": openai_async_image_wrapper,
             },
         ]
-
-    def instrument(self) -> None:
-        for wrapper in self.wrapped_methods:
-            wrap_function_wrapper(
-                wrapper["module"], wrapper["name"], wrapper["wrapper"]
-            )

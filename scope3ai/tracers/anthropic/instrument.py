@@ -1,13 +1,13 @@
-from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
 from .chat import (
     anthropic_chat_wrapper,
     anthropic_async_chat_wrapper,
     anthropic_stream_chat_wrapper,
     anthropic_async_stream_chat_wrapper,
 )
+from ...base_tracer import BaseTracer
 
 
-class AnthropicInstrumentor:
+class AnthropicInstrumentor(BaseTracer):
     def __init__(self) -> None:
         self.wrapped_methods = [
             {
@@ -31,9 +31,3 @@ class AnthropicInstrumentor:
                 "wrapper": anthropic_async_stream_chat_wrapper,
             },
         ]
-
-    def instrument(self) -> None:
-        for wrapper in self.wrapped_methods:
-            wrap_function_wrapper(
-                wrapper["module"], wrapper["name"], wrapper["wrapper"]
-            )

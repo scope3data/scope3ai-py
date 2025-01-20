@@ -1,23 +1,25 @@
-import base64
 import logging
 import time
-from io import BytesIO
 from typing import Any, Callable, Optional, Union
 
 from openai import AsyncStream, Stream
+from openai._legacy_response import LegacyAPIResponse as _LegacyAPIResponse
 from openai.resources.chat import AsyncCompletions, Completions
 from openai.types.chat import ChatCompletion as _ChatCompletion
 from openai.types.chat import ChatCompletionChunk as _ChatCompletionChunk
 
 from scope3ai.api.types import ImpactRow, Scope3AIContext
-from scope3ai.api.typesgen import Image as RootImage
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
-
-from .utils import MUTAGEN_MAPPING, _get_audio_duration
+from scope3ai.tracers.utils.multimodal import aggregate_multimodal
 
 PROVIDER = PROVIDERS.OPENAI.value
+
 logger = logging.getLogger("scope3ai.tracers.openai.chat")
+
+
+class LegacyApiResponse(_LegacyAPIResponse):
+    scope3ai: Optional[Scope3AIContext] = None
 
 
 class ChatCompletion(_ChatCompletion):
@@ -28,88 +30,45 @@ class ChatCompletionChunk(_ChatCompletionChunk):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-def _openai_aggregate_multimodal_image(content: dict, row: ImpactRow) -> None:
-    from PIL import Image
-
-    url = content["image_url"]["url"]
-    if url.startswith("data:"):
-        # extract content type, and data part
-        # example: data:image/jpeg;base64,....
-        content_type, data = url.split(",", 1)
-        image_data = BytesIO(base64.b64decode(data))
-        image = Image.open(image_data)
-        width, height = image.size
-        size = RootImage(root=f"{width}x{height}")
-
-        if row.input_images is None:
-            row.input_images = [size]
-        else:
-            row.input_images.append(size)
-
-    else:
-        # TODO: not supported yet.
-        # Should we actually download the file here just to have the size ??
-        pass
-
-
-def _openai_aggregate_multimodal_audio(content: dict, row: ImpactRow) -> None:
-    input_audio = content["input_audio"]
-    format = input_audio["format"]
-    b64data = input_audio["data"]
-    assert format in MUTAGEN_MAPPING
-
-    # decode the base64 data
-    audio_data = base64.b64decode(b64data)
-    # TODO: accept audio duration as float in AiApi
-    duration = int(_get_audio_duration(format, audio_data))
-
-    if row.input_audio_seconds is None:
-        row.input_audio_seconds = duration
-    else:
-        row.input_audio_seconds += duration
-
-
-def _openai_aggregate_multimodal_content(content: dict, row: ImpactRow) -> None:
-    try:
-        content_type = content.get("type")
-        if content_type == "image_url":
-            _openai_aggregate_multimodal_image(content, row)
-        elif content_type == "input_audio":
-            _openai_aggregate_multimodal_audio(content, row)
-    except Exception as e:
-        logger.error(f"Error processing multimodal content: {e}")
-
-
-def _openai_aggregate_multimodal(message: dict, row: ImpactRow) -> None:
-    # if the message content is not a tuple/list, it's just text.
-    # so there is nothing multimodal in it, we can just forget about it.
-    content = message.get("content", [])
-    if isinstance(content, (tuple, list)):
-        for item in content:
-            _openai_aggregate_multimodal_content(item, row)
-
-
 def _openai_chat_wrapper(
     response: Any, request_latency: float, kwargs: dict
 ) -> ChatCompletion:
     model_requested = kwargs["model"]
-    model_used = response.model
-
-    scope3_row = ImpactRow(
-        model_id=model_requested,
-        model_used_id=model_used,
-        input_tokens=response.usage.prompt_tokens,
-        output_tokens=response.usage.completion_tokens,
-        request_duration_ms=request_latency * 1000,
-        managed_service_id=PROVIDER,
-    )
+    if type(response) is _LegacyAPIResponse:
+        http_response = response.http_response.json()
+        model_used = http_response.get("model")
+        scope3_row = ImpactRow(
+            model_id=model_requested,
+            model_used_id=model_used,
+            input_tokens=http_response.get("usage").get("prompt_tokens"),
+            output_tokens=http_response.get("usage").get("completion_tokens"),
+            request_duration_ms=request_latency * 1000,
+            managed_service_id=PROVIDER,
+        )
+        messages = kwargs.get("messages", [])
+        for message in messages:
+            aggregate_multimodal(message, scope3_row, logger)
+        Scope3AI.get_instance().submit_impact(scope3_row)
+        scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+        setattr(response, "scope3ai", scope3ai_ctx)
+        return response
+    else:
+        model_used = response.model
+        scope3_row = ImpactRow(
+            model_id=model_requested,
+            model_used_id=model_used,
+            input_tokens=response.usage.prompt_tokens,
+            output_tokens=response.usage.completion_tokens,
+            request_duration_ms=request_latency * 1000,
+            managed_service_id=PROVIDER,
+        )
+        messages = kwargs.get("messages", [])
+        for message in messages:
+            aggregate_multimodal(message, scope3_row, logger)
+        scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+        return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
 
     # analyse multimodal part
-    messages = kwargs.get("messages", [])
-    for message in messages:
-        _openai_aggregate_multimodal(message, scope3_row)
-    scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-    return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
 
 
 def openai_chat_wrapper_non_stream(

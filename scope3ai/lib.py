@@ -107,6 +107,7 @@ class Scope3AI:
     _tracer: ContextVar[List[Tracer]] = ContextVar("tracer", default=[])
     _worker: Optional[BackgroundWorker] = None
     _providers: List[str] = []
+    _keep_tracers: bool = False
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
@@ -282,8 +283,8 @@ class Scope3AI:
         return tracers[-1] if tracers else None
 
     @contextmanager
-    def trace(self):
-        tracer = Tracer()
+    def trace(self, keep_traces=False):
+        tracer = Tracer(keep_traces=keep_traces)
         try:
             self._push_tracer(tracer)
             yield tracer

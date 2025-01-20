@@ -1,3 +1,4 @@
+import logging
 import time
 from typing import Any, Callable, Optional, Union
 
@@ -8,8 +9,11 @@ from litellm.utils import CustomStreamWrapper
 from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext, ImpactRow
 from scope3ai.constants import PROVIDERS
+from scope3ai.tracers.utils.multimodal import aggregate_multimodal
 
 PROVIDER = PROVIDERS.LITELLM.value
+
+logger = logging.getLogger("scope3ai.tracers.litellm.chat")
 
 
 class ChatCompletion(ModelResponse):
@@ -67,7 +71,11 @@ def litellm_chat_wrapper_non_stream(
     kwargs: Any,
 ) -> ChatCompletion:
     timer_start = time.perf_counter()
-    response = wrapped(*args, **kwargs)
+    with Scope3AI.get_instance().trace(keep_traces=True) as trace:
+        response = wrapped(*args, **kwargs)
+        if trace.traces:
+            setattr(response, "scope3ai", trace.traces[0])
+            return response
     request_latency = time.perf_counter() - timer_start
     model = response.model
     if model is None:
@@ -79,6 +87,9 @@ def litellm_chat_wrapper_non_stream(
         request_duration_ms=float(request_latency) * 1000,
         managed_service_id=PROVIDER,
     )
+    messages = args[1] if len(args) > 1 else kwargs.get("messages")
+    for message in messages:
+        aggregate_multimodal(message, scope3_row, logger)
     scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
     if scope3ai_ctx is not None:
         return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
