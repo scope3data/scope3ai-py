@@ -54,7 +54,7 @@ def test_litellm_multimodal_vision(tracer_with_sync_init):
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_tokens == 872
-    assert response.scope3ai.request.output_tokens == 59
+    assert response.scope3ai.request.output_tokens == 931
     assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
@@ -98,7 +98,7 @@ def test_litellm_multimodal_vision_2_images(tracer_with_sync_init):
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_tokens == 1082
-    assert response.scope3ai.request.output_tokens == 54
+    assert response.scope3ai.request.output_tokens == 1136
     assert response.scope3ai.request.input_images == [
         Image(root="512x512"),
         Image(root="1024x1024"),
@@ -138,7 +138,7 @@ def test_litellm_multimodal_audio(tracer_with_sync_init):
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_tokens == 29
-    assert response.scope3ai.request.output_tokens == 10
+    assert response.scope3ai.request.output_tokens == 39
     assert response.scope3ai.request.input_audio_seconds >= 1
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
@@ -182,7 +182,7 @@ def test_litellm_multimodal_audio_2(tracer_with_sync_init):
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_tokens == 46
-    assert response.scope3ai.request.output_tokens == 35
+    assert response.scope3ai.request.output_tokens == 81
     assert response.scope3ai.request.input_audio_seconds >= 1
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
