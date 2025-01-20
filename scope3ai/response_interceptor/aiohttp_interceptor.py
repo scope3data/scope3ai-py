@@ -6,9 +6,9 @@ from aiohttp import ClientSession
 
 AIOHTTP_RESPONSE_BASEKEY = "scope3ai__aiohttp_interceptor"
 AIOHTTP_RESPONSE_ENABLED = contextvars.ContextVar(
-    f"{AIOHTTP_RESPONSE_BASEKEY}__enabled", default=None
+    f"{AIOHTTP_RESPONSE_BASEKEY}__enabled", default=False
 )
-AIOHTTP_RESPONSE_VALUE = contextvars.ContextVar(
+AIOHTTP_RESPONSE_VALUE = contextvars.ContextVar[Any](
     f"{AIOHTTP_RESPONSE_BASEKEY}__value", default=None
 )
 
