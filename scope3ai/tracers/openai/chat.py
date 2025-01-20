@@ -3,7 +3,6 @@ import time
 from typing import Any, Callable, Optional, Union
 
 from openai import AsyncStream, Stream
-from openai._legacy_response import LegacyAPIResponse
 from openai.resources.chat import AsyncCompletions, Completions
 from openai.types.chat import ChatCompletion as _ChatCompletion
 from openai.types.chat import ChatCompletionChunk as _ChatCompletionChunk
@@ -30,37 +29,20 @@ def _openai_chat_wrapper(
     response: Any, request_latency: float, kwargs: dict
 ) -> ChatCompletion:
     model_requested = kwargs["model"]
-    if type(response) is LegacyAPIResponse:
-        http_response = response.http_response.json()
-        model_used = http_response.get("model")
-        scope3_row = ImpactRow(
-            model_id=model_requested,
-            model_used_id=model_used,
-            input_tokens=http_response.get("usage").get("prompt_tokens"),
-            output_tokens=http_response.get("usage").get("completion_tokens"),
-            request_duration_ms=request_latency * 1000,
-            managed_service_id=PROVIDER,
-        )
-        messages = kwargs.get("messages", [])
-        for message in messages:
-            aggregate_multimodal(message, scope3_row, logger)
-        Scope3AI.get_instance().submit_impact(scope3_row)
-        return response
-    else:
-        model_used = response.model
-        scope3_row = ImpactRow(
-            model_id=model_requested,
-            model_used_id=model_used,
-            input_tokens=response.usage.prompt_tokens,
-            output_tokens=response.usage.completion_tokens,
-            request_duration_ms=request_latency * 1000,
-            managed_service_id=PROVIDER,
-        )
-        messages = kwargs.get("messages", [])
-        for message in messages:
-            aggregate_multimodal(message, scope3_row, logger)
-        scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-        return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
+    model_used = response.model
+    scope3_row = ImpactRow(
+        model_id=model_requested,
+        model_used_id=model_used,
+        input_tokens=response.usage.prompt_tokens,
+        output_tokens=response.usage.completion_tokens,
+        request_duration_ms=request_latency * 1000,
+        managed_service_id=PROVIDER,
+    )
+    messages = kwargs.get("messages", [])
+    for message in messages:
+        aggregate_multimodal(message, scope3_row, logger)
+    scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+    return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
 
     # analyse multimodal part
 
@@ -122,6 +104,7 @@ async def openai_async_chat_wrapper_non_stream(
     args: Any,
     kwargs: Any,
 ) -> ChatCompletion:
+    ChatCompletion
     timer_start = time.perf_counter()
     response = await wrapped(*args, **kwargs)
     request_latency = time.perf_counter() - timer_start
@@ -173,8 +156,6 @@ async def openai_async_chat_wrapper(
     args: Any,
     kwargs: Any,
 ) -> Union[ChatCompletion, AsyncStream[ChatCompletionChunk]]:
-    # if litellm_response_enabled():
-    #     return wrapped(*args, **kwargs)
     if kwargs.get("stream", False):
         return openai_async_chat_wrapper_stream(wrapped, instance, args, kwargs)
     else:
@@ -186,8 +167,6 @@ async def openai_async_chat_wrapper(
 def openai_chat_wrapper(
     wrapped: Callable, instance: Completions, args: Any, kwargs: Any
 ) -> Union[ChatCompletion, Stream[ChatCompletionChunk]]:
-    # if litellm_response_enabled():
-    #     return wrapped(*args, **kwargs)
     if kwargs.get("stream", False):
         return openai_chat_wrapper_stream(wrapped, instance, args, kwargs)
     else:

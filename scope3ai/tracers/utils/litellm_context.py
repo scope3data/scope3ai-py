@@ -7,7 +7,7 @@ LITELLM_ENABLED = contextvars.ContextVar(
 )
 
 
-def litellm_response_enabled() -> bool:
+def is_litellm_active() -> bool:
     return LITELLM_ENABLED.get() is True
 
 
