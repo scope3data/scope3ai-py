@@ -277,8 +277,8 @@ class Scope3AI:
         return tracers[-1] if tracers else None
 
     @contextmanager
-    def trace(self, keep_tracers=False):
-        tracer = Tracer(keep_tracers=keep_tracers)
+    def trace(self, keep_traces=False):
+        tracer = Tracer(keep_traces=keep_traces)
         try:
             self._push_tracer(tracer)
             yield tracer

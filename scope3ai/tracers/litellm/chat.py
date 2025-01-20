@@ -71,7 +71,7 @@ def litellm_chat_wrapper_non_stream(
     kwargs: Any,
 ) -> ChatCompletion:
     timer_start = time.perf_counter()
-    with Scope3AI.get_instance().trace(keep_tracers=True) as trace:
+    with Scope3AI.get_instance().trace(keep_traces=True) as trace:
         response = wrapped(*args, **kwargs)
         if trace.traces:
             setattr(response, "scope3ai", trace.traces[0])

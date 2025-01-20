@@ -7,13 +7,13 @@ class Tracer:
     def __init__(
         self,
         name: str = None,
-        keep_tracers: bool = False,
+        keep_traces: bool = False,
     ) -> None:
         from scope3ai.lib import Scope3AI
 
         self.scope3ai = Scope3AI.get_instance()
         self.name = name
-        self.keep_tracers = keep_tracers
+        self.keep_traces = keep_traces
         self.children: List[Tracer] = []
         self.rows: List[ModeledRow] = []
         self.traces = []  # type: List[Scope3AIContext]
@@ -73,5 +73,5 @@ class Tracer:
             self.traces.append(trace)
 
     def _unlink_trace(self, trace) -> None:
-        if trace in self.traces and not self.keep_tracers:
+        if trace in self.traces and not self.keep_traces:
             self.traces.remove(trace)
