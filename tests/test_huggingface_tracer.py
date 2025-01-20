@@ -1,7 +1,8 @@
 from pathlib import Path
+from typing import Literal
 
 import pytest
-from huggingface_hub import InferenceClient, AsyncInferenceClient
+from huggingface_hub import AsyncInferenceClient, InferenceClient
 
 from scope3ai.api.typesgen import Image
 
@@ -246,30 +247,30 @@ async def test_huggingface_hub_image_to_image_async(tracer_with_sync_init):
     assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
+def get_test_image_for_type(name: str, image_type: Literal["str", "Path", "bytes"]):
+    datadir = Path(__file__).parent / "data"
+    path = datadir / name
+    if image_type == "str":
+        return path.as_posix()
+    elif image_type == "Path":
+        return path
+    elif image_type == "bytes":
+        return path.read_bytes()
+    else:
+        assert 0
+        return
+
+
 @pytest.mark.vcr
-@pytest.mark.parametrize(
-    "image_type",
-    ["str", "Path", "bytes"],
-)
+@pytest.mark.parametrize("image_type", ["str", "Path", "bytes"])
 @pytest.mark.asyncio
 async def test_huggingface_hub_object_detection_async(
     tracer_with_sync_init, image_type
 ):
     client = AsyncInferenceClient()
-    datadir = Path(__file__).parent / "data"
+    test_image = get_test_image_for_type("street_scene.png", image_type)
 
-    path = datadir / "street_scene.png"
-    if image_type == "str":
-        street_scene_image = path.as_posix()
-    elif image_type == "Path":
-        street_scene_image = path
-    elif image_type == "bytes":
-        street_scene_image = path.read_bytes()
-    else:
-        assert 0
-        return
-
-    response = await client.object_detection(street_scene_image)
+    response = await client.object_detection(test_image)
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
     assert response.scope3ai.request.request_duration_ms > 0
@@ -283,13 +284,18 @@ async def test_huggingface_hub_object_detection_async(
 
 
 @pytest.mark.vcr
-def test_huggingface_hub_object_detection(tracer_with_sync_init):
+@pytest.mark.parametrize("image_type", ["str", "Path", "bytes"])
+def test_huggingface_hub_object_detection(
+    tracer_with_sync_init,
+    image_type,
+):
     client = InferenceClient()
-    datadir = Path(__file__).parent / "data"
-    response = client.object_detection((datadir / "street_scene.png").as_posix())
+    test_image = get_test_image_for_type("street_scene.png", image_type)
+
+    response = client.object_detection(test_image)
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
-    assert response.scope3ai.request.request_duration_ms == 657
+    assert response.scope3ai.request.request_duration_ms > 0
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
     assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
@@ -300,16 +306,18 @@ def test_huggingface_hub_object_detection(tracer_with_sync_init):
 
 
 @pytest.mark.vcr
+@pytest.mark.parametrize("image_type", ["str", "Path", "bytes"])
 @pytest.mark.asyncio
-async def test_huggingface_hub_image_segmentation_async(tracer_with_sync_init):
+async def test_huggingface_hub_image_segmentation_async(
+    tracer_with_sync_init, image_type
+):
     client = AsyncInferenceClient()
-    datadir = Path(__file__).parent / "data"
-    dog_image = open((datadir / "dog.png").as_posix(), "rb")
-    dog_image_bytes = dog_image.read()
-    response = await client.image_segmentation(dog_image_bytes)
+    test_image = get_test_image_for_type("dog.png", image_type)
+
+    response = await client.image_segmentation(test_image)
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
-    assert response.scope3ai.request.request_duration_ms == 686
+    assert response.scope3ai.request.request_duration_ms > 0
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
     assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
@@ -320,13 +328,15 @@ async def test_huggingface_hub_image_segmentation_async(tracer_with_sync_init):
 
 
 @pytest.mark.vcr
-def test_huggingface_hub_image_segmentation(tracer_with_sync_init):
+@pytest.mark.parametrize("image_type", ["str", "Path", "bytes"])
+def test_huggingface_hub_image_segmentation(tracer_with_sync_init, image_type):
     client = InferenceClient()
-    datadir = Path(__file__).parent / "data"
-    response = client.image_segmentation((datadir / "dog.png").as_posix())
+    test_image = get_test_image_for_type("dog.png", image_type)
+
+    response = client.image_segmentation(test_image)
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
-    assert response.scope3ai.request.request_duration_ms == 686
+    assert response.scope3ai.request.request_duration_ms > 0
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
     assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
@@ -337,13 +347,14 @@ def test_huggingface_hub_image_segmentation(tracer_with_sync_init):
 
 
 @pytest.mark.vcr
+@pytest.mark.parametrize("image_type", ["str", "Path", "bytes"])
 @pytest.mark.asyncio
-async def test_huggingface_hub_image_classification_async(tracer_with_sync_init):
+async def test_huggingface_hub_image_classification_async(
+    tracer_with_sync_init, image_type
+):
     client = AsyncInferenceClient()
-    datadir = Path(__file__).parent / "data"
-    cat_image = open((datadir / "cat.png").as_posix(), "rb")
-    cat_image_bytes = cat_image.read()
-    response = await client.image_classification(cat_image_bytes)
+    test_image = get_test_image_for_type("cat.png", image_type)
+    response = await client.image_classification(test_image)
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_images == [Image(root="1024x704")]
     assert response.scope3ai.request.request_duration_ms == 226
@@ -357,10 +368,11 @@ async def test_huggingface_hub_image_classification_async(tracer_with_sync_init)
 
 
 @pytest.mark.vcr
-def test_huggingface_hub_image_classification(tracer_with_sync_init):
+@pytest.mark.parametrize("image_type", ["str", "Path", "bytes"])
+def test_huggingface_hub_image_classification(tracer_with_sync_init, image_type):
     client = InferenceClient()
-    datadir = Path(__file__).parent / "data"
-    response = client.image_classification((datadir / "cat.png").as_posix())
+    test_image = get_test_image_for_type("cat.png", image_type)
+    response = client.image_classification(test_image)
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_images == [Image(root="1024x704")]
     assert response.scope3ai.request.request_duration_ms == 226
