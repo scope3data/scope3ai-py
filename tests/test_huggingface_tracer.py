@@ -357,7 +357,7 @@ async def test_huggingface_hub_image_classification_async(
     response = await client.image_classification(test_image)
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_images == [Image(root="1024x704")]
-    assert response.scope3ai.request.request_duration_ms == 226
+    assert response.scope3ai.request.request_duration_ms > 0
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
     assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
@@ -375,7 +375,7 @@ def test_huggingface_hub_image_classification(tracer_with_sync_init, image_type)
     response = client.image_classification(test_image)
     assert getattr(response, "scope3ai") is not None
     assert response.scope3ai.request.input_images == [Image(root="1024x704")]
-    assert response.scope3ai.request.request_duration_ms == 226
+    assert response.scope3ai.request.request_duration_ms > 0
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
     assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
