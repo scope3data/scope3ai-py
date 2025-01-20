@@ -1,6 +1,7 @@
 import io
 import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Callable, List, Optional, Union
 
 from aiohttp import ClientResponse
@@ -44,7 +45,7 @@ def _hugging_face_image_segmentation_get_impact_row(
     input_images = []
     try:
         image_param = args[0] if len(args) > 0 else kwargs["image"]
-        if isinstance(image_param, str):
+        if isinstance(image_param, (str, Path)):
             input_image = Image.open(image_param)
         else:
             input_image = Image.open(io.BytesIO(image_param))

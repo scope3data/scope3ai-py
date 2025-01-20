@@ -1,6 +1,7 @@
 import io
 import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Callable, List, Optional, Union
 
 from aiohttp import ClientResponse
@@ -44,7 +45,7 @@ def _hugging_face_image_classification_get_impact_row(
         compute_time = http_response.headers.get("x-compute-time") or compute_time
     try:
         image_param = args[0] if len(args) > 0 else kwargs["image"]
-        if type(image_param) is str:
+        if isinstance(image_param, (str, Path)):
             input_image = Image.open(args[0] if len(args) > 0 else kwargs["image"])
         else:
             input_image = Image.open(io.BytesIO(image_param))
