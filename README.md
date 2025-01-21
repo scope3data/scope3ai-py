@@ -29,14 +29,14 @@ uv add scope3ai
 
 ## 📚 Library and SDK support Matrix
 
-| Library/SDK | Text generation | TTS | STT | Image Generation | Translation |
-|-------------|-----------------|----|-----|------------------|-----------|
-| Anthropic   | ✅              |    |     |                  |           |
-| Cohere      | ✅              |    |     |                  |           |
-| OpenAI      | ✅              | ✅ | ✅  | ✅               | ✅        |
-| Huggingface | ✅              | ✅ | ✅  | ✅               | ✅        |
-| LiteLLM     | ✅              |    |     |                  |           |
-| MistralAi   | ✅              |    |     |                  |           |
+| Library/SDK | Text generation | TTS | STT | Image Generation | Translation | Multimodal input | Multimodal output |
+|-------------|-----------------|----|-----|------------------|-----------|------------------|-------------------|
+| Anthropic   | ✅              |    |     |                  |           |                  |
+| Cohere      | ✅              |    |     |                  |           |                  |
+| OpenAI      | ✅              | ✅ | ✅  | ✅               | ✅        | Images/Audio     |
+| Huggingface | ✅              | ✅ | ✅  | ✅               | ✅        |                  |
+| LiteLLM     | ✅              |    |     |                  |           | Images/Audio     |
+| MistralAi   | ✅              |    |     |                  |           | Images           |
 
 Roadmap:
 - Google

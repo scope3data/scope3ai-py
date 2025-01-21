@@ -1,3 +1,4 @@
+import logging
 import time
 from collections.abc import AsyncGenerator, Iterable
 from typing import Any, Callable, Optional
@@ -11,8 +12,11 @@ from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext
 from scope3ai.api.typesgen import ImpactRow
 from scope3ai.constants import PROVIDERS
+from scope3ai.tracers.utils.multimodal import aggregate_multimodal
 
 PROVIDER = PROVIDERS.MISTRALAI.value
+
+logger = logging.getLogger("scope3ai.tracers.mistralai.chat")
 
 
 class ChatCompletionResponse(_ChatCompletionResponse):
@@ -40,6 +44,9 @@ def mistralai_v1_chat_wrapper(
         managed_service_id=PROVIDER,
     )
     scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+    messages = args[1] if len(args) > 1 else kwargs.get("messages")
+    for message in messages:
+        aggregate_multimodal(message, scope3_row, logger)
     chat = ChatCompletionResponse(**response.model_dump())
     chat.scope3ai = scope3ai_ctx
     return chat
