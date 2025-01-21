@@ -1,5 +1,3 @@
-import os
-
 import pytest
 import litellm
 
@@ -177,9 +175,6 @@ def test_litellm_multimodal_audio_2_openai(tracer_with_sync_init):
     assert response.scope3ai.impact.total_impact.usage_water_ml > 0
     assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
     assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
-
-
-os.environ["MISTRAL_API_KEY"] = "NiC15b550iBe200LVvoZso7QKHAGzOSe"
 
 
 @pytest.mark.vcr
