@@ -29,8 +29,8 @@ uv add scope3ai
 
 ## 📚 Library and SDK support Matrix
 
-| Library/SDK | Text generation | TTS | STT | Image Generation | Translation | Multimodal input |
-|-------------|-----------------|----|-----|------------------|-----------|------------------|
+| Library/SDK | Text generation | TTS | STT | Image Generation | Translation | Multimodal input | Multimodal output |
+|-------------|-----------------|----|-----|------------------|-----------|------------------|-------------------|
 | Anthropic   | ✅              |    |     |                  |           |                  |
 | Cohere      | ✅              |    |     |                  |           |                  |
 | OpenAI      | ✅              | ✅ | ✅  | ✅               | ✅        | Images/Audio     |
