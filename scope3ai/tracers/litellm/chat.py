@@ -71,7 +71,8 @@ def litellm_chat_wrapper_non_stream(
     kwargs: Any,
 ) -> ChatCompletion:
     timer_start = time.perf_counter()
-    with Scope3AI.get_instance().trace(keep_traces=True) as trace:
+    keep_tracers = not kwargs.pop("use_always_litellm_tracer", False)
+    with Scope3AI.get_instance().trace(keep_traces=keep_tracers) as trace:
         response = wrapped(*args, **kwargs)
         if trace.traces:
             setattr(response, "scope3ai", trace.traces[0])
@@ -113,7 +114,12 @@ async def litellm_async_chat_wrapper_base(
     kwargs: Any,
 ) -> ChatCompletion:
     timer_start = time.perf_counter()
-    response = await wrapped(*args, **kwargs)
+    keep_tracers = not kwargs.pop("use_always_litellm_tracer", False)
+    with Scope3AI.get_instance().trace(keep_traces=keep_tracers) as trace:
+        response = await wrapped(*args, **kwargs)
+        if trace.traces:
+            setattr(response, "scope3ai", trace.traces[0])
+            return response
     request_latency = time.perf_counter() - timer_start
     model = response.model
     if model is None:

@@ -18,11 +18,6 @@ DEFAULT_N = 1
 class ImageResponse(BaseModelResponse, _ImageResponse):
     scope3ai: Optional[Scope3AIContext] = None
 
-    def model_dump(self, *args, **kwargs) -> dict[str, Any]:
-        model_dump_response = super().model_dump()
-        del model_dump_response["scope3ai"]
-        return model_dump_response
-
 
 def _openai_image_get_impact_row(
     response: _ImageResponse, request_latency: float, **kwargs: Any
