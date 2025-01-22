@@ -38,7 +38,6 @@ def litellm_speech_generation_get_impact_row(
     }
     if duration is not None:
         options["output_audio_seconds"] = duration
-    # Add audio duration if available
     scope3_row = ImpactRow(
         model_id=model,
         request_duration_ms=float(request_latency) * 1000,
