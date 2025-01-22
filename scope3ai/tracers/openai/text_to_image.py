@@ -7,6 +7,7 @@ from openai.types.images_response import ImagesResponse as _ImageResponse
 from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
 from scope3ai.api.typesgen import Image as RootImage
 from scope3ai.lib import Scope3AI
+from scope3ai.tracers.openai.utils import BaseModelResponse
 
 PROVIDER = "openai"
 DEFAULT_MODEL = "dall-e-2"
@@ -14,8 +15,13 @@ DEFAULT_SIZE = "1024x1024"
 DEFAULT_N = 1
 
 
-class ImageResponse(_ImageResponse):
+class ImageResponse(BaseModelResponse, _ImageResponse):
     scope3ai: Optional[Scope3AIContext] = None
+
+    def model_dump(self, *args, **kwargs) -> dict[str, Any]:
+        model_dump_response = super().model_dump()
+        del model_dump_response["scope3ai"]
+        return model_dump_response
 
 
 def _openai_image_get_impact_row(

@@ -5,6 +5,10 @@ from scope3ai.tracers.litellm.chat import (
     litellm_chat_wrapper,
     litellm_async_chat_wrapper,
 )
+from scope3ai.tracers.litellm.speech_to_text import (
+    litellm_speech_to_text_wrapper,
+    litellm_speech_to_text_wrapper_async,
+)
 
 
 class LiteLLMInstrumentor:
@@ -19,6 +23,16 @@ class LiteLLMInstrumentor:
                 "module": litellm,
                 "name": "acompletion",
                 "wrapper": litellm_async_chat_wrapper,
+            },
+            {
+                "module": litellm,
+                "name": "transcription",
+                "wrapper": litellm_speech_to_text_wrapper,
+            },
+            {
+                "module": litellm,
+                "name": "atranscription",
+                "wrapper": litellm_speech_to_text_wrapper_async,
             },
         ]
 

@@ -25,7 +25,7 @@ def _openai_text_to_speech_get_impact_row(
     kwargs: Any,
 ) -> (HttpxBinaryResponseContent, ImpactRow):
     # try getting duration
-    response_format = kwargs["response_format"]
+    response_format = kwargs.get("response_format", "mp3")
     duration = _get_audio_duration(response_format, response.content)
 
     compute_time = response.response.headers.get("openai-processing-ms")
