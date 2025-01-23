@@ -1,20 +1,45 @@
+# translation.py
 import asyncio
-
 from huggingface_hub import InferenceClient
 from scope3ai import Scope3AI
 from scope3ai.tracers.huggingface.translation import HUGGING_FACE_TRANSLATION_TASK
 
+DESCRIPTION = "Hugging Face Translation with Environmental Impact Tracking"
 
-async def main():
+ARGUMENTS = [
+    {
+        "name_or_flags": "--model",
+        "type": str,
+        "default": None,
+        "help": "Model to use (default: recommended model)",
+    },
+    {
+        "name_or_flags": "--text",
+        "type": str,
+        "default": "Hello, how are you?",
+        "help": "Text to translate",
+    },
+    {
+        "name_or_flags": "--target-language",
+        "type": str,
+        "default": "es",
+        "help": 'Target language code (e.g., "es" for Spanish)',
+    },
+]
+
+
+async def main(model: str | None, text: str, target_language: str):
     client = InferenceClient()
     scope3 = Scope3AI.init()
-    model = client.get_recommended_model(HUGGING_FACE_TRANSLATION_TASK)
+    model_to_use = (
+        model if model else client.get_recommended_model(HUGGING_FACE_TRANSLATION_TASK)
+    )
 
     with scope3.trace() as tracer:
         response = client.translation(
-            model=model,
-            text="Hello, how are you?",
-            target_language="es",  # Spanish
+            model=model_to_use,
+            text=text,
+            target_language=target_language,
         )
         print("Translation Response:", response)
         impact = tracer.impact(response)
@@ -25,4 +50,10 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import argparse
+
+    parser = argparse.ArgumentParser(description=DESCRIPTION)
+    for argument in ARGUMENTS:
+        parser.add_argument(**argument)
+    args = parser.parse_args()
+    asyncio.run(main(**vars(args)))

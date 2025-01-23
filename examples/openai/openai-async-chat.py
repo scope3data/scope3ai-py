@@ -2,15 +2,38 @@ import asyncio
 from scope3ai import Scope3AI
 from openai import AsyncOpenAI
 
+DESCRIPTION = "OpenAI Async Chat Completion with Environmental Impact Tracking"
 
-async def main():
+ARGUMENTS = [
+    {
+        "name_or_flags": "--model",
+        "type": str,
+        "default": "gpt-3.5-turbo",
+        "help": "Model to use for chat completion",
+    },
+    {
+        "name_or_flags": "--message",
+        "type": str,
+        "default": "Hello!",
+        "help": "Message to send to the chat model",
+    },
+    {
+        "name_or_flags": "--role",
+        "type": str,
+        "default": "user",
+        "help": "Role for the message (user, system, or assistant)",
+    },
+]
+
+
+async def main(model: str, message: str, role: str):
     client = AsyncOpenAI()
     scope3 = Scope3AI.init()
 
     with scope3.trace() as tracer:
         response = await client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": "Hello!"}],
+            model=model,
+            messages=[{"role": role, "content": message}],
         )
         print(response.choices[0].message.content.strip())
 
@@ -22,4 +45,10 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import argparse
+
+    parser = argparse.ArgumentParser(description=DESCRIPTION)
+    for argument in ARGUMENTS:
+        parser.add_argument(**argument)
+    args = parser.parse_args()
+    asyncio.run(main(**vars(args)))
