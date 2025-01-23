@@ -1,7 +1,7 @@
 import pytest
 
 
-def test_tracer_linear():
+def test_tracer_linear(tracer_init):
     from scope3ai.api.tracer import Tracer
     from scope3ai.api.types import ModeledRow, ImpactMetrics
 
@@ -36,7 +36,7 @@ def test_tracer_linear():
     assert response.total_mlh2o == 6
 
 
-def test_tracer_nested():
+def test_tracer_nested(tracer_init):
     from scope3ai.api.tracer import Tracer
     from scope3ai.api.types import ModeledRow, ImpactMetrics
 
