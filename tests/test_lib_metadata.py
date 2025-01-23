@@ -1,5 +1,6 @@
-import pytest
 from typing import Optional
+
+import pytest
 
 
 def test_lib_init_default():
@@ -7,7 +8,7 @@ def test_lib_init_default():
 
     scope3: Optional[Scope3AI] = None
     try:
-        scope3 = Scope3AI.init(providers=[])
+        scope3 = Scope3AI.init(api_key="dummy", providers=[])
         assert scope3.environment is None
         assert scope3.application_id == "default"
         assert scope3.client_id is None
@@ -37,7 +38,7 @@ def test_lib_init_env(init_env):
 
     scope3: Optional[Scope3AI] = None
     try:
-        scope3 = Scope3AI.init(providers=[])
+        scope3 = Scope3AI.init(api_key="dummy", providers=[])
         assert scope3.environment == "environment"
         assert scope3.application_id == "application_id"
         assert scope3.client_id == "client_id"
@@ -53,6 +54,7 @@ def test_lib_init_precedence(init_env):
     scope3: Optional[Scope3AI] = None
     try:
         scope3 = Scope3AI.init(
+            api_key="dummy",
             environment="environment_2",
             application_id="application_id_2",
             client_id="client_id_2",
