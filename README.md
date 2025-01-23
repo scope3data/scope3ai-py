@@ -46,30 +46,52 @@ Roadmap:
 
 ### Initializing the SDK
 
-The SDK can be initialized with your API key and custom configurations.
+The SDK can be initialized with the following parameters, from environemnt variable or when calling `ScopeAI.init(...)`:
+
+| Attribute             | Environment Variable     | Description    | Can be customized per tracer |
+|-----------------------|--------------------------|--------------------------------|------------------------------|
+| **`api_key`**         | **`SCOPE3AI_API_KEY`**   | Your Scope3AI API key. Default: `None` | **No**                       |
+| `api_url`             | `SCOPE3AI_API_URL`       | The API endpoint URL. Default: `https://aiapi.scope3.com` | No                           |
+| `enable_debug_logging`| `SCOPE3AI_DEBUG_LOGGING` | Enable debug logging. Default: `False` | No                           |
+| `sync_mode`           | `SCOPE3AI_SYNC_MODE`     | Enable synchronous mode. Default: `False` | No                           |
+| `environment`         | `SCOPE3AI_ENVIRONMENT`   | The user-defined environment name, such as "production" or "staging". Default: `None` | No                           |
+| `application_id`      | `SCOPE3AI_APPLICATION_ID`| The user-defined application identifier. Default: `default` | ✅ Yes                       |
+| `client_id`           | `SCOPE3AI_CLIENT_ID`     | The user-defined client identifier. Default: `None` | ✅ Yes                       |
+| `project_id`          | `SCOPE3AI_PROJECT_ID`    | The user-defined project identifier. Default: `None` | ✅ Yes                       |
+| `session_id`          | -                        | The user-defined session identifier, used to track user session. Default `None`. Available only at tracer() level. | ✅ Yes                       |
+
+
+**Here is an example of how to initialize the SDK**:
 
 ```python
 from scope3ai import Scope3AI
 
 scope3 = Scope3AI.init(
-    api_key="YOUR_API_KEY",  # Replace "YOUR_API_KEY" with your actual key
-    api_url="https://api.scope3.ai/v1",  # Optional: Specify the API URL
-    enable_debug_logging=False,  # Enable debug logging (default: False)
-    sync_mode=False,  # Enable synchronous mode when sending telemetry to the API (default: False)
+    api_key="YOUR_API_KEY",
+    environment="staging",
+    application_id="my-app",
+    project_id="my-webinar-2024"
 )
 ```
 
-### Environment variables
+**You could also use environment variables to initialize the SDK**:
 
-You can also use environment variable to setup the SDK:
+1. Create a `.env` file with the following content:
 
-- `SCOPE3AI_API_KEY`: Your Scope3AI API key
-- `SCOPE3AI_API_URL`: The API endpoint URL. Default: `https://api.scope3.ai/v1`
-- `SCOPE3AI_SYNC_MODE`: If `True`, every interaction will be send synchronously to the API, otherwise it will use a background worker. Default: `False`
+```env
+SCOPE3AI_API_KEY=YOUR_API_KEY
+SCOPE3AI_ENVIRONMENT=staging
+SCOPE3AI_APPLICATION_ID=my-app
+SCOPE3AI_PROJECT_ID=my-webinar-2024
+```
+
+2. Use dotenv to load the environment variables:
 
 ```python
+from dotenv import load_dotenv
 from scope3ai import Scope3AI
 
+load_dotenv()
 scope3 = Scope3AI.init()
 ```
 
@@ -92,6 +114,23 @@ with scope3.trace() as tracer:
     print(f"Total Energy Wh: {impact.total_energy_wh}")
     print(f"Total GCO2e: {impact.total_gco2e}")
     print(f"Total MLH2O: {impact.total_mlh2o}")
+```
+
+### 2. Configure per-tracer metadata
+
+Some global metadata can be overridden per-tracer. This is useful when you want to mark a specific tracer with a different `client_id` or `project_id`.
+
+```python
+with scope3.trace(client_id="my-client", project_id="my-project") as tracer:
+    ...
+```
+
+You can track session with the `session_id` parameter of the tracer. This is only for categorizing the traces in the dashboard.
+but works at tracer level, not in global level like `client_id` or `project_id` or others.
+
+```python
+with scope3.trace(session_id="my-session") as tracer:
+    ...
 ```
 
 ### 2. Single interaction

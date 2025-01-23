@@ -4,13 +4,14 @@ import importlib.util
 import logging
 from contextlib import contextmanager
 from contextvars import ContextVar
+from datetime import datetime, timezone
 from functools import partial
 from os import getenv
 from typing import List, Optional
 from uuid import uuid4
 
 from .api.client import AsyncClient, Client
-from .api.defaults import DEFAULT_API_URL
+from .api.defaults import DEFAULT_API_URL, DEFAULT_APPLICATION_ID
 from .api.tracer import Tracer
 from .api.types import ImpactResponse, ImpactRow, Scope3AIContext
 from .constants import PROVIDERS
@@ -120,6 +121,10 @@ class Scope3AI:
         self.sync_mode: bool = False
         self._sync_client: Optional[Client] = None
         self._async_client: Optional[AsyncClient] = None
+        self.environment: Optional[str] = None
+        self.client_id: Optional[str] = None
+        self.project_id: Optional[str] = None
+        self.application_id: Optional[str] = None
 
     @classmethod
     def init(
@@ -129,6 +134,11 @@ class Scope3AI:
         sync_mode: bool = False,
         enable_debug_logging: bool = False,
         providers: Optional[List[str]] = None,
+        # metadata for scope3
+        environment: Optional[str] = None,
+        client_id: Optional[str] = None,
+        project_id: Optional[str] = None,
+        application_id: Optional[str] = None,
     ) -> "Scope3AI":
         if cls._instance is not None:
             raise Scope3AIError("Scope3AI is already initialized")
@@ -148,6 +158,16 @@ class Scope3AI:
                 "passing the API URL to the Scope3AI.init(api_url='xxx') "
                 "or by setting the SCOPE3AI_API_URL environment variable"
             )
+
+        # metadata
+        self.environment = environment or getenv("SCOPE3AI_ENVIRONMENT")
+        self.client_id = client_id or getenv("SCOPE3AI_CLIENT_ID")
+        self.project_id = project_id or getenv("SCOPE3AI_PROJECT_ID")
+        self.application_id = (
+            application_id
+            or getenv("SCOPE3AI_APPLICATION_ID")
+            or DEFAULT_APPLICATION_ID
+        )
 
         if enable_debug_logging:
             self._init_logging()
@@ -211,6 +231,7 @@ class Scope3AI:
             return response
 
         tracer = self.current_tracer
+        self._fill_impact_row(impact_row, tracer, self.root_tracer)
         ctx = Scope3AIContext(request=impact_row)
         ctx._tracer = tracer
         if tracer:
@@ -237,11 +258,14 @@ class Scope3AI:
             # and the background worker is not async (does not have to be).
             # so we just redirect the call to the sync version.
             return self.submit_impact(impact_row)
+
         tracer = self.current_tracer
+        self._fill_impact_row(impact_row, tracer, self.root_tracer)
         ctx = Scope3AIContext(request=impact_row)
         ctx._tracer = tracer
         if tracer:
             tracer._link_trace(ctx)
+            self._fill_impact_row_for_tracer(impact_row, tracer, self.root_tracer)
 
         response = await self._async_client.impact(
             rows=[impact_row],
@@ -283,8 +307,32 @@ class Scope3AI:
         return tracers[-1] if tracers else None
 
     @contextmanager
-    def trace(self, keep_traces=False):
-        tracer = Tracer(keep_traces=keep_traces)
+    def trace(
+        self,
+        keep_traces=False,
+        client_id: Optional[str] = None,
+        project_id: Optional[str] = None,
+        application_id: Optional[str] = None,
+        session_id: Optional[str] = None,
+    ):
+        root_tracer = self.root_tracer
+        if not client_id:
+            client_id = root_tracer.client_id if root_tracer else self.client_id
+        if not project_id:
+            project_id = root_tracer.project_id if root_tracer else self.project_id
+        if not application_id:
+            application_id = (
+                root_tracer.application_id if root_tracer else self.application_id
+            )
+        if not session_id:
+            session_id = root_tracer.session_id if root_tracer else None
+        tracer = Tracer(
+            keep_traces=keep_traces,
+            client_id=client_id,
+            project_id=project_id,
+            application_id=application_id,
+            session_id=session_id,
+        )
         try:
             self._push_tracer(tracer)
             yield tracer
@@ -345,3 +393,39 @@ class Scope3AI:
                 logging.debug("Waiting background informations to be processed")
                 scope3ai._worker._queue.join()
                 logging.debug("Shutting down Scope3AI")
+
+    def _fill_impact_row(
+        self,
+        row: ImpactRow,
+        tracer: Optional[Tracer] = None,
+        root_tracer: Optional[Tracer] = None,
+    ):
+        # fill fields with information we know about
+        row.request_id = generate_id()
+        if row.trace_id is None and root_tracer:
+            row.trace_id = root_tracer.trace_id
+        if row.utc_datetime is None:
+            row.utc_datetime = datetime.now(tz=timezone.utc)
+
+        # copy global-only metadata
+        if row.environment is None:
+            row.environment = self.environment
+
+        # copy tracer or global metadata
+        if row.client_id is None:
+            if tracer:
+                row.client_id = tracer.client_id or self.client_id
+            else:
+                row.client_id = self.client_id
+        if row.project_id is None:
+            if tracer:
+                row.project_id = tracer.project_id or self.project_id
+            else:
+                row.project_id = self.project_id
+        if row.application_id is None:
+            if tracer:
+                row.application_id = tracer.application_id or self.application_id
+            else:
+                row.application_id = self.application_id
+        if row.session_id is None and tracer:
+            row.session_id = tracer.session_id

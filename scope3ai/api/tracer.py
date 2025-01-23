@@ -1,4 +1,5 @@
 from typing import List, Optional
+from uuid import uuid4
 
 from .typesgen import ImpactResponse, ModeledRow
 
@@ -8,15 +9,26 @@ class Tracer:
         self,
         name: str = None,
         keep_traces: bool = False,
+        client_id: Optional[str] = None,
+        project_id: Optional[str] = None,
+        application_id: Optional[str] = None,
+        session_id: Optional[str] = None,
+        trace_id: Optional[str] = None,
     ) -> None:
         from scope3ai.lib import Scope3AI
 
+        self.trace_id = trace_id or uuid4().hex
         self.scope3ai = Scope3AI.get_instance()
         self.name = name
         self.keep_traces = keep_traces
         self.children: List[Tracer] = []
         self.rows: List[ModeledRow] = []
         self.traces = []  # type: List[Scope3AIContext]
+
+        self.client_id = client_id
+        self.project_id = project_id
+        self.application_id = application_id
+        self.session_id = session_id
 
     def impact(self, timeout: Optional[int] = None) -> ImpactResponse:
         """
