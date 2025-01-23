@@ -265,7 +265,6 @@ class Scope3AI:
         ctx._tracer = tracer
         if tracer:
             tracer._link_trace(ctx)
-            self._fill_impact_row_for_tracer(impact_row, tracer, self.root_tracer)
 
         response = await self._async_client.impact(
             rows=[impact_row],
