@@ -401,31 +401,48 @@ class Scope3AI:
         root_tracer: Optional[Tracer] = None,
     ):
         # fill fields with information we know about
+        # One trick is to not set anything on the ImpactRow if it's already set or if the value is None
+        # because the model are dumped and exclude the fields unset.
+        # If we set a field to None, it will be added for nothing.
+        def set_only_if(row, field, *values):
+            if getattr(row, field) is not None:
+                return
+            for value in values:
+                if value is not None:
+                    setattr(row, field, value)
+                    return
+
         row.request_id = generate_id()
-        if row.trace_id is None and root_tracer:
-            row.trace_id = root_tracer.trace_id
+        if root_tracer:
+            set_only_if(row, "trace_id", root_tracer.trace_id)
         if row.utc_datetime is None:
             row.utc_datetime = datetime.now(tz=timezone.utc)
 
         # copy global-only metadata
-        if row.environment is None:
-            row.environment = self.environment
+        set_only_if(
+            row,
+            "environment",
+            self.environment,
+        )
 
         # copy tracer or global metadata
-        if row.client_id is None:
-            if tracer:
-                row.client_id = tracer.client_id or self.client_id
-            else:
-                row.client_id = self.client_id
-        if row.project_id is None:
-            if tracer:
-                row.project_id = tracer.project_id or self.project_id
-            else:
-                row.project_id = self.project_id
-        if row.application_id is None:
-            if tracer:
-                row.application_id = tracer.application_id or self.application_id
-            else:
-                row.application_id = self.application_id
+        set_only_if(
+            row,
+            "client_id",
+            tracer.client_id if tracer else None,
+            self.client_id,
+        )
+        set_only_if(
+            row,
+            "project_id",
+            tracer.project_id if tracer else None,
+            self.project_id,
+        )
+        set_only_if(
+            row,
+            "application_id",
+            tracer.application_id if tracer else None,
+            self.application_id,
+        )
         if row.session_id is None and tracer:
             row.session_id = tracer.session_id
