@@ -26,8 +26,8 @@ def litellm_speech_to_text_get_impact_row(
     kwargs,
 ) -> (TranscriptionResponse, ImpactRow):
     request_latency = time.perf_counter() - timer_start
-    file = args[0] if len(args) > 0 else kwargs.pop("file")
-    model = args[1] if len(args) > 1 else kwargs.pop("model")
+    file = args[0] if len(args) > 0 else kwargs.get("file")
+    model = args[1] if len(args) > 1 else kwargs.get("model")
     request_latency = getattr(response, "_response_ms", request_latency)
     encoder = tiktoken.get_encoding("cl100k_base")
     options = {}
@@ -50,11 +50,11 @@ def litellm_speech_to_text_wrapper(
     wrapped: Callable, instance: Completions, args: Any, kwargs: Any
 ):
     timer_start = time.perf_counter()
-    keep_tracers = not kwargs.pop("use_always_litellm_tracer", False)
-    with Scope3AI.get_instance().trace(keep_traces=keep_tracers) as trace:
+    keep_traces = not kwargs.pop("use_always_litellm_tracer", False)
+    with Scope3AI.get_instance().trace(keep_traces=keep_traces) as tracer:
         response = wrapped(*args, **kwargs)
-        if trace.traces:
-            setattr(response, "scope3ai", trace.traces[0])
+        if tracer.traces:
+            setattr(response, "scope3ai", tracer.traces[0])
             return response
 
     impact_row = litellm_speech_to_text_get_impact_row(
@@ -69,11 +69,11 @@ async def litellm_speech_to_text_wrapper_async(
     wrapped: Callable, instance: Completions, args: Any, kwargs: Any
 ):
     timer_start = time.perf_counter()
-    keep_tracers = not kwargs.pop("use_always_litellm_tracer", False)
-    with Scope3AI.get_instance().trace(keep_traces=keep_tracers) as trace:
+    keep_traces = not kwargs.pop("use_always_litellm_tracer", False)
+    with Scope3AI.get_instance().trace(keep_traces=keep_traces) as tracer:
         response = await wrapped(*args, **kwargs)
-        if trace.traces:
-            setattr(response, "scope3ai", trace.traces[0])
+        if tracer.traces:
+            setattr(response, "scope3ai", tracer.traces[0])
             return response
     impact_row = litellm_speech_to_text_get_impact_row(
         timer_start, response, args, kwargs
