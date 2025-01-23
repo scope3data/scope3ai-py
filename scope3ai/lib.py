@@ -1,5 +1,4 @@
 import atexit
-import importlib.metadata
 import importlib.util
 import logging
 from contextlib import contextmanager
@@ -195,6 +194,8 @@ class Scope3AI:
         Returns:
             Scope3AI: The singleton instance of the Scope3AI class.
         """
+        if not cls._instance:
+            raise Scope3AIError("Scope3AI is not initialized. Use Scope3AI.init()")
         return cls._instance
 
     def submit_impact(
@@ -220,6 +221,7 @@ class Scope3AI:
             impact_row: ImpactRow,
             ctx: Scope3AIContext,
         ) -> Optional[ImpactResponse]:
+            assert self._sync_client is not None
             response = self._sync_client.impact(
                 rows=[impact_row],
                 with_response=True,
@@ -242,6 +244,7 @@ class Scope3AI:
             return ctx
 
         self._ensure_worker()
+        assert self._worker is not None
         self._worker.submit(partial(submit_impact, impact_row=impact_row, ctx=ctx))
         return ctx
 
@@ -265,8 +268,8 @@ class Scope3AI:
         ctx._tracer = tracer
         if tracer:
             tracer._link_trace(ctx)
-            self._fill_impact_row_for_tracer(impact_row, tracer, self.root_tracer)
 
+        assert self._async_client is not None
         response = await self._async_client.impact(
             rows=[impact_row],
             with_response=True,
