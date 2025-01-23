@@ -85,7 +85,7 @@ class Tracer:
             self.traces.append(trace)
 
     def _unlink_trace(self, trace) -> None:
-        if not self.keep_traces:
+        if self.keep_traces:
             return
         if trace in self.traces:
             self.traces.remove(trace)

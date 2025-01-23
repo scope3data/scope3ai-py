@@ -12,6 +12,7 @@ from openai.types.audio.transcription_verbose import (
 from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
+from scope3ai.tracers.openai.utils import BaseModelResponse
 from scope3ai.tracers.utils.audio import _get_file_audio_duration
 
 PROVIDER = PROVIDERS.OPENAI.value
@@ -23,11 +24,11 @@ class AnnotatedStr(str):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-class Transcription(_Transcription):
+class Transcription(BaseModelResponse, _Transcription):
     scope3ai: Optional[Scope3AIContext] = None
 
 
-class TranscriptionVerbose(_TranscriptionVerbose):
+class TranscriptionVerbose(BaseModelResponse, _TranscriptionVerbose):
     scope3ai: Optional[Scope3AIContext] = None
 
 

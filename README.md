@@ -35,7 +35,7 @@ uv add scope3ai
 | Cohere      | ✅              |    |     |                  |           |                  |
 | OpenAI      | ✅              | ✅ | ✅  | ✅               | ✅        | Images/Audio     |
 | Huggingface | ✅              | ✅ | ✅  | ✅               | ✅        |                  |
-| LiteLLM     | ✅              |    |     |                  |           | Images/Audio     |
+| LiteLLM     | ✅              |  ✅  |✅     |       ✅           |           | Images/Audio     |
 | MistralAi   | ✅              |    |     |                  |           | Images           |
 
 Roadmap:

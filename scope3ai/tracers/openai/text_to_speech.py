@@ -8,6 +8,7 @@ from openai.resources.audio.speech import AsyncSpeech, Speech, _legacy_response
 from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
+from scope3ai.tracers.openai.utils import BaseModelResponse
 from scope3ai.tracers.utils.audio import _get_audio_duration
 
 PROVIDER = PROVIDERS.OPENAI.value
@@ -15,7 +16,9 @@ PROVIDER = PROVIDERS.OPENAI.value
 logger = logging.getLogger(f"scope3ai.tracers.{__name__}")
 
 
-class HttpxBinaryResponseContent(_legacy_response.HttpxBinaryResponseContent):
+class HttpxBinaryResponseContent(
+    BaseModelResponse, _legacy_response.HttpxBinaryResponseContent
+):
     scope3ai: Optional[Scope3AIContext] = None
 
 
@@ -25,7 +28,7 @@ def _openai_text_to_speech_get_impact_row(
     kwargs: Any,
 ) -> (HttpxBinaryResponseContent, ImpactRow):
     # try getting duration
-    response_format = kwargs["response_format"]
+    response_format = kwargs.get("response_format", "mp3")
     duration = _get_audio_duration(response_format, response.content)
 
     compute_time = response.response.headers.get("openai-processing-ms")
