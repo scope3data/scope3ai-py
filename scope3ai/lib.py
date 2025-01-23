@@ -444,5 +444,8 @@ class Scope3AI:
             tracer.application_id if tracer else None,
             self.application_id,
         )
-        if row.session_id is None and tracer:
-            row.session_id = tracer.session_id
+        set_only_if(
+            row,
+            "session_id",
+            tracer.session_id if tracer else None,
+        )

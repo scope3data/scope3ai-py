@@ -1,10 +1,8 @@
 import logging
 import queue
 import threading
-from time import sleep
+from time import monotonic, sleep
 from typing import Callable, Optional
-
-from time import monotonic
 
 logger = logging.getLogger("scope3ai.worker")
 

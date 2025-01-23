@@ -89,6 +89,8 @@ def test_impact_row_no_tracer(init_env, tracer_init):
     assert request.client_id == "client_id"
     assert request.project_id == "project_id"
 
+    tracer_init._worker.resume()
+
 
 def test_impact_row_with_tracer(init_env, tracer_init):
     from scope3ai.api.types import ImpactRow
@@ -113,6 +115,8 @@ def test_impact_row_with_tracer(init_env, tracer_init):
         assert request.application_id == "application_id_2"
         assert request.client_id == "client_id_2"
         assert request.project_id == "project_id_2"
+
+    tracer_init._worker.resume()
 
 
 def test_impact_row_with_nested_tracer(init_env, tracer_init):
@@ -141,6 +145,8 @@ def test_impact_row_with_nested_tracer(init_env, tracer_init):
             assert request.client_id == "client_id_2"
             assert request.project_id == "project_id_3"
 
+    tracer_init._worker.resume()
+
 
 def test_impact_row_with_session_id(tracer_init):
     from scope3ai.api.types import ImpactRow
@@ -159,6 +165,8 @@ def test_impact_row_with_session_id(tracer_init):
         assert request.request_id is not None
         assert request.trace_id == tracer.trace_id
         assert request.session_id == "session_id_1"
+
+    tracer_init._worker.resume()
 
 
 def test_impact_row_nested_with_session_id(tracer_init):
@@ -181,3 +189,5 @@ def test_impact_row_nested_with_session_id(tracer_init):
             assert request.request_id is not None
             assert request.trace_id == tracer.trace_id
             assert request.session_id == "session_id_2"
+
+    tracer_init._worker.resume()
