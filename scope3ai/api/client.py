@@ -1,5 +1,5 @@
 from os import getenv
-from typing import List, Optional, Union
+from typing import Any, List, Optional, TypeVar
 
 import httpx
 from pydantic import BaseModel
@@ -15,13 +15,19 @@ from .types import (
     NodeResponse,
 )
 
+ClientType = TypeVar("ClientType", httpx.Client, httpx.AsyncClient)
+
 
 class Scope3AIError(Exception):
     pass
 
 
 class ClientBase:
-    def __init__(self, api_key: str = None, api_url: str = None) -> None:
+    def __init__(
+        self,
+        api_key: Optional[str] = None,
+        api_url: Optional[str] = None,
+    ) -> None:
         self.api_key = api_key or getenv("SCOPE3AI_API_KEY")
         self.api_url = api_url or getenv("SCOPE3AI_API_URL") or DEFAULT_API_URL
         if not self.api_key:
@@ -38,7 +44,7 @@ class ClientBase:
             )
 
     @property
-    def client(self) -> Union[httpx.Client, httpx.AsyncClient]:
+    def client(self) -> ClientType:
         """
         Obtain an httpx client for synchronous or asynchronous operation
         with the necessary authentication headers included.
@@ -47,8 +53,14 @@ class ClientBase:
             self._client = self.create_client()
         return self._client
 
+    def create_client(self) -> ClientType:
+        raise NotImplementedError
+
 
 class ClientCommands:
+    def execute_request(self, *args, **kwargs) -> Any:
+        raise NotImplementedError
+
     def model(
         self,
         family: Optional[Family] = None,
@@ -144,7 +156,7 @@ class Client(ClientBase, ClientCommands):
     Synchronous Client to the Scope3AI HTTP API
     """
 
-    def create_client(self):
+    def create_client(self) -> httpx.Client:
         return httpx.Client(headers={"Authorization": f"Bearer {self.api_key}"})
 
     def execute_request(

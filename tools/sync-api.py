@@ -1,6 +1,6 @@
 import shutil
-import tempfile
 import subprocess
+import tempfile
 from pathlib import Path
 
 
@@ -35,23 +35,10 @@ def patch_aiapi_yaml(filename: Path) -> None:
             raise ValueError("ERROR: 'number_of_experts' not found in the file.")
         return "\n".join(new_lines)
 
-    def fix_pattern(text):
-        print("- Fixing image pattern")
-        old_pattern = r"pattern: /^(\d{1,4})x(\d{1,4})$/"
-        new_pattern = r"pattern: ^(\d{1,4})x(\d{1,4})$"
-
-        if old_pattern not in text:
-            raise ValueError(
-                r"ERROR: 'pattern: /^(\d{1,4})x(\d{1,4})$/' not found in the file."
-            )
-
-        return text.replace(old_pattern, new_pattern)
-
     try:
         print(f"Patching aiapi.yaml: {filename}")
         content = filename.read_text()
         content = remove_number_of_experts(content)
-        content = fix_pattern(content)
         filename.write_text(content)
 
     except Exception as e:

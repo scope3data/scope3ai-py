@@ -6,6 +6,7 @@ repos:
     hooks:
       - id: debug-statements
       - id: trailing-whitespace
+        exclude: tests/api-mocks/aiapi.yaml
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.2
