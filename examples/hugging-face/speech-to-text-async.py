@@ -1,22 +1,26 @@
-import argparse
+# speech-to-text-async.py
 import asyncio
+from pathlib import Path
 
 from huggingface_hub import AsyncInferenceClient
+
 from scope3ai import Scope3AI
 from scope3ai.tracers.huggingface.speech_to_text import HUGGING_FACE_SPEECH_TO_TEXT_TASK
 
 
-async def main(audio_path, model):
+async def main(model: str | None, audio_path: Path, debug: bool = False):
     client = AsyncInferenceClient()
     scope3 = Scope3AI.init()
-    if not model:
-        model = await client.get_recommended_model(HUGGING_FACE_SPEECH_TO_TEXT_TASK)
+    model_to_use = (
+        model
+        if model
+        else client.get_recommended_model(HUGGING_FACE_SPEECH_TO_TEXT_TASK)
+    )
 
     with scope3.trace() as tracer:
-        # Replace `audio_path` with the path to your audio file
         with open(audio_path, "rb") as f:
             response = await client.automatic_speech_recognition(
-                model=model,
+                model=model_to_use,
                 audio=f,
             )
         print("Automatic Speech Recognition Response:", response)
@@ -28,16 +32,22 @@ async def main(audio_path, model):
 
 
 if __name__ == "__main__":
+    import argparse
+
     parser = argparse.ArgumentParser(
-        description="Run speech-to-text transformation with environmental impact tracing."
+        description="Hugging Face Speech-to-Text Transcription with Environmental Impact Tracking"
     )
-    parser.add_argument("--audio_path", type=str, help="Path to the input audio file.")
     parser.add_argument(
         "--model",
         type=str,
         default=None,
-        help="Hugging Face model to use. Defaults to the recommended model.",
+        help="Model to use (default: recommended model)",
+    )
+    parser.add_argument(
+        "--audio-path", type=Path, required=True, help="Path to the input audio file"
+    )
+    parser.add_argument(
+        "--debug", action="store_true", help="Enable debug mode", default=False
     )
     args = parser.parse_args()
-
-    asyncio.run(main(args.audio_path, args.model))
+    asyncio.run(main(**vars(args)))

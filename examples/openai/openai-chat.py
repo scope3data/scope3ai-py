@@ -2,14 +2,14 @@ from scope3ai import Scope3AI
 from openai import OpenAI
 
 
-def main():
+def main(model: str, message: str, role: str):
     client = OpenAI()
     scope3 = Scope3AI.init()
 
     with scope3.trace() as tracer:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": "Hello!"}],
+            model=model,
+            messages=[{"role": role, "content": message}],
         )
         print(response.choices[0].message.content.strip())
 
@@ -21,4 +21,28 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="OpenAI Chat Completion with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="gpt-3.5-turbo",
+        help="Model to use for chat completion",
+    )
+    parser.add_argument(
+        "--message",
+        type=str,
+        default="Hello!",
+        help="Message to send to the chat model",
+    )
+    parser.add_argument(
+        "--role",
+        type=str,
+        default="user",
+        help="Role for the message (user, system, or assistant)",
+    )
+    args = parser.parse_args()
+    main(**vars(args))

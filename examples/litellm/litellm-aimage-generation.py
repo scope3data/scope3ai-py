@@ -1,18 +1,16 @@
 import asyncio
+
+from litellm import aimage_generation
+
 from scope3ai import Scope3AI
-from openai import AsyncOpenAI
 
 
-async def main(model: str, prompt: str, n: int, size: str):
-    client = AsyncOpenAI()
+async def main(model: str, prompt: str, size: str, api_key: str | None = None):
     scope3 = Scope3AI.init()
 
     with scope3.trace() as tracer:
-        response = await client.images.generate(
-            model=model,
-            prompt=prompt,
-            n=n,
-            size=size,
+        response = await aimage_generation(
+            model=model, prompt=prompt, size=size, api_key=api_key
         )
         print(response.data[0].url)
 
@@ -27,23 +25,28 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="OpenAI Image Generation with Environmental Impact Tracking"
+        description="LiteLLM Image Generation with Environmental Impact Tracking"
     )
     parser.add_argument(
         "--model",
         type=str,
-        default="dall-e-2",
+        default="dall-e-3",
         help="Model to use for image generation",
     )
     parser.add_argument(
         "--prompt",
         type=str,
-        default="A beautiful landscape",
+        default="A beautiful sunset over mountains",
         help="Prompt for image generation",
     )
-    parser.add_argument("--n", type=int, default=1, help="Number of images to generate")
     parser.add_argument(
-        "--size", type=str, default="512x512", help="Size of the generated image"
+        "--size", type=str, default="1024x1024", help="Size of the generated image"
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        help="API key (optional if set in environment)",
+        default=None,
     )
     args = parser.parse_args()
     asyncio.run(main(**vars(args)))

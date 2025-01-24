@@ -1,17 +1,18 @@
-from scope3ai import Scope3AI
 from openai import OpenAI
 
+from scope3ai import Scope3AI
 
-def main():
+
+def main(model: str, prompt: str, n: int, size: str):
     client = OpenAI()
     scope3 = Scope3AI.init()
 
     with scope3.trace() as tracer:
         response = client.images.generate(
-            model="dall-e-2",
-            prompt="A beautiful landscape",
-            n=1,
-            size="512x512",
+            model=model,
+            prompt=prompt,
+            n=n,
+            size=size,
         )
         print(response.data[0].url)
 
@@ -23,4 +24,26 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="OpenAI Image Generation with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="dall-e-2",
+        help="Model to use for image generation",
+    )
+    parser.add_argument(
+        "--prompt",
+        type=str,
+        default="A beautiful landscape",
+        help="Prompt for image generation",
+    )
+    parser.add_argument("--n", type=int, default=1, help="Number of images to generate")
+    parser.add_argument(
+        "--size", type=str, default="512x512", help="Size of the generated image"
+    )
+    args = parser.parse_args()
+    main(**vars(args))

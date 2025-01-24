@@ -1,16 +1,14 @@
 import asyncio
-
 import cohere
-
 from scope3ai import Scope3AI
 
 
-async def main():
+async def main(message: str, max_tokens: int, api_key: str | None = None):
     scope3 = Scope3AI.init()
-    co = cohere.Client()
+    co = cohere.Client(api_key=api_key) if api_key else cohere.Client()
 
     with scope3.trace() as tracer:
-        response = await co.chat(message="Hello!", max_tokens=100)
+        response = await co.chat(message=message, max_tokens=max_tokens)
         print(response)
 
         impact = tracer.impact()
@@ -20,4 +18,28 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Cohere Chat Completion with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--message",
+        type=str,
+        default="Hello!",
+        help="Message to send to the chat model",
+    )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=100,
+        help="Maximum number of tokens in the response",
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        help="Cohere API key (optional if set in environment)",
+        default=None,
+    )
+    args = parser.parse_args()
+    asyncio.run(main(**vars(args)))

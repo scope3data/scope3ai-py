@@ -1,20 +1,24 @@
-import asyncio
-
+# text-to-image.py
 from huggingface_hub import InferenceClient
+
 from scope3ai import Scope3AI
 from scope3ai.tracers.huggingface.text_to_image import HUGGING_FACE_TEXT_TO_IMAGE_TASK
 
 
-async def main():
+def main(model: str | None, prompt: str, num_images: int):
     client = InferenceClient()
     scope3 = Scope3AI.init()
-    model = client.get_recommended_model(HUGGING_FACE_TEXT_TO_IMAGE_TASK)
+    model_to_use = (
+        model
+        if model
+        else client.get_recommended_model(HUGGING_FACE_TEXT_TO_IMAGE_TASK)
+    )
 
     with scope3.trace() as tracer:
         response = client.text_to_image(
-            model=model,
-            prompt="A serene forest with sunlight filtering through trees",
-            num_images=1,
+            model=model_to_use,
+            prompt=prompt,
+            num_images=num_images,
         )
         print("Text to Image Response:", response)
         impact = tracer.impact(response)
@@ -25,4 +29,25 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Hugging Face Text-to-Image Generation with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Model to use (default: recommended model)",
+    )
+    parser.add_argument(
+        "--prompt",
+        type=str,
+        default="A serene forest with sunlight filtering through trees",
+        help="Text prompt for image generation",
+    )
+    parser.add_argument(
+        "--num-images", type=int, default=1, help="Number of images to generate"
+    )
+    args = parser.parse_args()
+    main(**vars(args))

@@ -3,6 +3,19 @@ from pathlib import Path
 from openai import OpenAI
 from scope3ai import Scope3AI
 
+DESCRIPTION = "OpenAI Speech to Text"
+
+ARGUMENTS = [
+    {"name_or_flags": "--model", "type": str, "default": "whisper-1", "help": "Model"},
+    {
+        "name_or_flags": "--response_format",
+        "type": str,
+        "default": "json",
+        "help": "Response format",
+    },
+    {"name_or_flags": "filename", "type": Path, "help": "The path to the input file"},
+]
+
 
 def main(filename: Path, model: str, response_format: str):
     client = OpenAI()
@@ -26,11 +39,8 @@ def main(filename: Path, model: str, response_format: str):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="OpenAI Speech to Text")
-    parser.add_argument("--model", type=str, default="whisper-1", help="Model")
-    parser.add_argument(
-        "--response_format", type=str, default="json", help="Response format"
-    )
-    parser.add_argument("filename", type=Path, help="The path to the input file")
+    parser = argparse.ArgumentParser(description=DESCRIPTION)
+    for argument in ARGUMENTS:
+        parser.add_argument(**argument)
     args = parser.parse_args()
     main(**vars(args))

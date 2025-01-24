@@ -1,19 +1,26 @@
 import asyncio
 from scope3ai import Scope3AI
-from anthropic import AsyncAnthropic
+from mistralai import Mistral
 
 
-async def main(model: str, message: str, max_tokens: int, api_key: str | None = None):
-    client = AsyncAnthropic(api_key=api_key) if api_key else AsyncAnthropic()
+async def main(
+    model: str,
+    message: str,
+    max_tokens: int,
+    temperature: float,
+    api_key: str | None = None,
+):
     scope3 = Scope3AI.init()
+    client = Mistral(api_key=api_key) if api_key else Mistral()
 
     with scope3.trace() as tracer:
-        response = await client.messages.create(
+        response = await client.chat.complete_async(
             model=model,
             messages=[{"role": "user", "content": message}],
             max_tokens=max_tokens,
+            temperature=temperature,
         )
-        print(response.content[0].text.strip())
+        print(response.choices[0].message.content)
 
         impact = tracer.impact()
         print(impact)
@@ -26,16 +33,16 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Anthropic Claude Async Chat Completion with Environmental Impact Tracking"
+        description="Mistral AI Completion with Environmental Impact Tracking"
     )
     parser.add_argument(
         "--model",
         type=str,
-        default="claude-3-5-sonnet-latest",
-        help="Model to use for chat completion",
+        default="mistral-large-latest",
+        help="Model to use for completion",
     )
     parser.add_argument(
-        "--message", type=str, default="Hello!", help="Message to send to Claude"
+        "--message", type=str, default="Hello!", help="Message to send to the model"
     )
     parser.add_argument(
         "--max-tokens",
@@ -44,9 +51,15 @@ if __name__ == "__main__":
         help="Maximum number of tokens in the response",
     )
     parser.add_argument(
+        "--temperature",
+        type=float,
+        default=0.7,
+        help="Temperature for response generation",
+    )
+    parser.add_argument(
         "--api-key",
         type=str,
-        help="Anthropic API key (optional if set in environment)",
+        help="Mistral API key (optional if set in environment)",
         default=None,
     )
     args = parser.parse_args()
