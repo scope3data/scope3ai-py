@@ -1,31 +1,8 @@
 import asyncio
+
 import cohere
+
 from scope3ai import Scope3AI
-
-DESCRIPTION = (
-    "Cohere Async Streaming Chat Completion with Environmental Impact Tracking"
-)
-
-ARGUMENTS = [
-    {
-        "name_or_flags": "--message",
-        "type": str,
-        "default": "Hello!",
-        "help": "Message to send to the chat model",
-    },
-    {
-        "name_or_flags": "--max-tokens",
-        "type": int,
-        "default": 100,
-        "help": "Maximum number of tokens in the response",
-    },
-    {
-        "name_or_flags": "--api-key",
-        "type": str,
-        "help": "Cohere API key (optional if set in environment)",
-        "default": None,
-    },
-]
 
 
 async def main(message: str, max_tokens: int, api_key: str | None = None):
@@ -46,8 +23,26 @@ async def main(message: str, max_tokens: int, api_key: str | None = None):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    for argument in ARGUMENTS:
-        parser.add_argument(**argument)
+    parser = argparse.ArgumentParser(
+        description="Cohere Chat Completion with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--message",
+        type=str,
+        default="Hello!",
+        help="Message to send to the chat model",
+    )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=100,
+        help="Maximum number of tokens in the response",
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        help="Cohere API key (optional if set in environment)",
+        default=None,
+    )
     args = parser.parse_args()
     asyncio.run(main(**vars(args)))

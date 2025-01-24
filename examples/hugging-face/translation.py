@@ -52,8 +52,23 @@ async def main(model: str | None, text: str, target_language: str):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    for argument in ARGUMENTS:
-        parser.add_argument(**argument)
+    parser = argparse.ArgumentParser(
+        description="Hugging Face Translation with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Model to use (default: recommended model)",
+    )
+    parser.add_argument(
+        "--text", type=str, default="Hello, how are you?", help="Text to translate"
+    )
+    parser.add_argument(
+        "--target-language",
+        type=str,
+        default="es",
+        help='Target language code (e.g., "es" for Spanish)',
+    )
     args = parser.parse_args()
     asyncio.run(main(**vars(args)))

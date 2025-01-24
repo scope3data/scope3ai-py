@@ -61,8 +61,35 @@ async def main(model: str | None, message: str, role: str, max_tokens: int):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    for argument in ARGUMENTS:
-        parser.add_argument(**argument)
+    parser = argparse.ArgumentParser(
+        description="Hugging Face Chat Completion with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Model to use (default: recommended model)",
+    )
+    parser.add_argument(
+        "--message",
+        type=str,
+        default="Hello World!",
+        help="Message to send to the chat model",
+    )
+    parser.add_argument(
+        "--role",
+        type=str,
+        default="user",
+        help="Role for the message (user, system, or assistant)",
+    )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=15,
+        help="Maximum number of tokens to generate",
+    )
+    parser.add_argument(
+        "--debug", action="store_true", help="Enable debug mode", default=False
+    )
     args = parser.parse_args()
     asyncio.run(main(**vars(args)))

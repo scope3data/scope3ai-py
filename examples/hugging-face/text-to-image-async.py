@@ -2,33 +2,9 @@
 import asyncio
 
 from huggingface_hub import AsyncInferenceClient
+
 from scope3ai import Scope3AI
 from scope3ai.tracers.huggingface.text_to_image import HUGGING_FACE_TEXT_TO_IMAGE_TASK
-
-DESCRIPTION = (
-    "Hugging Face Async Text-to-Image Generation with Environmental Impact Tracking"
-)
-
-ARGUMENTS = [
-    {
-        "name_or_flags": "--model",
-        "type": str,
-        "default": None,
-        "help": "Model to use (default: recommended model)",
-    },
-    {
-        "name_or_flags": "--prompt",
-        "type": str,
-        "default": "A serene forest with sunlight filtering through trees",
-        "help": "Text prompt for image generation",
-    },
-    {
-        "name_or_flags": "--num-images",
-        "type": int,
-        "default": 1,
-        "help": "Number of images to generate",
-    },
-]
 
 
 async def main(model: str | None, prompt: str, num_images: int):
@@ -57,8 +33,23 @@ async def main(model: str | None, prompt: str, num_images: int):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    for argument in ARGUMENTS:
-        parser.add_argument(**argument)
+    parser = argparse.ArgumentParser(
+        description="Hugging Face Text-to-Image Generation with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Model to use (default: recommended model)",
+    )
+    parser.add_argument(
+        "--prompt",
+        type=str,
+        default="A serene forest with sunlight filtering through trees",
+        help="Text prompt for image generation",
+    )
+    parser.add_argument(
+        "--num-images", type=int, default=1, help="Number of images to generate"
+    )
     args = parser.parse_args()
     asyncio.run(main(**vars(args)))

@@ -5,35 +5,6 @@ from huggingface_hub import AsyncInferenceClient
 from scope3ai import Scope3AI
 from scope3ai.tracers.huggingface.image_to_image import HUGGING_FACE_IMAGE_TO_IMAGE_TASK
 
-DESCRIPTION = "Hugging Face Async Image-to-Image Transformation with Environmental Impact Tracking"
-
-ARGUMENTS = [
-    {
-        "name_or_flags": "--model",
-        "type": str,
-        "default": None,
-        "help": "Model to use (default: recommended model)",
-    },
-    {
-        "name_or_flags": "--image-path",
-        "type": Path,
-        "required": True,
-        "help": "Path to the input image file",
-    },
-    {
-        "name_or_flags": "--prompt",
-        "type": str,
-        "default": "Make it look like a watercolor painting",
-        "help": "Prompt describing the desired transformation",
-    },
-    {
-        "name_or_flags": "--debug",
-        "action": "store_true",
-        "help": "Enable debug mode",
-        "default": False,
-    },
-]
-
 
 async def main(model: str | None, image_path: Path, prompt: str, debug: bool = False):
     client = AsyncInferenceClient()
@@ -63,8 +34,26 @@ async def main(model: str | None, image_path: Path, prompt: str, debug: bool = F
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    for argument in ARGUMENTS:
-        parser.add_argument(**argument)
+    parser = argparse.ArgumentParser(
+        description="Hugging Face Image-to-Image Transformation with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help="Model to use (default: recommended model)",
+    )
+    parser.add_argument(
+        "--image-path", type=Path, required=True, help="Path to the input image file"
+    )
+    parser.add_argument(
+        "--prompt",
+        type=str,
+        default="Make it look like a watercolor painting",
+        help="Prompt describing the desired transformation",
+    )
+    parser.add_argument(
+        "--debug", action="store_true", help="Enable debug mode", default=False
+    )
     args = parser.parse_args()
     asyncio.run(main(**vars(args)))
