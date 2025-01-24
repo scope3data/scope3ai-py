@@ -27,7 +27,7 @@ def send_impact():
     from scope3ai.api.types import ImpactRow
 
     print("Sending impact")
-    impact = ImpactRow(model="gpt_4o", input_tokens=100, output_tokens=100)
+    impact = ImpactRow(model_id="gpt_4o", input_tokens=100, output_tokens=100)
     response = client.impact(rows=[impact])
     print(response)
 

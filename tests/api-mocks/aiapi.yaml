@@ -13,37 +13,38 @@ paths:
       operationId: status
       responses:
         "200":
-          description: Model details retrieved successfully
+          description: Server is behaving normally
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/StatusResponse"
-        "406":
-          description: Not acceptable response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "429":
-          description: Too many requests
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "401":
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "415":
-          description: Unsupported media type
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /reload:
+    get:
+      servers:
+        - url: https://aiapi.scope3.com
+          description: API server
+      operationId: reload
+      responses:
+        "200":
+          description: Cache reloaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusResponse"
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
@@ -110,6 +111,262 @@ paths:
                 $ref: "#/components/schemas/Error"
         default:
           description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      servers:
+        - url: https://aiapi.scope3.com
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Create a model
+      operationId: createModel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModelCreateRequest"
+      responses:
+        "201":
+          description: Model created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Model"
+        "400":
+          description: Invalid request format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Model ID already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /model/{modelId}:
+    parameters:
+      - name: modelId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      servers:
+        - url: https://aiapi.scope3.com
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Get a specific model (global or custom)
+      operationId: getModel
+      responses:
+        "200":
+          description: Model retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Model"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Model not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      servers:
+        - url: https://aiapi.scope3.com
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Update a model
+      operationId: updateModel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModelUpdateRequest"
+      responses:
+        "200":
+          description: Model updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Model"
+        "400":
+          description: Invalid request format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Model not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      servers:
+        - url: https://aiapi.scope3.com
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Delete a model
+      operationId: deleteModel
+      responses:
+        "204":
+          description: Model deleted successfully
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Model not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /model/{modelId}/alias:
+    parameters:
+      - name: modelId
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      servers:
+        - url: https://aiapi.scope3.com
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Add a new alias to a model
+      operationId: addModelAlias
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - alias
+              properties:
+                alias:
+                  type: string
+                  example: "claude-latest"
+      responses:
+        "204":
+          description: Alias deleted successfully
+        "400":
+          description: Invalid request format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Model not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Alias already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /model/{modelId}/alias/{alias}:
+    parameters:
+      - name: modelId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: alias
+        in: path
+        required: true
+        schema:
+          type: string
+    delete:
+      servers:
+        - url: https://aiapi.scope3.com
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Remove an alias from a model
+      operationId: removeModelAlias
+      responses:
+        "204":
+          description: Alias deleted successfully
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Alias not found
           content:
             application/json:
               schema:
@@ -390,6 +647,166 @@ paths:
                 $ref: "#/components/schemas/Error"
         default:
           description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      servers:
+        - url: https://aiapi.scope3.com
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Create a GPU
+      operationId: createGPU
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GPUCreateRequest"
+      responses:
+        "201":
+          description: GPU created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GPU"
+        "400":
+          description: Invalid request format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: GPU ID already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /gpu/{gpuId}:
+    parameters:
+      - name: gpuId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      servers:
+        - url: https://aiapi.scope3.com
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Get a specific GPU (global or custom)
+      operationId: getGPU
+      responses:
+        "200":
+          description: GPU retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GPU"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: GPU not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      servers:
+        - url: https://aiapi.scope3.com
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Update a GPU
+      operationId: updateGPU
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GPUUpdateRequest"
+      responses:
+        "200":
+          description: GPU updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GPU"
+        "400":
+          description: Invalid request format
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: GPU not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      servers:
+        - url: https://aiapi.scope3.com
+          description: API server
+      security:
+        - bearerAuth: []
+      summary: Delete a GPU
+      operationId: deleteGPU
+      responses:
+        "204":
+          description: GPU deleted successfully
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: GPU not found
           content:
             application/json:
               schema:
@@ -732,6 +1149,241 @@ components:
           items:
             $ref: "#/components/schemas/GPU"
 
+    ModelCreateRequest:
+      type: object
+      required:
+        - id
+      description: Create a new model
+      properties:
+        id:
+          type: string
+          example: "gpt-4-turbo"
+        name:
+          type: string
+          example: "GPT-4 Turbo"
+        family:
+          type: string
+          example: "gpt"
+        hugging_face_path:
+          type: string
+          example: "EleutherAI/gpt-neo-2.7B"
+        benchmark_model_id:
+          type: string
+          example: "gpt-4-turbo"
+        estimated_use_life_days:
+          type: number
+          example: 365
+          format: float
+          x-go-type: float64
+        estimated_requests_per_day:
+          type: number
+          example: 1000
+          format: float
+          x-go-type: float64
+        fine_tuned_from_model_id:
+          type: string
+          example: "gpt-4-turbo"
+        aliases:
+          type: array
+          items:
+            type: string
+          maxItems: 100
+          example: ["claude-latest"]
+        total_params_billions:
+          type: number
+          example: 175
+          format: float
+          x-go-type: float64
+        number_of_experts:
+          type: integer
+          x-go-type: int64
+          example: 7
+        params_per_expert_billions:
+          type: number
+          example: 8
+          format: float
+          x-go-type: float64
+        training_usage_energy_kwh:
+          type: number
+          example: 1013.1
+          format: float
+          x-go-type: float64
+        training_usage_emissions_kgco2e:
+          type: number
+          example: 1013.1
+          format: float
+          x-go-type: float64
+        training_usage_water_l:
+          type: number
+          example: 1013.1
+          format: float
+          x-go-type: float64
+        training_embodied_emissions_kgco2e:
+          type: number
+          example: 11013.1
+          format: float
+          x-go-type: float64
+        training_embodied_water_l:
+          type: number
+          example: 11013.1
+          format: float
+          x-go-type: float64
+
+    ModelUpdateRequest:
+      type: object
+      description: Update an existing model
+      properties:
+        name:
+          type: string
+          example: "GPT-4 Turbo"
+        family:
+          type: string
+          example: "gpt"
+        hugging_face_path:
+          type: string
+          example: "EleutherAI/gpt-neo-2.7B"
+        benchmark_model_id:
+          type: string
+          example: "gpt-4-turbo"
+        estimated_use_life_days:
+          type: number
+          format: float
+          example: 365
+          x-go-type: float64
+        estimated_requests_per_day:
+          type: number
+          example: 1000
+          format: float
+          x-go-type: float64
+        fine_tuned_from_model_id:
+          type: string
+          example: "gpt-4-turbo"
+        total_params_billions:
+          type: number
+          example: 175
+          format: float
+          x-go-type: float64
+        number_of_experts:
+          type: integer
+          x-go-type: int64
+          example: 7
+        params_per_expert_billions:
+          type: number
+          example: 8
+          format: float
+          x-go-type: float64
+        training_usage_energy_kwh:
+          type: number
+          example: 1013.1
+          format: float
+          x-go-type: float64
+        training_usage_emissions_kgco2e:
+          type: number
+          example: 1013.1
+          format: float
+          x-go-type: float64
+        training_usage_water_l:
+          type: number
+          example: 1013.1
+          format: float
+          x-go-type: float64
+        training_embodied_emissions_kgco2e:
+          type: number
+          example: 11013.1
+          format: float
+          x-go-type: float64
+        training_embodied_water_l:
+          type: number
+          example: 11013.1
+          format: float
+          x-go-type: float64
+
+    GPUCreateRequest:
+      type: object
+      required:
+        - id
+        - name
+        - max_power_w
+        - embodied_emissions_kgco2e
+        - embodied_water_mlh2o
+        - performance_ratio_to_h200
+        - ols_intercept
+        - ols_coefficient_gpu_count
+      properties:
+        name:
+          type: string
+          example: "NVIDIA A100 40GB"
+        id:
+          type: string
+          example: "a100_40gb"
+        max_power_w:
+          type: number
+          example: 700
+          format: float
+          x-go-type: float64
+        embodied_emissions_kgco2e:
+          type: number
+          example: 282.1
+          format: float
+          x-go-type: float64
+        embodied_water_mlh2o:
+          type: number
+          example: 181.1
+          format: float
+          x-go-type: float64
+        performance_ratio_to_h200:
+          type: number
+          example: 1.5
+          format: float
+          x-go-type: float64
+        ols_coefficient_gpu_count:
+          type: number
+          example: 11.4
+          format: float
+          x-go-type: float64
+        ols_intercept:
+          type: number
+          example: 11.4
+          format: float
+          x-go-type: float64
+
+    GPUUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "NVIDIA A100 40GB"
+        max_power_w:
+          type: number
+          example: 700
+          format: float
+          x-go-type: float64
+        embodied_emissions_kgco2e:
+          type: number
+          example: 282.1
+          format: float
+          x-go-type: float64
+        embodied_water_mlh2o:
+          type: number
+          example: 181.1
+          format: float
+          x-go-type: float64
+        performance_ratio_to_h200:
+          type: number
+          example: 1.5
+          format: float
+          x-go-type: float64
+        ols_coefficient_gpu_count:
+          type: number
+          example: 11.4
+          format: float
+          x-go-type: float64
+        ols_intercept:
+          type: number
+          example: 11.4
+          format: float
+          x-go-type: float64
+
     ImpactBigQueryRequest:
       type: object
       required:
@@ -757,6 +1409,7 @@ components:
           description: User-defined context from BigQuery
         calls:
           type: array
+          maxItems: 1000
           items:
             description: |
               Array of function call parameters in this exact order:
@@ -940,8 +1593,9 @@ components:
           maximum: 100000000
           example: 128
         input_audio_seconds:
-          type: integer
-          x-go-type: int64
+          type: number
+          format: float
+          x-go-type: float64
           description: the duration of audio input in seconds
           minimum: 0
           maximum: 100000
@@ -1004,11 +1658,23 @@ components:
       type: object
       required:
       - id
+      - created_at
+      - updated_at
+      - created_by
+      - customer_id
+      - aliases
       additionalProperties: false
       properties:
         id:
           type: string
           example: "gpt-4-turbo"
+        aliases:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+          description: List of aliases for this model; must be globally-unique with id
+          example: ["claude-latest", "claude-3-sonnet-current"]
         name:
           type: string
           example: "GPT-4 Turbo"
@@ -1082,6 +1748,19 @@ components:
         fine_tuned_from_model_id:
           type: string
           example: llama_31_8b
+        customer_id:
+          type: integer
+          x-go-type: int64
+          description: ID of the customer who owns this node (visible to admins only)
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+          description: ID of the user who created the node (admin or owner only)
 
     ImpactResponse:
       title: Impact Response
@@ -1250,7 +1929,7 @@ components:
             - updated_at
           properties:
             customer_id:
-              type: int
+              type: integer
               x-go-type: int64
               description: ID of the customer who owns this node (visible to admins only)
             created_at:
@@ -1267,12 +1946,17 @@ components:
       type: object
       required:
       - id
+      - name
       - max_power_w
       - embodied_emissions_kgco2e
       - embodied_water_mlh2o
       - performance_ratio_to_h200
       - ols_intercept
       - ols_coefficient_gpu_count
+      - created_at
+      - updated_at
+      - customer_id
+      - created_by
       additionalProperties: false
       properties:
         name:
@@ -1311,6 +1995,20 @@ components:
           example: 11.4
           format: float
           x-go-type: float64
+        customer_id:
+          type: integer
+          x-go-type: int64
+          description: ID of the customer who owns this node (visible to admins only)
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+          description: ID of the user who created the node (admin or owner only)
+        
 
     Image:
       type: string
