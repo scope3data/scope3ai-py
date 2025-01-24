@@ -2,41 +2,6 @@ from pathlib import Path
 from scope3ai import Scope3AI
 from litellm import speech
 
-DESCRIPTION = "LiteLLM Text-to-Speech with Environmental Impact Tracking"
-
-ARGUMENTS = [
-    {
-        "name_or_flags": "--model",
-        "type": str,
-        "default": "tts-1",
-        "help": "Model to use for speech synthesis",
-    },
-    {
-        "name_or_flags": "--text",
-        "type": str,
-        "default": "Hello, this is a test of text-to-speech conversion.",
-        "help": "Text to convert to speech",
-    },
-    {
-        "name_or_flags": "--voice",
-        "type": str,
-        "default": "alloy",
-        "help": "Voice to use for synthesis",
-    },
-    {
-        "name_or_flags": "--output",
-        "type": Path,
-        "default": Path("output.mp3"),
-        "help": "Output audio file path",
-    },
-    {
-        "name_or_flags": "--api-key",
-        "type": str,
-        "help": "API key (optional if set in environment)",
-        "default": None,
-    },
-]
-
 
 def main(model: str, text: str, voice: str, output: Path, api_key: str | None = None):
     scope3 = Scope3AI.init()
@@ -56,8 +21,29 @@ def main(model: str, text: str, voice: str, output: Path, api_key: str | None = 
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    for argument in ARGUMENTS:
-        parser.add_argument(**argument)
+    parser = argparse.ArgumentParser(
+        description="LiteLLM Text-to-Speech with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model", type=str, default="tts-1", help="Model to use for speech synthesis"
+    )
+    parser.add_argument(
+        "--text",
+        type=str,
+        default="Hello, this is a test of text-to-speech conversion.",
+        help="Text to convert to speech",
+    )
+    parser.add_argument(
+        "--voice", type=str, default="alloy", help="Voice to use for synthesis"
+    )
+    parser.add_argument(
+        "--output", type=Path, default=Path("output.mp3"), help="Output audio file path"
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        help="API key (optional if set in environment)",
+        default=None,
+    )
     args = parser.parse_args()
     main(**vars(args))

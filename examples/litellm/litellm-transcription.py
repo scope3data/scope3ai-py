@@ -2,35 +2,6 @@ from pathlib import Path
 from scope3ai import Scope3AI
 from litellm import transcription
 
-DESCRIPTION = "LiteLLM Speech-to-Text Transcription with Environmental Impact Tracking"
-
-ARGUMENTS = [
-    {
-        "name_or_flags": "--model",
-        "type": str,
-        "default": "whisper-1",
-        "help": "Model to use for transcription",
-    },
-    {
-        "name_or_flags": "--audio-path",
-        "type": Path,
-        "required": True,
-        "help": "Path to the input audio file",
-    },
-    {
-        "name_or_flags": "--language",
-        "type": str,
-        "default": None,
-        "help": "Language of the audio (optional)",
-    },
-    {
-        "name_or_flags": "--api-key",
-        "type": str,
-        "help": "API key (optional if set in environment)",
-        "default": None,
-    },
-]
-
 
 def main(
     model: str,
@@ -57,8 +28,23 @@ def main(
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    for argument in ARGUMENTS:
-        parser.add_argument(**argument)
+    parser = argparse.ArgumentParser(
+        description="LiteLLM Speech-to-Text Transcription with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model", type=str, default="whisper-1", help="Model to use for transcription"
+    )
+    parser.add_argument(
+        "--audio-path", type=Path, required=True, help="Path to the input audio file"
+    )
+    parser.add_argument(
+        "--language", type=str, default=None, help="Language of the audio (optional)"
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        help="API key (optional if set in environment)",
+        default=None,
+    )
     args = parser.parse_args()
     main(**vars(args))

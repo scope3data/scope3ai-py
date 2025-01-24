@@ -1,36 +1,6 @@
 from scope3ai import Scope3AI
 from openai import OpenAI
 
-DESCRIPTION = "OpenAI Streaming Chat Completion with Environmental Impact Tracking"
-
-ARGUMENTS = [
-    {
-        "name_or_flags": "--model",
-        "type": str,
-        "default": "gpt-3.5-turbo",
-        "help": "Model to use for chat completion",
-    },
-    {
-        "name_or_flags": "--message",
-        "type": str,
-        "default": "Hello!",
-        "help": "Message to send to the chat model",
-    },
-    {
-        "name_or_flags": "--role",
-        "type": str,
-        "default": "user",
-        "help": "Role for the message (user, system, or assistant)",
-    },
-    {
-        "name_or_flags": "--no-stream",
-        "action": "store_false",
-        "dest": "stream",
-        "help": "Disable streaming mode",
-        "default": True,
-    },
-]
-
 
 def main(model: str, message: str, role: str, stream: bool):
     client = OpenAI()
@@ -60,8 +30,33 @@ def main(model: str, message: str, role: str, stream: bool):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    for argument in ARGUMENTS:
-        parser.add_argument(**argument)
+    parser = argparse.ArgumentParser(
+        description="OpenAI Streaming Chat Completion with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="gpt-3.5-turbo",
+        help="Model to use for chat completion",
+    )
+    parser.add_argument(
+        "--message",
+        type=str,
+        default="Hello!",
+        help="Message to send to the chat model",
+    )
+    parser.add_argument(
+        "--role",
+        type=str,
+        default="user",
+        help="Role for the message (user, system, or assistant)",
+    )
+    parser.add_argument(
+        "--no-stream",
+        action="store_false",
+        dest="stream",
+        help="Disable streaming mode",
+        default=True,
+    )
     args = parser.parse_args()
     main(**vars(args))

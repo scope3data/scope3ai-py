@@ -54,8 +54,29 @@ async def main(model: str, message: str, max_tokens: int, api_key: str | None = 
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    for argument in ARGUMENTS:
-        parser.add_argument(**argument)
+    parser = argparse.ArgumentParser(
+        description="LiteLLM Completion with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="claude-3-sonnet-20240229",
+        help="Model to use for completion",
+    )
+    parser.add_argument(
+        "--message", type=str, default="Hello!", help="Message to send to the model"
+    )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=100,
+        help="Maximum number of tokens in the response",
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        help="API key (optional if set in environment)",
+        default=None,
+    )
     args = parser.parse_args()
     asyncio.run(main(**vars(args)))

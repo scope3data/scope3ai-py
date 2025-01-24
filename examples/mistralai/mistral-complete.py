@@ -1,41 +1,6 @@
 from scope3ai import Scope3AI
 from mistralai import Mistral
 
-DESCRIPTION = "Mistral AI Completion with Environmental Impact Tracking"
-
-ARGUMENTS = [
-    {
-        "name_or_flags": "--model",
-        "type": str,
-        "default": "mistral-large-latest",
-        "help": "Model to use for completion",
-    },
-    {
-        "name_or_flags": "--message",
-        "type": str,
-        "default": "Hello!",
-        "help": "Message to send to the model",
-    },
-    {
-        "name_or_flags": "--max-tokens",
-        "type": int,
-        "default": 100,
-        "help": "Maximum number of tokens in the response",
-    },
-    {
-        "name_or_flags": "--temperature",
-        "type": float,
-        "default": 0.7,
-        "help": "Temperature for response generation",
-    },
-    {
-        "name_or_flags": "--api-key",
-        "type": str,
-        "help": "Mistral API key (optional if set in environment)",
-        "default": None,
-    },
-]
-
 
 def main(
     model: str,
@@ -66,8 +31,35 @@ def main(
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    for argument in ARGUMENTS:
-        parser.add_argument(**argument)
+    parser = argparse.ArgumentParser(
+        description="Mistral AI Completion with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="mistral-large-latest",
+        help="Model to use for completion",
+    )
+    parser.add_argument(
+        "--message", type=str, default="Hello!", help="Message to send to the model"
+    )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=100,
+        help="Maximum number of tokens in the response",
+    )
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=0.7,
+        help="Temperature for response generation",
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        help="Mistral API key (optional if set in environment)",
+        default=None,
+    )
     args = parser.parse_args()
     main(**vars(args))

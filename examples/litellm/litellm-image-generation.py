@@ -1,35 +1,6 @@
 from scope3ai import Scope3AI
 from litellm import image_generation
 
-DESCRIPTION = "LiteLLM Image Generation with Environmental Impact Tracking"
-
-ARGUMENTS = [
-    {
-        "name_or_flags": "--model",
-        "type": str,
-        "default": "dall-e-3",
-        "help": "Model to use for image generation",
-    },
-    {
-        "name_or_flags": "--prompt",
-        "type": str,
-        "default": "A beautiful sunset over mountains",
-        "help": "Prompt for image generation",
-    },
-    {
-        "name_or_flags": "--size",
-        "type": str,
-        "default": "1024x1024",
-        "help": "Size of the generated image",
-    },
-    {
-        "name_or_flags": "--api-key",
-        "type": str,
-        "help": "API key (optional if set in environment)",
-        "default": None,
-    },
-]
-
 
 def main(model: str, prompt: str, size: str, api_key: str | None = None):
     scope3 = Scope3AI.init()
@@ -50,8 +21,29 @@ def main(model: str, prompt: str, size: str, api_key: str | None = None):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    for argument in ARGUMENTS:
-        parser.add_argument(**argument)
+    parser = argparse.ArgumentParser(
+        description="LiteLLM Image Generation with Environmental Impact Tracking"
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="dall-e-3",
+        help="Model to use for image generation",
+    )
+    parser.add_argument(
+        "--prompt",
+        type=str,
+        default="A beautiful sunset over mountains",
+        help="Prompt for image generation",
+    )
+    parser.add_argument(
+        "--size", type=str, default="1024x1024", help="Size of the generated image"
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        help="API key (optional if set in environment)",
+        default=None,
+    )
     args = parser.parse_args()
     main(**vars(args))
