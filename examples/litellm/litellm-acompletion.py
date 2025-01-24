@@ -1,15 +1,21 @@
 import asyncio
-import cohere
 from scope3ai import Scope3AI
+from litellm import acompletion
 
-DESCRIPTION = "Cohere Async Chat Completion with Environmental Impact Tracking"
+DESCRIPTION = "LiteLLM Async Completion with Environmental Impact Tracking"
 
 ARGUMENTS = [
+    {
+        "name_or_flags": "--model",
+        "type": str,
+        "default": "claude-3-sonnet-20240229",
+        "help": "Model to use for completion",
+    },
     {
         "name_or_flags": "--message",
         "type": str,
         "default": "Hello!",
-        "help": "Message to send to the chat model",
+        "help": "Message to send to the model",
     },
     {
         "name_or_flags": "--max-tokens",
@@ -20,21 +26,26 @@ ARGUMENTS = [
     {
         "name_or_flags": "--api-key",
         "type": str,
-        "help": "Cohere API key (optional if set in environment)",
+        "help": "API key (optional if set in environment)",
         "default": None,
     },
 ]
 
 
-async def main(message: str, max_tokens: int, api_key: str | None = None):
+async def main(model: str, message: str, max_tokens: int, api_key: str | None = None):
     scope3 = Scope3AI.init()
-    co = cohere.Client(api_key=api_key) if api_key else cohere.Client()
 
     with scope3.trace() as tracer:
-        response = await co.chat(message=message, max_tokens=max_tokens)
-        print(response)
+        response = await acompletion(
+            model=model,
+            messages=[{"role": "user", "content": message}],
+            max_tokens=max_tokens,
+            api_key=api_key,
+        )
+        print(response.choices[0].message.content)
 
         impact = tracer.impact()
+        print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")
         print(f"Total GCO2e: {impact.total_gco2e}")
         print(f"Total MLH2O: {impact.total_mlh2o}")

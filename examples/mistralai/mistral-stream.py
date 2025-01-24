@@ -1,26 +1,20 @@
-import cohere
 from scope3ai import Scope3AI
+from mistralai import Mistral
 
-DESCRIPTION = "Cohere v2 Streaming Chat Completion with Environmental Impact Tracking"
+DESCRIPTION = "Mistral AI Streaming Completion with Environmental Impact Tracking"
 
 ARGUMENTS = [
     {
         "name_or_flags": "--model",
         "type": str,
-        "default": "command-r-plus-08-2024",
-        "help": "Model to use for chat completion",
+        "default": "mistral-large-latest",
+        "help": "Model to use for completion",
     },
     {
         "name_or_flags": "--message",
         "type": str,
-        "default": "Hello world!",
-        "help": "Message to send to the chat model",
-    },
-    {
-        "name_or_flags": "--role",
-        "type": str,
-        "default": "user",
-        "help": "Role for the message",
+        "default": "Hello!",
+        "help": "Message to send to the model",
     },
     {
         "name_or_flags": "--max-tokens",
@@ -29,30 +23,43 @@ ARGUMENTS = [
         "help": "Maximum number of tokens in the response",
     },
     {
+        "name_or_flags": "--temperature",
+        "type": float,
+        "default": 0.7,
+        "help": "Temperature for response generation",
+    },
+    {
         "name_or_flags": "--api-key",
         "type": str,
-        "help": "Cohere API key (optional if set in environment)",
+        "help": "Mistral API key (optional if set in environment)",
         "default": None,
     },
 ]
 
 
 def main(
-    model: str, message: str, role: str, max_tokens: int, api_key: str | None = None
+    model: str,
+    message: str,
+    max_tokens: int,
+    temperature: float,
+    api_key: str | None = None,
 ):
     scope3 = Scope3AI.init()
-    co = cohere.ClientV2(api_key=api_key) if api_key else cohere.ClientV2()
+    client = Mistral(api_key=api_key) if api_key else Mistral()
 
     with scope3.trace() as tracer:
-        stream = co.chat_stream(
+        stream = client.chat.stream(
             model=model,
-            messages=[{"role": role, "content": message}],
+            messages=[{"role": "user", "content": message}],
             max_tokens=max_tokens,
+            temperature=temperature,
         )
-        for event in stream:
-            print(event)
+        for chunk in stream:
+            print(chunk.choices[0].delta.content or "", end="", flush=True)
+        print()
 
         impact = tracer.impact()
+        print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")
         print(f"Total GCO2e: {impact.total_gco2e}")
         print(f"Total MLH2O: {impact.total_mlh2o}")

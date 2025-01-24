@@ -1,49 +1,48 @@
 import asyncio
-import cohere
 from scope3ai import Scope3AI
+from litellm import aimage_generation
 
-DESCRIPTION = "Cohere v2 Async Chat Completion with Environmental Impact Tracking"
+DESCRIPTION = "LiteLLM Async Image Generation with Environmental Impact Tracking"
 
 ARGUMENTS = [
     {
         "name_or_flags": "--model",
         "type": str,
-        "default": "command-r-plus-08-2024",
-        "help": "Model to use for chat completion",
+        "default": "dall-e-3",
+        "help": "Model to use for image generation",
     },
     {
-        "name_or_flags": "--message",
+        "name_or_flags": "--prompt",
         "type": str,
-        "default": "Hello world!",
-        "help": "Message to send to the chat model",
+        "default": "A beautiful sunset over mountains",
+        "help": "Prompt for image generation",
     },
     {
-        "name_or_flags": "--role",
+        "name_or_flags": "--size",
         "type": str,
-        "default": "user",
-        "help": "Role for the message",
+        "default": "1024x1024",
+        "help": "Size of the generated image",
     },
     {
         "name_or_flags": "--api-key",
         "type": str,
-        "help": "Cohere API key (optional if set in environment)",
+        "help": "API key (optional if set in environment)",
         "default": None,
     },
 ]
 
 
-async def main(model: str, message: str, role: str, api_key: str | None = None):
+async def main(model: str, prompt: str, size: str, api_key: str | None = None):
     scope3 = Scope3AI.init()
-    co = cohere.AsyncClientV2(api_key=api_key) if api_key else cohere.AsyncClientV2()
 
     with scope3.trace() as tracer:
-        response = await co.chat(
-            model=model,
-            messages=[{"role": role, "content": message}],
+        response = await aimage_generation(
+            model=model, prompt=prompt, size=size, api_key=api_key
         )
-        print(response)
+        print(response.data[0].url)
 
         impact = tracer.impact()
+        print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")
         print(f"Total GCO2e: {impact.total_gco2e}")
         print(f"Total MLH2O: {impact.total_mlh2o}")
