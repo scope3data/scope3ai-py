@@ -48,7 +48,7 @@ def _openai_translation_get_impact_row(
     options = {}
     duration = _get_file_audio_duration(kwargs["file"])
     if duration is not None:
-        options["input_audio_seconds"] = int(duration)
+        options["input_audio_seconds"] = duration
 
     scope3_row = ImpactRow(
         model_id=model,

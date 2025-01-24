@@ -2,8 +2,8 @@ from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
 
 from scope3ai.base_tracer import BaseTracer
 from scope3ai.tracers.huggingface.chat import (
-    huggingface_chat_wrapper,
     huggingface_async_chat_wrapper,
+    huggingface_chat_wrapper,
 )
 from scope3ai.tracers.huggingface.image_to_image import (
     huggingface_image_to_image_wrapper,
@@ -22,8 +22,8 @@ from scope3ai.tracers.huggingface.text_to_speech import (
     huggingface_text_to_speech_wrapper_async,
 )
 from scope3ai.tracers.huggingface.translation import (
-    huggingface_translation_wrapper_non_stream,
     huggingface_translation_wrapper_async_non_stream,
+    huggingface_translation_wrapper_non_stream,
 )
 from scope3ai.tracers.huggingface.vision.image_classification import (
     huggingface_image_classification_wrapper,

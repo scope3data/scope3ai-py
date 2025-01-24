@@ -22,7 +22,7 @@ def vcr_config():
     return {
         "filter_headers": [("authorization", "DUMMY"), ("x-api-key", "DUMMY")],
         "ignore_localhost": True,
-        "ignore_hosts": ["aiapi.scope3.com"],
+        "ignore_hosts": ["aiapi.scope3.com", "aiapi.staging.scope3.com"],
     }
 
 
@@ -36,6 +36,14 @@ def is_responsive(url):
 
 @pytest.fixture(scope="session")
 def docker_api_info(docker_ip, docker_services):
+    if os.environ.get("SCOPE3AI_TEST_MODE_USING_REAL_API"):
+        from scope3ai.api.defaults import DEFAULT_API_URL
+
+        return {
+            "api_key": os.getenv("SCOPE3AI_API_KEY"),
+            "api_url": os.getenv("SCOPE3AI_API_URL", DEFAULT_API_URL),
+        }
+
     port = docker_services.port_for("prism", 4010)
     url = f"http://{docker_ip}:{port}"
     docker_services.wait_until_responsive(

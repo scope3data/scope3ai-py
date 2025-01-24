@@ -1,6 +1,6 @@
 import time
 from dataclasses import asdict, dataclass
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional, Tuple, Union
 
 import tiktoken
 from aiohttp import ClientResponse
@@ -34,7 +34,7 @@ def _hugging_face_translation_get_impact_row(
     http_response: Optional[Union[ClientResponse, Response]],
     args: Any,
     kwargs: Any,
-) -> (TranslationOutput, ImpactRow):
+) -> Tuple[TranslationOutput, ImpactRow]:
     encoder = tiktoken.get_encoding("cl100k_base")
     input_tokens = 0
     compute_time = time.perf_counter() - timer_start

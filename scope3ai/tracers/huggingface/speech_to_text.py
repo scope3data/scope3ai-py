@@ -1,6 +1,6 @@
 import time
 from dataclasses import asdict, dataclass
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional, Tuple, Union
 
 from aiohttp import ClientResponse
 from huggingface_hub import (
@@ -35,19 +35,20 @@ def _hugging_face_automatic_recognition_get_impact_row(
     http_response: Optional[Union[ClientResponse, Response]],
     args: Any,
     kwargs: Any,
-) -> (AutomaticSpeechRecognitionOutput, ImpactRow):
+) -> Tuple[AutomaticSpeechRecognitionOutput, ImpactRow]:
     compute_audio_length = None
+    compute_time = 0
     if http_response:
         compute_audio_length = http_response.headers.get("x-compute-audio-length")
         compute_time = http_response.headers.get("x-compute-time")
-    else:
+    if not compute_time:
         compute_time = time.perf_counter() - timer_start
     if not compute_audio_length:
         compute_audio_length = 0
     scope3_row = ImpactRow(
         model_id=model,
         task=Task.text_to_speech,
-        input_audio_seconds=int(float(compute_audio_length)),
+        input_audio_seconds=float(compute_audio_length),
         request_duration_ms=float(compute_time) * 1000,
         managed_service_id=PROVIDER,
     )

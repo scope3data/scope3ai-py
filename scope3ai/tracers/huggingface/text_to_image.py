@@ -1,6 +1,6 @@
 import time
 from dataclasses import dataclass
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional, Tuple, Union
 
 import tiktoken
 from aiohttp import ClientResponse
@@ -35,7 +35,7 @@ def _hugging_face_text_to_image_get_impact_row(
     http_response: Optional[Union[ClientResponse, Response]],
     args: Any,
     kwargs: Any,
-) -> (TextToImageOutput, ImpactRow):
+) -> Tuple[TextToImageOutput, ImpactRow]:
     input_tokens = 0
     compute_time = time.perf_counter() - timer_start
     if http_response:
