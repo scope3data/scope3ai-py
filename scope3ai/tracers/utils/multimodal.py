@@ -40,12 +40,13 @@ def aggregate_multimodal_audio(content: dict, row: ImpactRow) -> None:
     # decode the base64 data
     audio_data = base64.b64decode(b64data)
     # TODO: accept audio duration as float in AiApi
-    duration = int(_get_audio_duration(format, audio_data))
+    duration = _get_audio_duration(format, audio_data)
 
-    if row.input_audio_seconds is None:
-        row.input_audio_seconds = duration
-    else:
-        row.input_audio_seconds += duration
+    if duration:
+        if row.input_audio_seconds is None:
+            row.input_audio_seconds = duration
+        else:
+            row.input_audio_seconds += duration
 
 
 def aggregate_multimodal_content(
