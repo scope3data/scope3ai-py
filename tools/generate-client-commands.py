@@ -24,6 +24,21 @@ class GenerateClientCommands:
         self.generate()
 
         output_filename.write_text(self.output.getvalue())
+        
+        # Run ruff import organization
+        result = subprocess.run(
+            ["ruff", "check", "--select", "I", "--fix", str(output_filename)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            print(f"Ruff import organization failed:\n{result.stderr}")
+            raise subprocess.CalledProcessError(
+                result.returncode, result.args, result.stdout, result.stderr
+            )
+
+        # Run ruff format
         result = subprocess.run(
             ["ruff", "format", str(output_filename)],
             capture_output=True,
