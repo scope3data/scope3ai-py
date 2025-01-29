@@ -1,8 +1,9 @@
 import yaml
+from typing import Optional, TextIO
 
 
 class GenerateClientCommands:
-    def __init__(self, api_file: str):
+    def __init__(self, api_file: str, output: TextIO):
         with open(api_file, "r") as f:
             self.openapi = yaml.safe_load(f)
         # Import at top level to avoid repeated imports
@@ -124,7 +125,7 @@ class GenerateClientCommands:
         body.append(',\n'.join(execute_args))
         body.append('    )')
         
-        print('\n'.join(body))
+        self.output.write('\n'.join(body) + '\n\n')
 
     def normalize_name(self, name: str) -> str:
         """Convert camelCase to snake_case"""
@@ -147,6 +148,8 @@ if __name__ == "__main__":
         description="Generate client commands from OpenAPI spec"
     )
     parser.add_argument("api_file", type=str, help="OpenAPI spec file")
+    parser.add_argument("output_file", type=str, help="Output Python file")
     args = parser.parse_args()
 
-    generator = GenerateClientCommands(args.api_file)
+    with open(args.output_file, "w") as f:
+        generator = GenerateClientCommands(args.api_file, f)
