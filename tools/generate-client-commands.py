@@ -32,7 +32,7 @@ class GenerateClientCommands:
 
         # Handle path parameters first
         for parameter in path_params:
-            param_name = parameter["name"]
+            param_name = self.normalize_name(parameter["name"])
             schema = parameter.get("schema", {})
             if "$ref" in schema:
                 param_type = schema["$ref"].split("/")[-1]
@@ -44,7 +44,7 @@ class GenerateClientCommands:
         # Handle operation-specific parameters
         parameters = operation.get("parameters", [])
         for parameter in parameters:
-            param_name = parameter["name"]
+            param_name = self.normalize_name(parameter["name"])
             schema = parameter.get("schema", {})
             if "$ref" in schema:
                 param_type = schema["$ref"].split("/")[-1]
@@ -128,14 +128,18 @@ class GenerateClientCommands:
         
         print('\n'.join(body))
 
-    def normalize_operation_id(self, operation_id: str) -> str:
-        """Convert camelCase operationId to snake_case function name"""
+    def normalize_name(self, name: str) -> str:
+        """Convert camelCase to snake_case"""
         import re
 
         # Insert underscore between camelCase
-        name = re.sub("([a-z0-9])([A-Z])", r"\1_\2", operation_id)
+        name = re.sub("([a-z0-9])([A-Z])", r"\1_\2", name)
         # Convert to lowercase
         return name.lower()
+
+    def normalize_operation_id(self, operation_id: str) -> str:
+        """Convert camelCase operationId to snake_case function name"""
+        return self.normalize_name(operation_id)
 
 
 if __name__ == "__main__":
