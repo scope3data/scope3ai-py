@@ -154,7 +154,11 @@ if __name__ == "__main__":
         description="Generate client commands from OpenAPI spec"
     )
     parser.add_argument("spec", type=str, help="OpenAPI spec file")
-    parser.add_argument("output", type=str, help="Output Python file")
+    parser.add_argument(
+        "output",
+        type=str,
+        help="Output Python file",
+    )
     args = parser.parse_args()
 
-    generator = GenerateClientCommands(args.spec, args.output)
+    generator = GenerateClientCommands(args.spec, Path(args.output))
