@@ -5,6 +5,8 @@ class GenerateClientCommands:
     def __init__(self, api_file: str):
         with open(api_file, "r") as f:
             self.openapi = yaml.safe_load(f)
+        # Import at top level to avoid repeated imports
+        from typing import Optional
         self.generate()
 
     def generate(self):
@@ -66,8 +68,26 @@ class GenerateClientCommands:
                     content_type = "dict"
                 params.append(f"content: {content_type}")
 
+        # Extract return type from 200/201 response
+        return_type = None
+        responses = operation.get("responses", {})
+        if "200" in responses:
+            response_schema = responses["200"].get("content", {}).get("application/json", {}).get("schema", {})
+            if "$ref" in response_schema:
+                return_type = response_schema["$ref"].split("/")[-1]
+        elif "201" in responses:
+            response_schema = responses["201"].get("content", {}).get("application/json", {}).get("schema", {})
+            if "$ref" in response_schema:
+                return_type = response_schema["$ref"].split("/")[-1]
+        else:
+            raise ValueError(f"No 200/201 response found for {method} {path}")
+
+        # Add with_response parameter
+        params.append("with_response: Optional[bool] = True")
+        
         params_str = ", ".join(["self"] + params)
-        print(f"def {funcname}({params_str}): pass")
+        return_annotation = f" -> {return_type}" if return_type else ""
+        print(f"def {funcname}({params_str}){return_annotation}: pass")
 
     def normalize_operation_id(self, operation_id: str) -> str:
         """Convert camelCase operationId to snake_case function name"""
