@@ -9,16 +9,34 @@ class GenerateClientCommands:
 
     def generate(self):
         for path, operations in self.openapi["paths"].items():
+            # Extract path parameters if they exist
+            path_params = []
+            if "parameters" in operations:
+                path_params = operations["parameters"]
+            
+            # Process each operation method
             for method, operation in operations.items():
-                self.generate_command(path, method, operation)
+                if method != "parameters":  # Skip the parameters method itself
+                    self.generate_command(path, method, operation, path_params)
 
-    def generate_command(self, path: str, method: str, operation: dict):
+    def generate_command(self, path: str, method: str, operation: dict, path_params: list):
         print(f"generate_command: {path}, {method}")
         print(operation)
         funcname = self.normalize_path_for_function(path, method)
         params = []
 
-        # Handle query/path parameters
+        # Handle path parameters first
+        for parameter in path_params:
+            param_name = parameter["name"]
+            schema = parameter.get("schema", {})
+            if "$ref" in schema:
+                param_type = schema["$ref"].split("/")[-1]
+            else:
+                param_type = schema.get("type", "Any")
+            # Path parameters are always required
+            params.append(f"{param_name}: {param_type}")
+
+        # Handle operation-specific parameters
         parameters = operation.get("parameters", [])
         for parameter in parameters:
             param_name = parameter["name"]
