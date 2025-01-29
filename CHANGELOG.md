@@ -1,6 +1,95 @@
 # CHANGELOG
 
 
+## v0.3.0 (2025-01-29)
+
+### Bug Fixes
+
+- Fix async submit impact (#66) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`48404b6`](https://github.com/scope3data/scope3ai-py/commit/48404b6b25d56698de5a4df21cd164ebe3978d02))
+
+- Hugging face examples (#58) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`897c91c`](https://github.com/scope3data/scope3ai-py/commit/897c91c75ca637d064726877ce727fa2139b0d4d))
+
+- Remove unused files (#82) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`f8de77f`](https://github.com/scope3data/scope3ai-py/commit/f8de77faca10551b456be653def0dbdebb170ea1))
+
+- **examples**: Examples standarization (#80) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`9924927`](https://github.com/scope3data/scope3ai-py/commit/9924927250d432f579cc02c640b12dd0bc6e663d))
+
+- **huggingface**: Async methods (#65) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`ca05ac7`](https://github.com/scope3data/scope3ai-py/commit/ca05ac73c6bcce95849dc4d3b3314cf69bcaa95c))
+
+- **huggingface**: Fix image classification and segmentation to support Path (#71)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`196fd25`](https://github.com/scope3data/scope3ai-py/commit/196fd253b2afb297f46597da62ee949e2f2da689))
+
+- **huggingface**: Fixing aiohttp not working with VCR if passing filename (#68)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`0060c03`](https://github.com/scope3data/scope3ai-py/commit/0060c03ae41923acdb54e5155f29e74b7df72a7f))
+
+- **huggingface**: Missed to fix Image for input_images, as well as others pyright fixes (#64)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`6a8f7d2`](https://github.com/scope3data/scope3ai-py/commit/6a8f7d22ae734366d5fee61cf1c5b2cd5a1c6a90))
+
+- **scope3ai**: Fix library pyright issues on attribute not defined (#69)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`bb4de42`](https://github.com/scope3data/scope3ai-py/commit/bb4de427fcd80f895f82d5e707a8b13a73e6f7f9))
+
+- **scope3ai**: Input_audio_seconds is now float (and additional pyright) (#79)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`7aa77d9`](https://github.com/scope3data/scope3ai-py/commit/7aa77d96865356a79394c03baec556a63f971f21))
+
+- **scope3ai**: Remove unwanted call and fix pyright warning (#75)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`0cfbba8`](https://github.com/scope3data/scope3ai-py/commit/0cfbba85d7a7a9bc4b826fc294fdcd31079cba35))
+
+### Features
+
+- **api**: Synchronize api, fixes pyright issues and api example (#78)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`031f754`](https://github.com/scope3data/scope3ai-py/commit/031f75459635e0127c46a4531419ae91cb7af150))
+
+- **api**: Update with latest API yaml from aiapi (#63)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`39a8a42`](https://github.com/scope3data/scope3ai-py/commit/39a8a428ab0859e444a71da6e6b3ca46666ce365))
+
+- **huggingface**: Speech to text async fix (#62)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`57af474`](https://github.com/scope3data/scope3ai-py/commit/57af4740ced133f8f7b05adb1f59a6f56880072f))
+
+- **huggingface**: Vision methods - image classification / image segmentation / object detection
+  (#61) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`16d41cd`](https://github.com/scope3data/scope3ai-py/commit/16d41cd6ce6740142d48e31407d85de40b81abfb))
+
+- **litellm**: Multimodal (#70) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`a68633e`](https://github.com/scope3data/scope3ai-py/commit/a68633e0d4cf62ec7c3b84cb48f500422252a9f6))
+
+- **litellm**: Use default tracer and Image generation - TTS - STT (#73)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`52d9bee`](https://github.com/scope3data/scope3ai-py/commit/52d9bee8ad7356108d594777769dd664bac29ad7))
+
+- **metadata**: Include many metadata accessible at global or tracer level (#74)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`cafc008`](https://github.com/scope3data/scope3ai-py/commit/cafc00866a9ea3cbdad50033cdba6c332424d56a))
+
+- **mistralai**: Multimodal integration - test for litellm (#72)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`d76790b`](https://github.com/scope3data/scope3ai-py/commit/d76790b05e36c23649a2b2042f2fbd8d6b03da54))
+
+- **openai**: Implement multimodal input reporting (base64 image and audio) (#60)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`80b58cb`](https://github.com/scope3data/scope3ai-py/commit/80b58cba03c86335a2638724e6fd458dda70882f))
+
+- **tests**: Allow the test suite to be run again real api using SCOPE3AI_TEST_MODE_USING_REAL_API
+  (#77) ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`dda1833`](https://github.com/scope3data/scope3ai-py/commit/dda183310484d0edba85b7d622e02cc8349dc4db))
+
+- **tool**: Add built-in generator for client commands (#83)
+  ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`bfeb0bb`](https://github.com/scope3data/scope3ai-py/commit/bfeb0bb1caca9eaf1fef2af2f2539350c56b992f))
+
+
 ## v0.3.0-rc.1 (2025-01-09)
 
 ### Bug Fixes
@@ -13,6 +102,11 @@
 
 - Use local model cost for tests (#49) ([](https://github.com/scope3data/scope3ai-py/pull),
   [`5a572e8`](https://github.com/scope3data/scope3ai-py/commit/5a572e8fdb8c2d85d5120cfdf252774afbfe1d2c))
+
+### Chores
+
+- **release**: 0.3.0-rc.1 ([](https://github.com/scope3data/scope3ai-py/pull),
+  [`9c5fa89`](https://github.com/scope3data/scope3ai-py/commit/9c5fa89c8a15e25b26582c0d5fce6adaed90b446))
 
 ### Documentation
 
