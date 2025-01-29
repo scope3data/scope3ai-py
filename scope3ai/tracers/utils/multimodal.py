@@ -49,6 +49,20 @@ def aggregate_multimodal_audio(content: dict, row: ImpactRow) -> None:
             row.input_audio_seconds += duration
 
 
+def aggregate_multimodal_audio_content_output(
+    content: str, audio_format: str, row: ImpactRow
+) -> None:
+    assert audio_format in MUTAGEN_MAPPING
+
+    audio_data = base64.b64decode(content)
+    duration = _get_audio_duration(audio_format, audio_data)
+    if duration:
+        if row.output_audio_seconds is None:
+            row.output_audio_seconds = duration
+        else:
+            row.output_audio_seconds += duration
+
+
 def aggregate_multimodal_content(
     content: dict, row: ImpactRow, logger: logging.Logger
 ) -> None:
