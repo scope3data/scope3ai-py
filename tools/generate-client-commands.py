@@ -24,7 +24,9 @@ class GenerateClientCommands:
         self, path: str, method: str, operation: dict, path_params: list
     ):
         print(f"generate_command: {path}, {method}")
-        funcname = self.normalize_path_for_function(path, method)
+        if "operationId" not in operation:
+            raise ValueError(f"No operationId found for {method} {path}")
+        funcname = self.normalize_operation_id(operation["operationId"])
         params = []
 
         # Handle path parameters first
@@ -68,20 +70,13 @@ class GenerateClientCommands:
         params_str = ", ".join(["self"] + params)
         print(f"def {funcname}({params_str}): pass")
 
-    def normalize_path_for_function(self, path: str, method: str):
-        # examples:
-        # /node/{nodeId} get -> get_node
-        # /model/{modelId} post -> post_model
-        # /model/{modelId}/alias get -> get_model_alias
-        # /model/{modelId}/alias/[alias} delete -> delete_model_alias
-        function_name = ""
-        for part in path.split("/"):
-            if part and "{" not in part:
-                function_name += f"_{part}"
-
-        method = method.lower()
-        function_name = f"{method}{function_name}"
-        return function_name.strip("_")
+    def normalize_operation_id(self, operation_id: str) -> str:
+        """Convert camelCase operationId to snake_case function name"""
+        import re
+        # Insert underscore between camelCase
+        name = re.sub('([a-z0-9])([A-Z])', r'\1_\2', operation_id)
+        # Convert to lowercase
+        return name.lower()
 
 
 if __name__ == "__main__":
