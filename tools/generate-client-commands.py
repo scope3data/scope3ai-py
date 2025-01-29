@@ -28,13 +28,15 @@ class GenerateClientCommands:
             ["ruff", "format", str(output_filename)],
             capture_output=True,
             text=True,
-            check=False
+            check=False,
         )
         if result.returncode != 0:
             print(f"Ruff format failed:\n{result.stderr}")
             raise subprocess.CalledProcessError(
                 result.returncode, result.args, result.stdout, result.stderr
             )
+
+        print(f"Generated {output_filename}")
 
     def generate(self):
         for path, operations in self.openapi["paths"].items():
