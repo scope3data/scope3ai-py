@@ -23,7 +23,6 @@ class GenerateClientCommands:
     def generate_command(
         self, path: str, method: str, operation: dict, path_params: list
     ):
-        print(f"generate_command: {path}, {method}")
         if "operationId" not in operation:
             raise ValueError(f"No operationId found for {method} {path}")
         funcname = self.normalize_operation_id(operation["operationId"])
@@ -73,8 +72,9 @@ class GenerateClientCommands:
     def normalize_operation_id(self, operation_id: str) -> str:
         """Convert camelCase operationId to snake_case function name"""
         import re
+
         # Insert underscore between camelCase
-        name = re.sub('([a-z0-9])([A-Z])', r'\1_\2', operation_id)
+        name = re.sub("([a-z0-9])([A-Z])", r"\1_\2", operation_id)
         # Convert to lowercase
         return name.lower()
 
