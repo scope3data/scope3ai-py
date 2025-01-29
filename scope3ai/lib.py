@@ -12,7 +12,7 @@ from uuid import uuid4
 from .api.client import AsyncClient, Client
 from .api.defaults import DEFAULT_API_URL, DEFAULT_APPLICATION_ID
 from .api.tracer import Tracer
-from .api.types import ImpactResponse, ImpactRow, Scope3AIContext
+from .api.types import ImpactRequest, ImpactResponse, ImpactRow, Scope3AIContext
 from .constants import PROVIDERS
 from .worker import BackgroundWorker
 
@@ -222,8 +222,8 @@ class Scope3AI:
             ctx: Scope3AIContext,
         ) -> Optional[ImpactResponse]:
             assert self._sync_client is not None
-            response = self._sync_client.impact(
-                rows=[impact_row],
+            response = self._sync_client.get_impact(
+                content=ImpactRequest(rows=[impact_row]),
                 with_response=True,
             )
             ctx.set_impact(response.rows[0])
@@ -270,8 +270,8 @@ class Scope3AI:
             tracer._link_trace(ctx)
 
         assert self._async_client is not None
-        response = await self._async_client.impact(
-            rows=[impact_row],
+        response = await self._async_client.get_impact(
+            content=ImpactRequest(rows=[impact_row]),
             with_response=True,
         )
         ctx.set_impact(response.rows[0])

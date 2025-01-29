@@ -201,5 +201,5 @@ This script will download the latest YAML file, patch it if necessary
 and generate the `typesgen.py` file.
 
 ```bash
-$ uv run tools/sync-api.py
+$ uv run -m tools.sync-api
 ```
