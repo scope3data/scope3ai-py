@@ -68,19 +68,21 @@ class GenerateClientCommands:
                     content_type = "dict"
                 params.append(f"content: {content_type}")
 
-        # Extract return type from 200/201 response
+        # Extract return type from success response (200/201/204)
         return_type = None
         responses = operation.get("responses", {})
-        if "200" in responses:
-            response_schema = responses["200"].get("content", {}).get("application/json", {}).get("schema", {})
-            if "$ref" in response_schema:
-                return_type = response_schema["$ref"].split("/")[-1]
-        elif "201" in responses:
-            response_schema = responses["201"].get("content", {}).get("application/json", {}).get("schema", {})
-            if "$ref" in response_schema:
-                return_type = response_schema["$ref"].split("/")[-1]
-        else:
-            raise ValueError(f"No 200/201 response found for {method} {path}")
+        for status in ["200", "201", "204"]:
+            if status in responses:
+                if status == "204":  # No content
+                    return_type = "None"
+                    break
+                response_schema = responses[status].get("content", {}).get("application/json", {}).get("schema", {})
+                if "$ref" in response_schema:
+                    return_type = response_schema["$ref"].split("/")[-1]
+                    break
+        
+        if return_type is None:
+            raise ValueError(f"No 200/201/204 response found for {method} {path}")
 
         # Add with_response parameter
         params.append("with_response: Optional[bool] = True")
