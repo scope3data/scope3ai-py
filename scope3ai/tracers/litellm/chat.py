@@ -9,7 +9,10 @@ from litellm.utils import CustomStreamWrapper
 from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext, ImpactRow
 from scope3ai.constants import PROVIDERS
-from scope3ai.tracers.utils.multimodal import aggregate_multimodal
+from scope3ai.tracers.utils.multimodal import (
+    aggregate_multimodal,
+    aggregate_multimodal_audio_content_output,
+)
 
 PROVIDER = PROVIDERS.LITELLM.value
 
@@ -72,6 +75,7 @@ def litellm_chat_wrapper_non_stream(
 ) -> ChatCompletion:
     timer_start = time.perf_counter()
     keep_traces = not kwargs.pop("use_always_litellm_tracer", False)
+    modalities = kwargs.get("modalities", [])
     with Scope3AI.get_instance().trace(keep_traces=keep_traces) as tracer:
         response = wrapped(*args, **kwargs)
         if tracer.traces:
@@ -88,6 +92,15 @@ def litellm_chat_wrapper_non_stream(
         request_duration_ms=float(request_latency) * 1000,
         managed_service_id=PROVIDER,
     )
+    if "audio" in modalities:
+        audio_format = kwargs.get("audio", {}).get("format", "mp3")
+        for choice in response.choices:
+            audio_data = getattr(choice.message, "audio")
+            if audio_data:
+                audio_content = audio_data.data
+                aggregate_multimodal_audio_content_output(
+                    audio_content, audio_format, scope3_row
+                )
     messages = args[1] if len(args) > 1 else kwargs.get("messages")
     for message in messages:
         aggregate_multimodal(message, scope3_row, logger)

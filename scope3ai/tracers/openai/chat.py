@@ -11,7 +11,10 @@ from openai.types.chat import ChatCompletionChunk as _ChatCompletionChunk
 from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
-from scope3ai.tracers.utils.multimodal import aggregate_multimodal
+from scope3ai.tracers.utils.multimodal import (
+    aggregate_multimodal,
+    aggregate_multimodal_audio_content_output,
+)
 
 PROVIDER = PROVIDERS.OPENAI.value
 
@@ -33,18 +36,29 @@ class ChatCompletionChunk(_ChatCompletionChunk):
 def _openai_chat_wrapper(
     response: Any, request_latency: float, kwargs: dict
 ) -> ChatCompletion:
-    model_requested = kwargs["model"]
+    model_requested = kwargs.get("model")
+    modalities = kwargs.get("modalities", [])
     if type(response) is _LegacyAPIResponse:
         http_response = response.http_response.json()
         model_used = http_response.get("model")
         scope3_row = ImpactRow(
             model_id=model_requested,
             model_used_id=model_used,
-            input_tokens=http_response.get("usage").get("prompt_tokens"),
-            output_tokens=http_response.get("usage").get("completion_tokens"),
+            input_tokens=http_response.get("usage", {}).get("prompt_tokens"),
+            output_tokens=http_response.get("usage", {}).get("completion_tokens"),
             request_duration_ms=request_latency * 1000,
             managed_service_id=PROVIDER,
         )
+        if "audio" in modalities:
+            audio_format = kwargs.get("audio", {}).get("format", "mp3")
+            for choice in http_response.get("choices", []):
+                audio_data = choice.get("message", {}).get("audio", {})
+                if audio_data:
+                    audio_content = audio_data.get("data")
+                    aggregate_multimodal_audio_content_output(
+                        audio_content, audio_format, scope3_row
+                    )
+
         messages = kwargs.get("messages", [])
         for message in messages:
             aggregate_multimodal(message, scope3_row, logger)
@@ -53,15 +67,24 @@ def _openai_chat_wrapper(
         setattr(response, "scope3ai", scope3ai_ctx)
         return response
     else:
-        model_used = response.model
         scope3_row = ImpactRow(
             model_id=model_requested,
-            model_used_id=model_used,
+            model_used_id=response.model,
             input_tokens=response.usage.prompt_tokens,
             output_tokens=response.usage.completion_tokens,
             request_duration_ms=request_latency * 1000,
             managed_service_id=PROVIDER,
         )
+        if "audio" in modalities:
+            audio_format = kwargs.get("audio", {}).get("format", "mp3")
+            for choice in response.choices:
+                audio_data = getattr(choice.message, "audio")
+                if audio_data:
+                    audio_content = audio_data.data
+                    aggregate_multimodal_audio_content_output(
+                        audio_content, audio_format, scope3_row
+                    )
+
         messages = kwargs.get("messages", [])
         for message in messages:
             aggregate_multimodal(message, scope3_row, logger)
