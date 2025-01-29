@@ -25,31 +25,15 @@ class GenerateClientCommands:
 
         output_filename.write_text(self.output.getvalue())
         
-        # Run ruff import organization
-        result = subprocess.run(
+        # Run ruff commands
+        self._run_subprocess(
             ["ruff", "check", "--select", "I", "--fix", str(output_filename)],
-            capture_output=True,
-            text=True,
-            check=False,
+            "Ruff import organization"
         )
-        if result.returncode != 0:
-            print(f"Ruff import organization failed:\n{result.stderr}")
-            raise subprocess.CalledProcessError(
-                result.returncode, result.args, result.stdout, result.stderr
-            )
-
-        # Run ruff format
-        result = subprocess.run(
+        self._run_subprocess(
             ["ruff", "format", str(output_filename)],
-            capture_output=True,
-            text=True,
-            check=False,
+            "Ruff format"
         )
-        if result.returncode != 0:
-            print(f"Ruff format failed:\n{result.stderr}")
-            raise subprocess.CalledProcessError(
-                result.returncode, result.args, result.stdout, result.stderr
-            )
 
         print(f"Generated {output_filename}")
 
@@ -269,6 +253,20 @@ class GenerateClientCommands:
     def normalize_operation_id(self, operation_id: str) -> str:
         """Convert camelCase operationId to snake_case function name"""
         return self.normalize_name(operation_id)
+
+    def _run_subprocess(self, cmd: list[str], description: str) -> None:
+        """Run a subprocess command and handle errors"""
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            print(f"{description} failed:\n{result.stderr}")
+            raise subprocess.CalledProcessError(
+                result.returncode, result.args, result.stdout, result.stderr
+            )
 
 
 if __name__ == "__main__":
