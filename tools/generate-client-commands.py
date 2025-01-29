@@ -51,7 +51,7 @@ class GenerateClientCommands:
 
     def generate_imports(self):
         imports = [
-            "from typing import Optional",
+            "from typing import Any, Optional",
             "",
         ]
 
@@ -187,35 +187,41 @@ class GenerateClientCommands:
 
         # Generate function body
         body = [
-            f"def {funcname}({params_str}){return_annotation}:",
-            f'    """{operation.get("summary", "")}\n    """',
+            f"    def {funcname}({params_str}){return_annotation}:",
+            f'        """{operation.get("summary", "")}\n        """',
         ]
 
         # Add params dict only if we have query parameters
         has_query_params = any(param.get("in") == "query" for param in parameters)
         if has_query_params:
-            body.append("    params = {}")
+            body.append("        params = {}")
             for param in parameters:
                 if param.get("in") == "query":
                     name = self.normalize_name(param["name"])
-                    body.append(f"    if {name} is not None:")
-                    body.append(f'        params["{param["name"]}"] = {name}')
+                    body.append(f"        if {name} is not None:")
+                    body.append(f'            params["{param["name"]}"] = {name}')
 
         # Build execute_request call
-        execute_args = [f'        "{path}"', f'        method="{method.upper()}"']
+        execute_args = [f'            "{path}"', f'            method="{method.upper()}"']
 
         if has_query_params:
-            execute_args.append("        params=params")
+            execute_args.append("            params=params")
         if "requestBody" in operation:
-            execute_args.append("        json=content")
+            execute_args.append("            json=content")
         if return_type and return_type != "None":
-            execute_args.append(f"        response_model={return_type}")
-        execute_args.append("        with_response=with_response")
+            execute_args.append(f"            response_model={return_type}")
+        execute_args.append("            with_response=with_response")
 
-        body.append("    return self.execute_request(")
+        body.append("        return self.execute_request(")
         body.append(",\n".join(execute_args))
-        body.append("    )")
+        body.append("        )")
 
+        # Add class definition before first method
+        if self.output.tell() == 0:
+            self.output.write("\n\nclass ClientCommands:\n")
+            self.output.write("    def execute_request(self, *args, **kwargs) -> Any:\n")
+            self.output.write("        raise NotImplementedError\n\n")
+        
         self.output.write("\n".join(body) + "\n\n")
 
     def normalize_name(self, name: str) -> str:
