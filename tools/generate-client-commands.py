@@ -20,6 +20,7 @@ class GenerateClientCommands:
         # Generate the file
         self.generate_header(spec)
         self.generate_imports()
+        self.generate_start()
         self.generate()
 
         output_filename.write_text(self.output.getvalue())
@@ -65,6 +66,14 @@ class GenerateClientCommands:
             imports.append("")
 
         self.output.write("\n".join(imports) + "\n\n")
+
+    def generate_start(self):
+        content = [
+            "class ClientCommands:\n",
+            "    def execute_request(self, *args, **kwargs) -> Any:\n",
+            "        raise NotImplementedError\n\n",
+        ]
+        self.output.write("".join(content))
 
     def collect_types(self):
         """Collect all unique types used in responses and parameters"""
@@ -202,7 +211,10 @@ class GenerateClientCommands:
                     body.append(f'            params["{param["name"]}"] = {name}')
 
         # Build execute_request call
-        execute_args = [f'            "{path}"', f'            method="{method.upper()}"']
+        execute_args = [
+            f'            "{path}"',
+            f'            method="{method.upper()}"',
+        ]
 
         if has_query_params:
             execute_args.append("            params=params")
@@ -216,12 +228,6 @@ class GenerateClientCommands:
         body.append(",\n".join(execute_args))
         body.append("        )")
 
-        # Add class definition before first method
-        if self.output.tell() == 0:
-            self.output.write("\n\nclass ClientCommands:\n")
-            self.output.write("    def execute_request(self, *args, **kwargs) -> Any:\n")
-            self.output.write("        raise NotImplementedError\n\n")
-        
         self.output.write("\n".join(body) + "\n\n")
 
     def normalize_name(self, name: str) -> str:
