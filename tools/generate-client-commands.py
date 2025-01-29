@@ -89,7 +89,44 @@ class GenerateClientCommands:
         
         params_str = ", ".join(["self"] + params)
         return_annotation = f" -> {return_type}" if return_type else ""
-        print(f"def {funcname}({params_str}){return_annotation}: pass")
+        
+        # Generate function body
+        body = [
+            f'def {funcname}({params_str}){return_annotation}:',
+            f'    """{operation.get("summary", "")}\n    """',
+            '    params = {}'
+        ]
+        
+        # Add query parameters
+        for param in parameters:
+            if param.get("in") == "query":
+                name = param["name"]
+                body.append(f'    if {name} is not None:')
+                body.append(f'        params["{name}"] = {name}')
+        
+        # Add request body handling
+        if "requestBody" in operation:
+            body.append('    request_body = content')
+        
+        # Build execute_request call
+        execute_args = [
+            f'        "{path}"',
+            f'        method="{method.upper()}"'
+        ]
+        
+        if parameters:
+            execute_args.append('        params=params')
+        if "requestBody" in operation:
+            execute_args.append('        json=request_body')
+        if return_type and return_type != "None":
+            execute_args.append(f'        response_model={return_type}')
+        execute_args.append('        with_response=with_response')
+        
+        body.append('    return self.execute_request(')
+        body.append(',\n'.join(execute_args))
+        body.append('    )')
+        
+        print('\n'.join(body))
 
     def normalize_operation_id(self, operation_id: str) -> str:
         """Convert camelCase operationId to snake_case function name"""
