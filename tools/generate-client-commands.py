@@ -37,7 +37,7 @@ class GenerateClientCommands:
         funcname = self.normalize_operation_id(operation["operationId"])
         params = []
 
-        # Handle path parameters first
+        # 1. Handle path parameters first
         for parameter in path_params:
             param_name = self.normalize_name(parameter["name"])
             schema = parameter.get("schema", {})
@@ -48,23 +48,7 @@ class GenerateClientCommands:
             # Path parameters are always required
             params.append(f"{param_name}: {param_type}")
 
-        # Handle operation-specific parameters
-        parameters = operation.get("parameters", [])
-        for parameter in parameters:
-            param_name = self.normalize_name(parameter["name"])
-            schema = parameter.get("schema", {})
-            if "$ref" in schema:
-                param_type = schema["$ref"].split("/")[-1]
-            else:
-                param_type = schema.get("type", "Any")
-
-            if not parameter.get("required", False):
-                param_type = f"Optional[{param_type}]"
-                params.append(f"{param_name}: {param_type} = None")
-            else:
-                params.append(f"{param_name}: {param_type}")
-
-        # Handle request body
+        # 2. Handle request body if it exists
         if "requestBody" in operation:
             content = operation["requestBody"]["content"]
             if "application/json" in content:
@@ -74,6 +58,23 @@ class GenerateClientCommands:
                 else:
                     content_type = "dict"
                 params.append(f"content: {content_type}")
+
+        # 3. Handle query parameters
+        parameters = operation.get("parameters", [])
+        for parameter in parameters:
+            if parameter.get("in") == "query":  # Only process query parameters
+                param_name = self.normalize_name(parameter["name"])
+                schema = parameter.get("schema", {})
+                if "$ref" in schema:
+                    param_type = schema["$ref"].split("/")[-1]
+                else:
+                    param_type = schema.get("type", "Any")
+
+                if not parameter.get("required", False):
+                    param_type = f"Optional[{param_type}]"
+                    params.append(f"{param_name}: {param_type} = None")
+                else:
+                    params.append(f"{param_name}: {param_type}")
 
         # Extract return type from success response (200/201/204)
         return_type = None
@@ -96,7 +97,7 @@ class GenerateClientCommands:
         if return_type is None:
             raise ValueError(f"No 200/201/204 response found for {method} {path}")
 
-        # Add with_response parameter
+        # 4. Add with_response parameter last
         params.append("with_response: Optional[bool] = True")
 
         params_str = ", ".join(["self"] + params)
