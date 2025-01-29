@@ -14,6 +14,7 @@ class GenerateClientCommands:
 
     def generate_command(self, path: str, method: str, operation: dict):
         print(f"generate_command: {path}, {method}")
+        print(operation)
         funcname = self.normalize_path_for_function(path, method)
         params = []
 
@@ -26,7 +27,7 @@ class GenerateClientCommands:
                 param_type = schema["$ref"].split("/")[-1]
             else:
                 param_type = schema.get("type", "Any")
-            
+
             if not parameter.get("required", False):
                 param_type = f"Optional[{param_type}]"
                 params.append(f"{param_name}: {param_type} = None")
