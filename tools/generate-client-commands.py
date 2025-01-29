@@ -1,14 +1,18 @@
+import io
+from pathlib import Path
+
 import yaml
-from typing import Optional, TextIO
 
 
 class GenerateClientCommands:
-    def __init__(self, api_file: str, output: TextIO):
-        with open(api_file, "r") as f:
+    def __init__(self, spec: str, output_filename: Path):
+        with open(spec, "r") as f:
             self.openapi = yaml.safe_load(f)
-        # Import at top level to avoid repeated imports
-        from typing import Optional
+
+        self.output = io.StringIO()
         self.generate()
+
+        output_filename.write_text(self.output.getvalue())
 
     def generate(self):
         for path, operations in self.openapi["paths"].items():
@@ -77,55 +81,57 @@ class GenerateClientCommands:
                 if status == "204":  # No content
                     return_type = "None"
                     break
-                response_schema = responses[status].get("content", {}).get("application/json", {}).get("schema", {})
+                response_schema = (
+                    responses[status]
+                    .get("content", {})
+                    .get("application/json", {})
+                    .get("schema", {})
+                )
                 if "$ref" in response_schema:
                     return_type = response_schema["$ref"].split("/")[-1]
                     break
-        
+
         if return_type is None:
             raise ValueError(f"No 200/201/204 response found for {method} {path}")
 
         # Add with_response parameter
         params.append("with_response: Optional[bool] = True")
-        
+
         params_str = ", ".join(["self"] + params)
         return_annotation = f" -> {return_type}" if return_type else ""
-        
+
         # Generate function body
         body = [
-            f'def {funcname}({params_str}){return_annotation}:',
-            f'    """{operation.get("summary", "")}\n    """'
+            f"def {funcname}({params_str}){return_annotation}:",
+            f'    """{operation.get("summary", "")}\n    """',
         ]
 
         # Add params dict only if we have query parameters
         has_query_params = any(param.get("in") == "query" for param in parameters)
         if has_query_params:
-            body.append('    params = {}')
+            body.append("    params = {}")
             for param in parameters:
                 if param.get("in") == "query":
                     name = self.normalize_name(param["name"])
-                    body.append(f'    if {name} is not None:')
+                    body.append(f"    if {name} is not None:")
                     body.append(f'        params["{param["name"]}"] = {name}')
-        
+
         # Build execute_request call
-        execute_args = [
-            f'        "{path}"',
-            f'        method="{method.upper()}"'
-        ]
-        
+        execute_args = [f'        "{path}"', f'        method="{method.upper()}"']
+
         if has_query_params:
-            execute_args.append('        params=params')
+            execute_args.append("        params=params")
         if "requestBody" in operation:
-            execute_args.append('        json=content')
+            execute_args.append("        json=content")
         if return_type and return_type != "None":
-            execute_args.append(f'        response_model={return_type}')
-        execute_args.append('        with_response=with_response')
-        
-        body.append('    return self.execute_request(')
-        body.append(',\n'.join(execute_args))
-        body.append('    )')
-        
-        self.output.write('\n'.join(body) + '\n\n')
+            execute_args.append(f"        response_model={return_type}")
+        execute_args.append("        with_response=with_response")
+
+        body.append("    return self.execute_request(")
+        body.append(",\n".join(execute_args))
+        body.append("    )")
+
+        self.output.write("\n".join(body) + "\n\n")
 
     def normalize_name(self, name: str) -> str:
         """Convert camelCase to snake_case"""
@@ -147,9 +153,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Generate client commands from OpenAPI spec"
     )
-    parser.add_argument("api_file", type=str, help="OpenAPI spec file")
-    parser.add_argument("output_file", type=str, help="Output Python file")
+    parser.add_argument("spec", type=str, help="OpenAPI spec file")
+    parser.add_argument("output", type=str, help="Output Python file")
     args = parser.parse_args()
 
-    with open(args.output_file, "w") as f:
-        generator = GenerateClientCommands(args.api_file, f)
+    generator = GenerateClientCommands(args.spec, args.output)
