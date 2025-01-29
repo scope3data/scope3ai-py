@@ -1573,11 +1573,11 @@ components:
         cloud_instance_id:
           type: string
           description: The instance type in the cloud
-          example: xl-4g-8a100
+          example: p4d.24xlarge
         node_id:
           type: string
           description: The ID of a custom or global node
-          example: h200-2024-build
+          example: aws:p4d.24xlarge
         country:
           $ref: "#/components/schemas/CountryCode"
         region:

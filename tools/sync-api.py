@@ -74,6 +74,24 @@ def run_code_generation() -> None:
         print(f"ERROR: Failed to run code generation or formatting: {e}")
 
 
+def run_client_commands_generation() -> None:
+    try:
+        subprocess.run(
+            [
+                "uv",
+                "run",
+                "python",
+                "-m",
+                "tools.generate-client-commands",
+                "tests/api-mocks/aiapi.yaml",
+            ],
+            check=True,
+        )
+        print("Client commands generation completed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"ERROR: Failed to generate client commands: {e}")
+
+
 def main() -> None:
     repo_url = "git@github.com:scope3data/aiapi"
     dst_file = Path("tests/api-mocks/aiapi.yaml")
@@ -87,6 +105,7 @@ def main() -> None:
             copy_file(src_file, dst_file)
             patch_aiapi_yaml(dst_file)
             run_code_generation()
+            run_client_commands_generation()
         except Exception as e:
             print(f"ERROR: An error occurred: {e}")
             shutil.rmtree(clone_dir, ignore_errors=True)
