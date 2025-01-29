@@ -93,20 +93,18 @@ class GenerateClientCommands:
         # Generate function body
         body = [
             f'def {funcname}({params_str}){return_annotation}:',
-            f'    """{operation.get("summary", "")}\n    """',
-            '    params = {}'
+            f'    """{operation.get("summary", "")}\n    """'
         ]
-        
-        # Add query parameters
-        for param in parameters:
-            if param.get("in") == "query":
-                name = param["name"]
-                body.append(f'    if {name} is not None:')
-                body.append(f'        params["{name}"] = {name}')
-        
-        # Add request body handling
-        if "requestBody" in operation:
-            body.append('    request_body = content')
+
+        # Add params dict only if we have query parameters
+        has_query_params = any(param.get("in") == "query" for param in parameters)
+        if has_query_params:
+            body.append('    params = {}')
+            for param in parameters:
+                if param.get("in") == "query":
+                    name = self.normalize_name(param["name"])
+                    body.append(f'    if {name} is not None:')
+                    body.append(f'        params["{param["name"]}"] = {name}')
         
         # Build execute_request call
         execute_args = [
@@ -114,10 +112,10 @@ class GenerateClientCommands:
             f'        method="{method.upper()}"'
         ]
         
-        if parameters:
+        if has_query_params:
             execute_args.append('        params=params')
         if "requestBody" in operation:
-            execute_args.append('        json=request_body')
+            execute_args.append('        json=content')
         if return_type and return_type != "None":
             execute_args.append(f'        response_model={return_type}')
         execute_args.append('        with_response=with_response')
