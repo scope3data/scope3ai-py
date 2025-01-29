@@ -1,4 +1,5 @@
 import io
+import subprocess
 from pathlib import Path
 
 import yaml
@@ -13,7 +14,6 @@ class GenerateClientCommands:
         self.generate()
 
         output_filename.write_text(self.output.getvalue())
-        import subprocess
         subprocess.run(["ruff", "format", str(output_filename)], check=True)
 
     def generate(self):
