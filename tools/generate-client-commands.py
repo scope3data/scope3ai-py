@@ -15,15 +15,37 @@ class GenerateClientCommands:
     def generate_command(self, path: str, method: str, operation: dict):
         print(f"generate_command: {path}, {method}")
         funcname = self.normalize_path_for_function(path, method)
-        # funcparams = []
-        print(f"def {funcname}(self): pass")
+        params = []
 
-        # # build parameters
-        # parameters = operation.get("parameters", [])
-        # for argname, parameter in parameters:
-        #     argtype = self.normalize_parameter_type(parameter)
+        # Handle query/path parameters
+        parameters = operation.get("parameters", [])
+        for parameter in parameters:
+            param_name = parameter["name"]
+            schema = parameter.get("schema", {})
+            if "$ref" in schema:
+                param_type = schema["$ref"].split("/")[-1]
+            else:
+                param_type = schema.get("type", "Any")
+            
+            if not parameter.get("required", False):
+                param_type = f"Optional[{param_type}]"
+                params.append(f"{param_name}: {param_type} = None")
+            else:
+                params.append(f"{param_name}: {param_type}")
 
-        # print(funcparams, argtype)
+        # Handle request body
+        if "requestBody" in operation:
+            content = operation["requestBody"]["content"]
+            if "application/json" in content:
+                schema = content["application/json"]["schema"]
+                if "$ref" in schema:
+                    content_type = schema["$ref"].split("/")[-1]
+                else:
+                    content_type = "dict"
+                params.append(f"content: {content_type}")
+
+        params_str = ", ".join(["self"] + params)
+        print(f"def {funcname}({params_str}): pass")
 
     def normalize_path_for_function(self, path: str, method: str):
         # examples:
