@@ -1,15 +1,4 @@
 import pytest
-from scope3ai.api.typesgen import (
-    Family,
-    ModelCreateRequest,
-    ModelUpdateRequest,
-    NodeCreateRequest,
-    NodeUpdateRequest,
-    GPUCreateRequest,
-    GPUUpdateRequest,
-    ImpactRequest,
-    ImpactBigQueryRequest,
-)
 
 
 def test_api_status(api_client):
@@ -52,7 +41,7 @@ def test_api_get_node(api_client):
     list_response = api_client.list_nodes()
     assert list_response.nodes
     node_id = list_response.nodes[0].id
-    
+
     # Now test get_node with a specific ID
     response = api_client.get_node(node_id)
     assert response is not None
@@ -64,7 +53,7 @@ async def test_async_api_get_node(async_api_client):
     list_response = await async_api_client.list_nodes()
     assert list_response.nodes
     node_id = list_response.nodes[0].id
-    
+
     # Now test get_node with a specific ID
     response = await async_api_client.get_node(node_id)
     assert response is not None
@@ -88,7 +77,7 @@ def test_api_get_gpu(api_client):
     list_response = api_client.list_gpus()
     assert list_response.gpus
     gpu_id = list_response.gpus[0].id
-    
+
     # Now test get_gpu with a specific ID
     response = api_client.get_gpu(gpu_id)
     assert response is not None
@@ -100,7 +89,7 @@ async def test_async_api_get_gpu(async_api_client):
     list_response = await async_api_client.list_gpus()
     assert list_response.gpus
     gpu_id = list_response.gpus[0].id
-    
+
     # Now test get_gpu with a specific ID
     response = await async_api_client.get_gpu(gpu_id)
     assert response is not None
@@ -124,7 +113,7 @@ def test_api_get_model(api_client):
     list_response = api_client.list_models()
     assert list_response.models
     model_id = list_response.models[0].id
-    
+
     # Now test get_model with a specific ID
     response = api_client.get_model(model_id)
     assert response is not None
@@ -136,7 +125,7 @@ async def test_async_api_get_model(async_api_client):
     list_response = await async_api_client.list_models()
     assert list_response.models
     model_id = list_response.models[0].id
-    
+
     # Now test get_model with a specific ID
     response = await async_api_client.get_model(model_id)
     assert response is not None
