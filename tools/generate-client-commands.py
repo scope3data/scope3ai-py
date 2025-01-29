@@ -24,16 +24,13 @@ class GenerateClientCommands:
         self.generate()
 
         output_filename.write_text(self.output.getvalue())
-        
+
         # Run ruff commands
         self._run_subprocess(
-            ["ruff", "check", "--select", "I", "--fix", str(output_filename)],
-            "Ruff import organization"
+            ["ruff", "check", "--fix", str(output_filename)],
+            "Ruff import organization",
         )
-        self._run_subprocess(
-            ["ruff", "format", str(output_filename)],
-            "Ruff format"
-        )
+        self._run_subprocess(["ruff", "format", str(output_filename)], "Ruff format")
 
         print(f"Generated {output_filename}")
 
@@ -263,7 +260,10 @@ class GenerateClientCommands:
             check=False,
         )
         if result.returncode != 0:
-            print(f"{description} failed:\n{result.stderr}")
+            if result.stderr:
+                print(f"{description} failed [stderr]:\n{result.stderr}")
+            if result.stdout:
+                print(f"{description} failed [stdout]:\n{result.stdout}")
             raise subprocess.CalledProcessError(
                 result.returncode, result.args, result.stdout, result.stderr
             )
