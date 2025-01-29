@@ -1,6 +1,28 @@
 import pytest
 
 
+def test_api_status(api_client):
+    response = api_client.status()
+    assert response is not None
+
+
+@pytest.mark.asyncio
+async def test_async_api_status(async_api_client):
+    response = await async_api_client.status()
+    assert response is not None
+
+
+def test_api_reload(api_client):
+    response = api_client.reload()
+    assert response is not None
+
+
+@pytest.mark.asyncio
+async def test_async_api_reload(async_api_client):
+    response = await async_api_client.reload()
+    assert response is not None
+
+
 def test_api_list_nodes(api_client):
     response = api_client.list_nodes()
     assert response is not None
