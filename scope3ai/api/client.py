@@ -1,19 +1,11 @@
 from os import getenv
-from typing import Any, List, Optional, TypeVar
+from typing import Optional, TypeVar
 
 import httpx
 from pydantic import BaseModel
 
+from .commandsgen import ClientCommands
 from .defaults import DEFAULT_API_URL
-from .types import (
-    Family,
-    GPUResponse,
-    ImpactRequest,
-    ImpactResponse,
-    ImpactRow,
-    ModelResponse,
-    NodeResponse,
-)
 
 ClientType = TypeVar("ClientType", httpx.Client, httpx.AsyncClient)
 
@@ -55,100 +47,6 @@ class ClientBase:
 
     def create_client(self) -> ClientType:
         raise NotImplementedError
-
-
-class ClientCommands:
-    def execute_request(self, *args, **kwargs) -> Any:
-        raise NotImplementedError
-
-    def model(
-        self,
-        family: Optional[Family] = None,
-        with_response: Optional[bool] = True,
-    ) -> ModelResponse:
-        """
-        List models
-        """
-        params = {}
-        if family:
-            params["family"] = family
-        return self.execute_request(
-            "/model",
-            method="GET",
-            params=params,
-            response_model=ModelResponse,
-            with_response=with_response,
-        )
-
-    def gpu(
-        self,
-        with_response: Optional[bool] = True,
-    ) -> GPUResponse:
-        """
-        List GPUs
-        """
-        return self.execute_request(
-            "/gpu",
-            method="GET",
-            response_model=GPUResponse,
-            with_response=with_response,
-        )
-
-    def node(
-        self,
-        service: Optional[str] = None,
-        cloud: Optional[str] = None,
-        custom: Optional[bool] = None,
-        gpu: Optional[str] = None,
-        instance: Optional[str] = None,
-        with_response: Optional[bool] = True,
-    ) -> NodeResponse:
-        """
-        List nodes
-        """
-        params = {}
-        if service is not None:
-            params["service"] = service
-        if cloud is not None:
-            params["cloud"] = cloud
-        if custom is not None:
-            params["custom"] = custom
-        if gpu is not None:
-            params["gpu"] = gpu
-        if instance is not None:
-            params["instance"] = instance
-        return self.execute_request(
-            "/node",
-            method="GET",
-            params=params,
-            response_model=NodeResponse,
-            with_response=with_response,
-        )
-
-    def impact(
-        self,
-        rows: List[ImpactRow],
-        debug: Optional[bool] = None,
-        with_response: Optional[bool] = True,
-    ) -> ImpactResponse:
-        """
-        Get impact metrics for a task
-        """
-        params = {}
-        if debug is not None:
-            params["debug"] = debug
-        json_body = ImpactRequest(rows=rows).model_dump(
-            mode="json",
-            exclude_unset=True,
-        )
-        return self.execute_request(
-            "/v1/impact",
-            method="POST",
-            params=params,
-            json=json_body,
-            response_model=ImpactResponse,
-            with_response=with_response,
-        )
 
 
 class Client(ClientBase, ClientCommands):

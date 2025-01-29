@@ -14,7 +14,7 @@ class GenerateClientCommands:
         "integer": "int",
         "number": "float",
         "array": "list",
-        "object": "dict"
+        "object": "dict",
     }
 
     def __init__(self, spec: str, output_filename: Path):
@@ -36,11 +36,11 @@ class GenerateClientCommands:
         output_filename.write_text(self.output.getvalue())
 
         # Run ruff commands
+        self._run_subprocess(["ruff", "check", "--fix", str(output_filename)])
         self._run_subprocess(
-            ["ruff", "check", "--fix", str(output_filename)],
-            "Ruff import organization",
+            ["ruff", "check", "--select", "I", "--fix", str(output_filename)]
         )
-        self._run_subprocess(["ruff", "format", str(output_filename)], "Ruff format")
+        self._run_subprocess(["ruff", "format", str(output_filename)])
 
         print(f"Generated {output_filename}")
 
@@ -261,7 +261,7 @@ class GenerateClientCommands:
         """Convert camelCase operationId to snake_case function name"""
         return self.normalize_name(operation_id)
 
-    def _run_subprocess(self, cmd: list[str], description: str) -> None:
+    def _run_subprocess(self, cmd: list[str]) -> None:
         """Run a subprocess command and handle errors"""
         result = subprocess.run(
             cmd,
@@ -270,10 +270,11 @@ class GenerateClientCommands:
             check=False,
         )
         if result.returncode != 0:
+            cmdtxt = " ".join(cmd)
             if result.stderr:
-                print(f"{description} failed [stderr]:\n{result.stderr}")
+                print(f"{cmdtxt}: failed [stderr]:\n{result.stderr}")
             if result.stdout:
-                print(f"{description} failed [stdout]:\n{result.stdout}")
+                print(f"{cmdtxt} failed [stdout]:\n{result.stdout}")
             raise subprocess.CalledProcessError(
                 result.returncode, result.args, result.stdout, result.stderr
             )
@@ -287,8 +288,9 @@ if __name__ == "__main__":
     )
     parser.add_argument("spec", type=str, help="OpenAPI spec file")
     parser.add_argument(
-        "output",
+        "--output",
         type=str,
+        default="scope3ai/api/commandsgen.py",
         help="Output Python file",
     )
     args = parser.parse_args()
