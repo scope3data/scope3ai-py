@@ -13,15 +13,17 @@ class GenerateClientCommands:
             path_params = []
             if "parameters" in operations:
                 path_params = operations["parameters"]
-            
+
             # Process each operation method
             for method, operation in operations.items():
-                if method != "parameters":  # Skip the parameters method itself
-                    self.generate_command(path, method, operation, path_params)
+                if method == "parameters":
+                    continue
+                self.generate_command(path, method, operation, path_params)
 
-    def generate_command(self, path: str, method: str, operation: dict, path_params: list):
+    def generate_command(
+        self, path: str, method: str, operation: dict, path_params: list
+    ):
         print(f"generate_command: {path}, {method}")
-        print(operation)
         funcname = self.normalize_path_for_function(path, method)
         params = []
 
