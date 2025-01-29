@@ -7,6 +7,16 @@ import yaml
 
 
 class GenerateClientCommands:
+    # OpenAPI to Python type mapping
+    TYPE_MAP = {
+        "string": "str",
+        "boolean": "bool",
+        "integer": "int",
+        "number": "float",
+        "array": "list",
+        "object": "dict"
+    }
+
     def __init__(self, spec: str, output_filename: Path):
         with open(spec, "r") as f:
             self.openapi = yaml.safe_load(f)
@@ -143,7 +153,7 @@ class GenerateClientCommands:
             if "$ref" in schema:
                 param_type = schema["$ref"].split("/")[-1]
             else:
-                param_type = schema.get("type", "Any")
+                param_type = self.TYPE_MAP.get(schema.get("type"), "Any")
             # Path parameters are always required
             params.append(f"{param_name}: {param_type}")
 
@@ -167,7 +177,7 @@ class GenerateClientCommands:
                 if "$ref" in schema:
                     param_type = schema["$ref"].split("/")[-1]
                 else:
-                    param_type = schema.get("type", "Any")
+                    param_type = self.TYPE_MAP.get(schema.get("type"), "Any")
 
                 if not parameter.get("required", False):
                     param_type = f"Optional[{param_type}]"
