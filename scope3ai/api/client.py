@@ -71,6 +71,8 @@ class Client(ClientBase, ClientCommands):
         if params:
             kwargs["params"] = params
         if json:
+            if isinstance(json, BaseModel):
+                json = json.model_dump(mode="json", exclude_unset=True)
             kwargs["json"] = json
         response = self.client.request(method, full_url, **kwargs)
         response.raise_for_status()
@@ -103,6 +105,8 @@ class AsyncClient(ClientBase, ClientCommands):
         if params:
             kwargs["params"] = params
         if json:
+            if isinstance(json, BaseModel):
+                json = json.model_dump(mode="json", exclude_unset=True)
             kwargs["json"] = json
         response = await self.client.request(method, full_url, **kwargs)
         response.raise_for_status()

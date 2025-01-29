@@ -12,6 +12,7 @@ has_errors=False rows=[ImpactResponseRow(fine_tuning_impact=ImpactMetrics(usage_
 """
 
 from scope3ai.api import AsyncClient
+from scope3ai.api.types import ImpactRequest
 
 # api_key is taken from the environment variable SCOPE3AI_API_KEY
 client = AsyncClient()
@@ -19,7 +20,7 @@ client = AsyncClient()
 
 async def list_gpus():
     print("Listing GPUs")
-    response = await client.gpu()
+    response = await client.list_gpus()
     print(response)
 
 
@@ -28,7 +29,11 @@ async def send_impact():
 
     print("Sending impact")
     impact = ImpactRow(model_id="gpt_4o", input_tokens=100, output_tokens=100)
-    response = await client.impact(rows=[impact])
+    response = await client.get_impact(
+        content=ImpactRequest(
+            rows=[impact],
+        )
+    )
     print(response)
 
 
