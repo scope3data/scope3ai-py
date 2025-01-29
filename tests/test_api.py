@@ -1,4 +1,15 @@
 import pytest
+from scope3ai.api.typesgen import (
+    Family,
+    ModelCreateRequest,
+    ModelUpdateRequest,
+    NodeCreateRequest,
+    NodeUpdateRequest,
+    GPUCreateRequest,
+    GPUUpdateRequest,
+    ImpactRequest,
+    ImpactBigQueryRequest,
+)
 
 
 def test_api_status(api_client):
