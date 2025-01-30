@@ -33,9 +33,9 @@ uv add scope3ai
 |-------------|-----------------|----|-----|------------------|-----------|------------------|-------------------|
 | Anthropic   | ✅              |    |     |                  |           |                  |
 | Cohere      | ✅              |    |     |                  |           |                  |
-| OpenAI      | ✅              | ✅ | ✅  | ✅               | ✅        | Images/Audio     | Audio
+| OpenAI      | ✅              | ✅ | ✅  | ✅               | ✅        | Images/Audio     | Text/Audio
 | Huggingface | ✅              | ✅ | ✅  | ✅               | ✅        |                  |
-| LiteLLM     | ✅              |  ✅  |✅     |       ✅           |           | Images/Audio     | Audio
+| LiteLLM     | ✅              |  ✅  |✅     |       ✅           |           | Images/Audio     | Text/Audio
 | MistralAi   | ✅              |    |     |                  |           | Images           |
 
 Roadmap:
