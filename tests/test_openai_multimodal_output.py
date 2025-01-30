@@ -29,3 +29,21 @@ def test_openai_multimodal_output(tracer_with_sync_init, audio_format):
     assert response.scope3ai.impact.total_impact.usage_water_ml > 0
     assert response.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
     assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
+
+
+@pytest.mark.vcr
+@pytest.mark.asyncio
+@pytest.mark.parametrize("audio_format", ["wav", "mp3", "flac", "opus"])
+async def test_openai_multimodal_output_async(tracer_with_sync_init, audio_format):
+    from openai import AsyncOpenAI
+
+    client = AsyncOpenAI()
+    response = await client.chat.completions.create(
+        model="gpt-4o-audio-preview",
+        modalities=["text", "audio"],
+        audio={"voice": "alloy", "format": audio_format},
+        messages=[
+            {"role": "user", "content": "Is a golden retriever a good family dog?"}
+        ],
+    )
+    assert len(response.choices) > 0

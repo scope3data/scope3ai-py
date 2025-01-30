@@ -35,7 +35,7 @@ class ChatCompletionChunk(_ChatCompletionChunk):
 
 def _openai_chat_wrapper(
     response: Any, request_latency: float, kwargs: dict
-) -> ChatCompletion:
+) -> Union[_LegacyAPIResponse | ChatCompletion, ImpactRow]:
     model_requested = kwargs.get("model")
     modalities = kwargs.get("modalities", [])
     if type(response) is _LegacyAPIResponse:
@@ -62,10 +62,7 @@ def _openai_chat_wrapper(
         messages = kwargs.get("messages", [])
         for message in messages:
             aggregate_multimodal(message, scope3_row, logger)
-        Scope3AI.get_instance().submit_impact(scope3_row)
-        scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-        setattr(response, "scope3ai", scope3ai_ctx)
-        return response
+        return response, scope3_row
     else:
         scope3_row = ImpactRow(
             model_id=model_requested,
@@ -88,8 +85,7 @@ def _openai_chat_wrapper(
         messages = kwargs.get("messages", [])
         for message in messages:
             aggregate_multimodal(message, scope3_row, logger)
-        scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-        return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
+        return response, scope3_row
 
     # analyse multimodal part
 
@@ -103,7 +99,13 @@ def openai_chat_wrapper_non_stream(
     timer_start = time.perf_counter()
     response = wrapped(*args, **kwargs)
     request_latency = time.perf_counter() - timer_start
-    return _openai_chat_wrapper(response, request_latency, kwargs)
+    response, scope3_row = _openai_chat_wrapper(response, request_latency, kwargs)
+    scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+    if isinstance(response, _LegacyAPIResponse):
+        setattr(response, "scope3ai", scope3ai_ctx)
+        return response
+    else:
+        return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
 
 
 def openai_chat_wrapper_stream(
@@ -154,7 +156,13 @@ async def openai_async_chat_wrapper_non_stream(
     timer_start = time.perf_counter()
     response = await wrapped(*args, **kwargs)
     request_latency = time.perf_counter() - timer_start
-    return _openai_chat_wrapper(response, request_latency, kwargs)
+    response, scope3_row = _openai_chat_wrapper(response, request_latency, kwargs)
+    scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
+    if isinstance(response, _LegacyAPIResponse):
+        setattr(response, "scope3ai", scope3ai_ctx)
+        return response
+    else:
+        return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
 
 
 async def openai_async_chat_wrapper_stream(

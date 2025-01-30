@@ -128,6 +128,7 @@ async def litellm_async_chat_wrapper_base(
 ) -> ChatCompletion:
     timer_start = time.perf_counter()
     keep_traces = not kwargs.pop("use_always_litellm_tracer", False)
+    modalities = kwargs.get("modalities", [])
     with Scope3AI.get_instance().trace(keep_traces=keep_traces) as tracer:
         response = await wrapped(*args, **kwargs)
         if tracer.traces:
@@ -144,6 +145,18 @@ async def litellm_async_chat_wrapper_base(
         request_duration_ms=float(request_latency) * 1000,
         managed_service_id=PROVIDER,
     )
+    if "audio" in modalities:
+        audio_format = kwargs.get("audio", {}).get("format", "mp3")
+        for choice in response.choices:
+            audio_data = getattr(choice.message, "audio")
+            if audio_data:
+                audio_content = audio_data.data
+                aggregate_multimodal_audio_content_output(
+                    audio_content, audio_format, scope3_row
+                )
+    messages = args[1] if len(args) > 1 else kwargs.get("messages")
+    for message in messages:
+        aggregate_multimodal(message, scope3_row, logger)
     scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
     if scope3ai_ctx is not None:
         return ChatCompletion(**response.model_dump(), scope3ai=scope3ai_ctx)
