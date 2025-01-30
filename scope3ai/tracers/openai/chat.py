@@ -35,7 +35,7 @@ class ChatCompletionChunk(_ChatCompletionChunk):
 
 def _openai_chat_wrapper(
     response: Any, request_latency: float, kwargs: dict
-) -> Union[_LegacyAPIResponse | ChatCompletion, ImpactRow]:
+) -> Union[_LegacyAPIResponse, ChatCompletion, ImpactRow]:
     model_requested = kwargs.get("model")
     modalities = kwargs.get("modalities", [])
     if type(response) is _LegacyAPIResponse:
