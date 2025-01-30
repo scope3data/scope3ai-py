@@ -1,5 +1,3 @@
-from wrapt import wrap_function_wrapper  # type: ignore[import-untyped]
-
 from scope3ai.base_tracer import BaseTracer
 from scope3ai.tracers.huggingface.chat import (
     huggingface_async_chat_wrapper,
@@ -133,9 +131,3 @@ class HuggingfaceInstrumentor(BaseTracer):
                 "wrapper": huggingface_object_detection_wrapper_async,
             },
         ]
-
-    def instrument(self) -> None:
-        for wrapper in self.wrapped_methods:
-            wrap_function_wrapper(
-                wrapper["module"], wrapper["name"], wrapper["wrapper"]
-            )
