@@ -3,7 +3,7 @@ from google.genai import Client
 import os
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(decode_compressed_response=True)
 def test_gemini_chat(tracer_with_sync_init):
     client = Client(api_key=os.environ["GOOGLE_API_KEY"])
     response = client.models.generate_content(
@@ -21,7 +21,7 @@ def test_gemini_chat(tracer_with_sync_init):
     assert response.scope3ai.impact.total_impact.embodied_water_ml > 0
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(decode_compressed_response=True)
 @pytest.mark.asyncio
 async def test_gemini_chat_async(tracer_with_sync_init):
     client = Client(api_key=os.environ["GOOGLE_API_KEY"])
