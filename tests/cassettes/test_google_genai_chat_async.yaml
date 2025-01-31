@@ -1,0 +1,139 @@
+interactions:
+- request:
+    body: '{"contents": [{"parts": [{"text": "How does RLHF work?"}], "role": "user"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '76'
+      Content-Type:
+      - application/json
+      user-agent:
+      - google-genai-sdk/0.7.0 gl-python/3.12.8
+      x-goog-api-client:
+      - google-genai-sdk/0.7.0 gl-python/3.12.8
+      x-goog-api-key:
+      - DUMMY
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent
+  response:
+    body:
+      string: "{\n  \"candidates\": [\n    {\n      \"content\": {\n        \"parts\":
+        [\n          {\n            \"text\": \"Okay, let's break down how Reinforcement
+        Learning from Human Feedback (RLHF) works. It's a complex process, but we
+        can make it understandable step-by-step.\\n\\n**The Big Picture: Why RLHF?**\\n\\nLarge
+        Language Models (LLMs), even with their vast training on text data, can struggle
+        with a few things:\\n\\n* **Truthfulness:** They might generate factually
+        incorrect or nonsensical text.\\n* **Helpfulness:** Their responses might
+        be irrelevant or unhelpful to the user.\\n* **Harmlessness:** They might generate
+        toxic, biased, or unsafe content.\\n* **Alignment with Human Intent:** They
+        might not understand nuanced human desires or preferences.\\n\\nRLHF aims
+        to address these limitations by using human feedback to further refine an
+        LLM's behavior. It essentially guides the LLM towards generating outputs that
+        are more aligned with human expectations and values.\\n\\n**The Three Main
+        Stages of RLHF:**\\n\\nRLHF is typically broken down into three key stages:\\n\\n1.
+        **Supervised Fine-Tuning (SFT):**\\n   * **Purpose:** To create an initial,
+        capable language model that can follow instructions reasonably well.\\n   *
+        **Process:**\\n      * You start with a pre-trained LLM (e.g., GPT-3, LLaMA).\\n
+        \     * You then collect a dataset of **high-quality input-output pairs**,
+        where the outputs are crafted by humans to be good examples of desirable responses.\\n
+        \     * The LLM is trained (fine-tuned) on this dataset using standard supervised
+        learning techniques.\\n   * **Outcome:** You get a fine-tuned language model
+        that is more likely to follow instructions and generate relevant text than
+        the original, pre-trained model. This serves as a good starting point for
+        further refinement.\\n\\n2. **Reward Model Training:**\\n   * **Purpose:**
+        To create a model that can score the quality of different LLM outputs based
+        on human preference.\\n   * **Process:**\\n      * You take the SFT model
+        and have it generate several possible outputs for a given input.\\n      *
+        You then ask human annotators to **rank** these outputs based on their preferences.
+        For example, they might rank one output as \\\"much better,\\\" \\\"slightly
+        better,\\\" or \\\"much worse\\\" than another.\\n      * This ranked data
+        is used to train a **reward model** (often a separate neural network). The
+        reward model learns to assign a numerical score (a \\\"reward\\\") to each
+        output, reflecting the human preference.\\n      * This reward model attempts
+        to capture what makes an output good according to the human annotators.\\n
+        \  * **Outcome:** You get a reward model that can predict how much a human
+        would prefer one LLM output over another.\\n\\n3. **Reinforcement Learning
+        Fine-Tuning:**\\n   * **Purpose:** To use the reward model to further optimize
+        the SFT model's behavior.\\n   * **Process:**\\n      * The SFT model is used
+        to generate outputs for given inputs.\\n      * The reward model scores each
+        output.\\n      * The LLM is fine-tuned using a reinforcement learning algorithm
+        (often Proximal Policy Optimization, or PPO). The goal is to adjust the LLM's
+        parameters to maximize the reward predicted by the reward model.\\n      *
+        This means the LLM learns to generate outputs that are more likely to be scored
+        highly by the reward model, and therefore, more preferred by humans.\\n   *
+        **Outcome:** You get a final, fine-tuned LLM that is more aligned with human
+        preferences, producing outputs that are more truthful, helpful, and harmless.\\n\\n**Key
+        Concepts and Algorithms:**\\n\\n* **Supervised Fine-Tuning (SFT):** Standard
+        supervised learning techniques used to train the model on curated input-output
+        pairs.\\n* **Reward Model:** A model that learns to score the quality of LLM
+        outputs based on human preferences (often trained using pairwise comparison).\\n*
+        **Proximal Policy Optimization (PPO):** A common reinforcement learning algorithm
+        used to fine-tune the LLM based on the reward model's feedback.\\n* **Human
+        Annotators:** People who provide the crucial feedback and preferences that
+        drive the reward model and guide the reinforcement learning process.\\n\\n**Iterative
+        Nature of RLHF:**\\n\\nIt's important to note that RLHF is often an iterative
+        process. After going through these three stages, researchers might collect
+        new human feedback and repeat the process, leading to continuous improvement
+        of the model's alignment.\\n\\n**Challenges of RLHF:**\\n\\n* **Data Collection:**
+        Gathering high-quality, diverse human feedback is expensive and time-consuming.\\n*
+        **Bias:** The human annotators' biases can be unintentionally reflected in
+        the reward model, potentially leading to biased LLM outputs.\\n* **Complexity:**
+        Implementing RLHF requires a complex infrastructure and a good understanding
+        of both supervised and reinforcement learning.\\n* **Trade-offs:** Aligning
+        the model with human preference can sometimes come at the expense of other
+        factors like creativity or fluency.\\n\\n**In Summary:**\\n\\nRLHF uses human
+        feedback as a training signal to improve the alignment of large language models
+        with human expectations. By going through supervised fine-tuning, reward model
+        training, and reinforcement learning fine-tuning, LLMs become more truthful,
+        helpful, harmless, and better at understanding human intent. While it's a
+        powerful technique, it also presents challenges that researchers are actively
+        working to address.\\n\\nThis breakdown should give you a good understanding
+        of how RLHF works. Let me know if you have any more questions!\\n\"\n          }\n
+        \       ],\n        \"role\": \"model\"\n      },\n      \"finishReason\":
+        \"STOP\",\n      \"safetyRatings\": [\n        {\n          \"category\":
+        \"HARM_CATEGORY_HATE_SPEECH\",\n          \"probability\": \"NEGLIGIBLE\"\n
+        \       },\n        {\n          \"category\": \"HARM_CATEGORY_DANGEROUS_CONTENT\",\n
+        \         \"probability\": \"NEGLIGIBLE\"\n        },\n        {\n          \"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\n          \"probability\": \"NEGLIGIBLE\"\n
+        \       },\n        {\n          \"category\": \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\n
+        \         \"probability\": \"NEGLIGIBLE\"\n        }\n      ],\n      \"avgLogprobs\":
+        -0.51318045692576764\n    }\n  ],\n  \"usageMetadata\": {\n    \"promptTokenCount\":
+        7,\n    \"candidatesTokenCount\": 1148,\n    \"totalTokenCount\": 1155,\n
+        \   \"promptTokensDetails\": [\n      {\n        \"modality\": \"TEXT\",\n
+        \       \"tokenCount\": 6\n      }\n    ],\n    \"candidatesTokensDetails\":
+        [\n      {\n        \"modality\": \"TEXT\",\n        \"tokenCount\": 1148\n
+        \     }\n    ]\n  },\n  \"modelVersion\": \"gemini-2.0-flash-exp\"\n}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Fri, 31 Jan 2025 18:47:38 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=8670
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+      content-length:
+      - '6490'
+    status:
+      code: 200
+      message: OK
+version: 1

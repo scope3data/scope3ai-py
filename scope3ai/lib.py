@@ -51,6 +51,14 @@ def init_huggingface_hub_instrumentor() -> None:
         instrumentor.instrument()
 
 
+def init_google_genai_instrumentor() -> None:
+    if importlib.util.find_spec("google") is not None:
+        from scope3ai.tracers.google_genai.instrument import GoogleGenAiInstrumentor
+
+        instrumentor = GoogleGenAiInstrumentor()
+        instrumentor.instrument()
+
+
 def init_litellm_instrumentor() -> None:
     if importlib.util.find_spec("litellm") is not None:
         from scope3ai.tracers.litellm.instrument import LiteLLMInstrumentor
@@ -79,6 +87,7 @@ _INSTRUMENTS = {
     PROVIDERS.COHERE.value: init_cohere_instrumentor,
     PROVIDERS.OPENAI.value: init_openai_instrumentor,
     PROVIDERS.HUGGINGFACE_HUB.value: init_huggingface_hub_instrumentor,
+    PROVIDERS.GOOGLE_GENAI.value: init_google_genai_instrumentor,
     PROVIDERS.LITELLM.value: init_litellm_instrumentor,
     PROVIDERS.MISTRALAI.value: init_mistral_v1_instrumentor,
     PROVIDERS.RESPONSE.value: init_response_instrumentor,

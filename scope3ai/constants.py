@@ -9,3 +9,4 @@ class PROVIDERS(Enum):
     LITELLM = "litellm"
     MISTRALAI = "mistralai"
     RESPONSE = "response"
+    GOOGLE_GENAI = "google_genai"

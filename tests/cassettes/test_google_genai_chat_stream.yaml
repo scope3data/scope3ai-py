@@ -1,0 +1,197 @@
+interactions:
+- request:
+    body: '{"contents": [{"parts": [{"text": "tell me a story"}], "role": "user"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '72'
+      Content-Type:
+      - application/json
+      user-agent:
+      - google-genai-sdk/0.7.0 gl-python/3.12.8
+      x-goog-api-client:
+      - google-genai-sdk/0.7.0 gl-python/3.12.8
+      x-goog-api-key:
+      - DUMMY
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:streamGenerateContent?alt=sse
+  response:
+    body:
+      string: "data: {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \"Okay\"}],\"role\":
+        \"model\"}}],\"usageMetadata\": {\"promptTokenCount\": 5,\"totalTokenCount\":
+        5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata: {\"candidates\":
+        [{\"content\": {\"parts\": [{\"text\": \", here's a story for you:\\n\\nThe
+        wind, a restless spirit\"}],\"role\": \"model\"},\"safetyRatings\": [{\"category\":
+        \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \", rattled the shutters
+        of old Mrs. Gable's cottage. Inside, nestled\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" amongst crocheted
+        doilies and stacks of well-loved books, Elara, a tiny house sparrow, hopped
+        nervously. She was new to this corner of\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" the garden, having
+        recently been ousted from her nest by a particularly boisterous family of
+        blue tits.\\n\\nElara was small, even for a sparrow\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \". Her feathers were
+        a muted brown, and her chirps were more like tiny whispers. She felt invisible,
+        a speck in the grand tapestry of the garden. She longed to be noticed, to
+        be seen as something more than just another ordinary\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" bird.\\n\\nOne
+        day, Mrs. Gable, her face framed by a halo of white hair, emerged from her
+        cottage. In her hands, she carried a small, intricately carved wooden bird
+        feeder. It was painted with bright, cheerful colors\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" and shaped like
+        a tiny pagoda. Elara watched, her heart fluttering with a mixture of hope
+        and apprehension, as Mrs. Gable carefully filled the feeder with seeds.\\n\\nOther
+        birds flocked to the feeder: fat robins, flamboyant finches, even the boisterous
+        blue tits. Elara, intimidated by their\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" confidence, stayed
+        perched on the edge of a rose bush, watching with longing. She was too timid
+        to join the throng.\\n\\nDays turned into weeks. Elara continued to observe,
+        her hunger growing. She even tried to fly closer, but her small wings felt
+        heavy with doubt. She started to think she might have\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" to leave the garden,
+        find a place where she wouldn't feel so utterly insignificant.\\n\\nOne afternoon,
+        as the sun dipped low, painting the sky in hues of orange and purple, Mrs.
+        Gable came back outside. She noticed Elara, still perched on the rose bush,
+        her little head drooping. Mrs.\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" Gable's eyes, surprisingly
+        sharp beneath her wrinkled lids, seemed to see right through her.\\n\\nInstead
+        of filling the pagoda feeder, she took out a small dish and carefully sprinkled
+        a few tiny seeds near the base of the rose bush. She then retreated back inside
+        her cottage, leaving Elara alone with the unexpected offering\"}],\"role\":
+        \"model\"},\"safetyRatings\": [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_HARASSMENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\":
+        \"NEGLIGIBLE\"}]}],\"usageMetadata\": {\"promptTokenCount\": 5,\"totalTokenCount\":
+        5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata: {\"candidates\":
+        [{\"content\": {\"parts\": [{\"text\": \".\\n\\nElara, surprised by this kindness,
+        tentatively hopped down. She pecked at the seeds, each one a burst of flavor.
+        It wasn't just the food, though. It was the feeling that someone had seen
+        her, had noticed her unique struggle.\\n\\nFrom that day on, Mrs. Gable continued\"}],\"role\":
+        \"model\"},\"safetyRatings\": [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_HARASSMENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\":
+        \"NEGLIGIBLE\"}]}],\"usageMetadata\": {\"promptTokenCount\": 5,\"totalTokenCount\":
+        5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata: {\"candidates\":
+        [{\"content\": {\"parts\": [{\"text\": \" to leave a small dish of seeds specifically
+        for Elara. She didn\u2019t chase away the other birds, but she made sure Elara
+        had her own little space.\\n\\nElara, in turn, became less timid. Her chirps
+        grew a little louder, a little more confident. She began to explore the garden\"}],\"role\":
+        \"model\"},\"safetyRatings\": [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_HARASSMENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\":
+        \"NEGLIGIBLE\"}]}],\"usageMetadata\": {\"promptTokenCount\": 5,\"totalTokenCount\":
+        5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata: {\"candidates\":
+        [{\"content\": {\"parts\": [{\"text\": \" with renewed vigor. She discovered
+        hidden nooks, the sweetest berries, and the most vibrant flowers. She realized
+        that being small didn\u2019t mean being insignificant. It meant being able
+        to appreciate the details, the quiet moments, the beauty that often went unnoticed
+        by the bolder, brighter birds.\\n\\nElara never forgot the\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" kindness Mrs. Gable
+        had shown her. She would often perch on the windowsill and sing her softest
+        melodies, a thank you to the woman who had seen the potential for greatness,
+        even in the smallest sparrow. She had learned that sometimes, it\u2019s not
+        about being the loudest or the biggest, but about finding your\"}],\"role\":
+        \"model\"},\"safetyRatings\": [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_HARASSMENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\":
+        \"NEGLIGIBLE\"}]}],\"usageMetadata\": {\"promptTokenCount\": 5,\"totalTokenCount\":
+        5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata: {\"candidates\":
+        [{\"content\": {\"parts\": [{\"text\": \" own unique voice and being appreciated
+        for who you are. And in Mrs. Gable's garden, Elara, the small, muted sparrow,
+        finally felt seen, finally felt at home.\\n\"}],\"role\": \"model\"},\"finishReason\":
+        \"STOP\",\"safetyRatings\": [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_HARASSMENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\":
+        \"NEGLIGIBLE\"}]}],\"usageMetadata\": {\"promptTokenCount\": 5,\"candidatesTokenCount\":
+        741,\"totalTokenCount\": 746,\"promptTokensDetails\": [{\"modality\": \"TEXT\",\"tokenCount\":
+        4}],\"candidatesTokensDetails\": [{\"modality\": \"TEXT\",\"tokenCount\":
+        741}]},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Disposition:
+      - attachment
+      Content-Type:
+      - text/event-stream
+      Date:
+      - Thu, 30 Jan 2025 22:49:43 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=567
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

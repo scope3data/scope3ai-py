@@ -1,0 +1,225 @@
+interactions:
+- request:
+    body: '{"contents": [{"parts": [{"text": "tell me a story"}], "role": "user"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '72'
+      Content-Type:
+      - application/json
+      user-agent:
+      - google-genai-sdk/0.7.0 gl-python/3.12.8
+      x-goog-api-client:
+      - google-genai-sdk/0.7.0 gl-python/3.12.8
+      x-goog-api-key:
+      - DUMMY
+    method: POST
+    uri: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:streamGenerateContent?alt=sse
+  response:
+    body:
+      string: "data: {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \"Okay\"}],\"role\":
+        \"model\"}}],\"usageMetadata\": {\"promptTokenCount\": 5,\"totalTokenCount\":
+        5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata: {\"candidates\":
+        [{\"content\": {\"parts\": [{\"text\": \", settle in and let me tell you a
+        story.\\n\\nThe wind whispered secrets\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" through the gnarled
+        branches of the Whisperwood, a forest that bordered the\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" small village of
+        Oakhaven. Unlike the cheerful chatter of other woods, the Whisperwood spoke
+        in rustling leaves, creaking limbs, and the occasional low\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" hum that seemed
+        to vibrate through the very earth. Elara, a young woman with eyes the color
+        of moss and hair like spun moonlight, understood these whispers.\"}],\"role\":
+        \"model\"},\"safetyRatings\": [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_HARASSMENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\":
+        \"NEGLIGIBLE\"}]}],\"usageMetadata\": {\"promptTokenCount\": 5,\"totalTokenCount\":
+        5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata: {\"candidates\":
+        [{\"content\": {\"parts\": [{\"text\": \" She was the village's caretaker,
+        the one who listened to the forest's heart.\\n\\nFor generations, Oakhaven
+        had lived in harmony with the Whisperwood. They took only what they needed,
+        leaving the forest to its own\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" mysterious rhythms.
+        But lately, the whispers had grown troubled. The usual rustling had turned
+        to sharp crackles, the hum had become a low, mournful groan. The villagers,
+        usually so at peace, grew uneasy. Crops withered,\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" the river ran sluggishly,
+        and a palpable sense of dread hung in the air.\\n\\nElara felt it too. The
+        forest was in pain, and she knew she had to find the cause. She packed a small
+        knapsack with dried berries, a water skin, and her grandmother\u2019s worn
+        leather journal, filled\"}],\"role\": \"model\"},\"safetyRatings\": [{\"category\":
+        \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" with notes on the
+        forest's ancient lore. She stepped into the Whisperwood, the sunlight instantly
+        muted by the dense canopy.\\n\\nAs she ventured deeper, the whispers intensified,
+        revealing disjointed images \u2013 a gaping wound in the earth, a shadowy
+        figure, the glint of metal. Following these fragmented clues, El\"}],\"role\":
+        \"model\"},\"safetyRatings\": [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_HARASSMENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\":
+        \"NEGLIGIBLE\"}]}],\"usageMetadata\": {\"promptTokenCount\": 5,\"totalTokenCount\":
+        5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata: {\"candidates\":
+        [{\"content\": {\"parts\": [{\"text\": \"ara reached the heart of the forest,
+        a clearing she\u2019d never seen before. There, a deep chasm scarred the earth,
+        revealing raw, exposed soil and roots torn from the ground. By the edge of
+        the chasm stood a figure cloaked in black, his face hidden in shadow. He held
+        a strange\"}],\"role\": \"model\"},\"safetyRatings\": [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_HARASSMENT\",\"probability\":
+        \"NEGLIGIBLE\"},{\"category\": \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\":
+        \"NEGLIGIBLE\"}]}],\"usageMetadata\": {\"promptTokenCount\": 5,\"totalTokenCount\":
+        5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata: {\"candidates\":
+        [{\"content\": {\"parts\": [{\"text\": \", humming device, its metallic surface
+        pulsing with an unnatural light.\\n\\n\\\"What are you doing?\\\" Elara called
+        out, her voice trembling slightly.\\n\\nThe figure turned, his hidden face
+        briefly illuminated by the device\u2019s light, revealing sharp, inhuman features.
+        He didn\u2019t speak, but the humming device grew\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" louder, and the
+        ground around the chasm began to tremble. Elara understood. He was stealing
+        the forest\u2019s life force, draining its magic to power his machine.\\n\\nElara
+        knew she couldn't fight him directly. Instead, she opened her grandmother's
+        journal, her fingers tracing the faded ink.\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" She found a passage
+        detailing an ancient ritual, one used to bind the forest to itself and mend
+        its wounds. But it required a sacrifice, a piece of her own essence.\\n\\nHesitantly,
+        she began to chant the words, her voice echoing through the clearing. The
+        forest responded, the rustling leaves turning into\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" a chorus, the groaning
+        hum transforming into a vibrant melody. As she chanted, she felt a part of
+        herself, a small spark of her soul, begin to unravel and merge with the earth.
+        The chasm began to close, the torn roots knitted back together, and the figure
+        in black stumbled back, the humming\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" device sputtering.\\n\\nThe
+        figure roared in frustration, his form flickering before he vanished in a
+        puff of smoke. The device, now silent, tumbled to the ground.\\n\\nElara,
+        weak but strangely at peace, watched as the forest began to heal. The whispers
+        had changed again, no longer filled with pain, but\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" with a soft, gentle
+        rhythm of gratitude. The colors of the leaves seemed brighter, the air cleaner.
+        \\n\\nShe knew she wouldn't be the same. A part of her had become the forest
+        itself, bound to it forever. But as she walked back towards Oakhaven, the
+        setting sun casting long shadows\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \", she felt a deep
+        sense of belonging, a connection so profound it filled her with quiet joy.\\n\\nThe
+        village welcomed her with cheers, their fear replaced by hope. The river flowed
+        freely again, and the crops began to flourish. The Whisperwood had been saved,
+        and in saving it, Elara had found her\"}],\"role\": \"model\"},\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" true purpose. She
+        was no longer just the caretaker, she was a part of the forest, and the forest
+        was a part of her, their destinies forever intertwined. And every time the
+        wind rustled the leaves, they would whisper her name, Elara, the one who listened,
+        the one who healed, the\"}],\"role\": \"model\"},\"safetyRatings\": [{\"category\":
+        \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"totalTokenCount\": 5},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\ndata:
+        {\"candidates\": [{\"content\": {\"parts\": [{\"text\": \" one who became
+        one with the Whisperwood.\\n\"}],\"role\": \"model\"},\"finishReason\": \"STOP\",\"safetyRatings\":
+        [{\"category\": \"HARM_CATEGORY_HATE_SPEECH\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_DANGEROUS_CONTENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_HARASSMENT\",\"probability\": \"NEGLIGIBLE\"},{\"category\":
+        \"HARM_CATEGORY_SEXUALLY_EXPLICIT\",\"probability\": \"NEGLIGIBLE\"}]}],\"usageMetadata\":
+        {\"promptTokenCount\": 5,\"candidatesTokenCount\": 894,\"totalTokenCount\":
+        899,\"promptTokensDetails\": [{\"modality\": \"TEXT\",\"tokenCount\": 4}],\"candidatesTokensDetails\":
+        [{\"modality\": \"TEXT\",\"tokenCount\": 894}]},\"modelVersion\": \"gemini-2.0-flash-exp\"}\r\n\r\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Disposition:
+      - attachment
+      Content-Type:
+      - text/event-stream
+      Date:
+      - Thu, 30 Jan 2025 22:49:49 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Server-Timing:
+      - gfet4t7; dur=576
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      - X-Origin
+      - Referer
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1
