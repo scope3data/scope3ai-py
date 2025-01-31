@@ -11,23 +11,23 @@ class GeminiInstrumentor(BaseTracer):
     def __init__(self) -> None:
         self.wrapped_methods = [
             {
-                "module": "google.genai",
-                "name": "Client.models.generate_content",
+                "module": "google.genai.models",
+                "name": "Models.generate_content",
                 "wrapper": gemini_chat_wrapper,
             },
             {
-                "module": "gemini.client",
-                "name": "Client.aio.models.generate_content",
+                "module": "google.genai.models",
+                "name": "AsyncModels.generate_content",
                 "wrapper": gemini_async_chat_wrapper,
             },
             {
-                "module": "gemini.client",
-                "name": "Client.chats.send_message_stream",
+                "module": "google.genai.chats",
+                "name": "Chat.send_message_stream",
                 "wrapper": gemini_chat_stream_wrapper,
             },
             {
-                "module": "gemini.client",
-                "name": "Client.aio.chats.send_message_stream",
+                "module": "google.genai.chats",
+                "name": "AsyncChat.send_message_stream",
                 "wrapper": gemini_async_chat_stream_wrapper,
             },
         ]
