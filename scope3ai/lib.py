@@ -53,9 +53,9 @@ def init_huggingface_hub_instrumentor() -> None:
 
 def init_gemini_instrumentor() -> None:
     if importlib.util.find_spec("google") is not None:
-        from scope3ai.tracers.gemini.instrument import GeminiInstrumentor
+        from scope3ai.tracers.google_genai.instrument import GoogleGenAiInstrumentor
 
-        instrumentor = GeminiInstrumentor()
+        instrumentor = GoogleGenAiInstrumentor()
         instrumentor.instrument()
 
 

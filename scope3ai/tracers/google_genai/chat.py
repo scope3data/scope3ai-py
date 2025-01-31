@@ -8,7 +8,7 @@ from scope3ai.api.typesgen import ImpactRow
 from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 
-PROVIDER = PROVIDERS.GEMINI.value
+PROVIDER = PROVIDERS.GOOGLE_GENAI.value
 
 
 class GenerateContentResponse(_GenerateContentResponse):
@@ -25,7 +25,9 @@ def get_impact_row(response: _GenerateContentResponse, duration_ms: float) -> Im
     )
 
 
-def gemini_chat_wrapper(wrapped: Callable, instance: Client, args: Any, kwargs: Any):
+def google_genai_chat_wrapper(
+    wrapped: Callable, instance: Client, args: Any, kwargs: Any
+):
     start = time.time()
     response = wrapped(*args, **kwargs)
     duration_ms = time.time() - start
@@ -36,7 +38,7 @@ def gemini_chat_wrapper(wrapped: Callable, instance: Client, args: Any, kwargs: 
     return response
 
 
-async def gemini_async_chat_wrapper(
+async def google_genai_async_chat_wrapper(
     wrapped: Callable, instance: Client, args: Any, kwargs: Any
 ):
     start = time.time()
@@ -49,7 +51,7 @@ async def gemini_async_chat_wrapper(
     return response
 
 
-def gemini_chat_stream_wrapper(
+def google_genai_chat_stream_wrapper(
     wrapped: Callable, instance: Client, args: Any, kwargs: Any
 ):
     start = time.time()
@@ -63,7 +65,7 @@ def gemini_chat_stream_wrapper(
         yield chunk
 
 
-async def gemini_async_chat_stream_wrapper(
+async def google_genai_async_chat_stream_wrapper(
     wrapped: Callable, instance: Client, args: Any, kwargs: Any
 ):
     start = time.time()
