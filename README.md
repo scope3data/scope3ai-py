@@ -37,6 +37,7 @@ uv add scope3ai
 | Huggingface | ✅              | ✅ | ✅  | ✅               | ✅        |                  |
 | LiteLLM     | ✅              |  ✅  |✅     |       ✅           |           | Images/Audio     | Text/Audio
 | MistralAi   | ✅              |    |     |                  |           | Images           |
+| Gemini   | ✅              |    |     |                  |           |            |
 
 Roadmap:
 - Google
