@@ -60,6 +60,10 @@ tests = [
 openapi = [
     "datamodel-code-generator>=0.26.4",
 ]
+dev = [
+    "pydoc-markdown>=4.8.2",
+    "tomli>=2.2.1",
+]
 
 [tool.semantic_release]
 assets = []
@@ -126,3 +130,28 @@ insecure = false
 [tool.semantic_release.publish]
 dist_glob_patterns = ["dist/*"]
 upload_to_vcs_release = true
+
+[tool.pydoc-markdown]
+loaders = [
+    { type = "python" }
+]
+processors = [
+    { type = "filter" },
+    { type = "smart" },
+    { type = "crossref" }
+]
+
+[tool.pydoc-markdown.renderer]
+type = "markdown"
+descriptive_class_title = false
+render_toc = false
+code_headers = true
+docstrings_as_blockquote = false
+signature_with_def = true
+
+[tool.pydoc-markdown.renderer.header_level_by_type]
+Module = 1
+Class = 2
+Method = 3
+Function = 3
+Property = 3

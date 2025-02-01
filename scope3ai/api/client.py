@@ -15,6 +15,17 @@ class Scope3AIError(Exception):
 
 
 class ClientBase:
+    """
+    Base client class for communicating with the Scope3AI HTTP API.
+
+    Handles authentication and provides core request functionality for both
+    synchronous and asynchronous clients.
+
+    Attributes:
+        api_key (Optional[str]): API key for authentication, can be passed in or read from env var
+        api_url (Optional[str]): URL for the API, defaults to production endpoint
+    """
+
     def __init__(
         self,
         api_key: Optional[str] = None,
