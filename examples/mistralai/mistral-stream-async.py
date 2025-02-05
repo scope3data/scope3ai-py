@@ -18,7 +18,6 @@ async def main(
 
     with scope3.trace() as tracer:
         chunk_count = 0
-        content = ""
         async for chunk in await client.chat.stream_async(
             model=model,
             messages=[{"role": "user", "content": message}],
@@ -26,9 +25,9 @@ async def main(
             temperature=temperature,
         ):
             chunk_count += 1
-            content += chunk.data.choices[0].delta.content
+            print(chunk.data.choices[0].delta.content, end="", flush=True)
+        print()
         print(f"Chunk count: {chunk_count}")
-        print(f"Content: {content}")
         impact = tracer.impact()
         print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")
