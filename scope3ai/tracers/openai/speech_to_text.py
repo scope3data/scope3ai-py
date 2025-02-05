@@ -1,6 +1,6 @@
 import logging
 import time
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional, Tuple, Union
 
 import tiktoken
 from openai.resources.audio.transcriptions import AsyncTranscriptions, Transcriptions
@@ -10,12 +10,12 @@ from openai.types.audio.transcription_verbose import (
 )
 
 from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
+from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.tracers.openai.utils import BaseModelResponse
 from scope3ai.tracers.utils.audio import _get_file_audio_duration
 
-# TODO: PROVIDER = PROVIDERS.OPENAI.value for now AiApi does not support it
-PROVIDER = ""
+PROVIDER = PROVIDERS.OPENAI.value
 logger = logging.getLogger("scope3.tracers.openai.speech_to_text")
 
 
@@ -33,7 +33,7 @@ class TranscriptionVerbose(BaseModelResponse, _TranscriptionVerbose):
 
 def _openai_speech_to_text_get_impact_row(
     response: Any, request_latency: float, kwargs: dict
-) -> (Union[Transcription, TranscriptionVerbose, str], ImpactRow):
+) -> Tuple[Union[Transcription, TranscriptionVerbose, str], ImpactRow]:
     model = kwargs["model"]
     encoder = tiktoken.get_encoding("cl100k_base")
 

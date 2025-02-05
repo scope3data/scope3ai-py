@@ -1,15 +1,15 @@
 import time
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Tuple
 
 from openai.resources.images import AsyncImages, Images
 from openai.types.images_response import ImagesResponse as _ImageResponse
 from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
 from scope3ai.api.typesgen import Image as RootImage
+from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.tracers.openai.utils import BaseModelResponse
 
-# TODO: PROVIDER = PROVIDERS.OPENAI.value for now AiApi does not support it
-PROVIDER = ""
+PROVIDER = PROVIDERS.OPENAI.value
 DEFAULT_MODEL = "dall-e-2"
 DEFAULT_SIZE = "1024x1024"
 DEFAULT_N = 1
@@ -21,7 +21,7 @@ class ImageResponse(BaseModelResponse, _ImageResponse):
 
 def _openai_image_get_impact_row(
     response: _ImageResponse, request_latency: float, **kwargs: Any
-) -> (ImageResponse, ImpactRow):
+) -> Tuple[ImageResponse, ImpactRow]:
     model = kwargs.get("model", DEFAULT_MODEL)
     size = RootImage(root=kwargs.get("size", DEFAULT_SIZE))
     n = kwargs.get("n", DEFAULT_N)
