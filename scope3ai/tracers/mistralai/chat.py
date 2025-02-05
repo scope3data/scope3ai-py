@@ -11,11 +11,9 @@ from mistralai.models import CompletionEvent
 from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext
 from scope3ai.api.typesgen import ImpactRow
-from scope3ai.constants import PROVIDERS
 from scope3ai.tracers.utils.multimodal import aggregate_multimodal
 
-PROVIDER = PROVIDERS.MISTRALAI.value
-PROVIDER = ""
+
 logger = logging.getLogger("scope3ai.tracers.mistralai.chat")
 
 

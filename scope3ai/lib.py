@@ -423,7 +423,6 @@ class Scope3AI:
                     return
 
         row.request_id = generate_id()
-        row.managed_service_id = ""
         if root_tracer:
             set_only_if(row, "trace_id", root_tracer.trace_id)
         if row.utc_datetime is None:
@@ -437,6 +436,13 @@ class Scope3AI:
         )
 
         # copy tracer or global metadata
+
+        set_only_if(
+            row,
+            "managed_service_id",
+            row.managed_service_id if row.managed_service_id else "",
+        )
+
         set_only_if(
             row,
             "client_id",

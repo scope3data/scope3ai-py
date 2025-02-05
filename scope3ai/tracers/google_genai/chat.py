@@ -5,10 +5,7 @@ from google.genai.types import GenerateContentResponse as _GenerateContentRespon
 
 from scope3ai.api.types import Scope3AIContext
 from scope3ai.api.typesgen import ImpactRow
-from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
-
-PROVIDER = PROVIDERS.GOOGLE_GENAI.value
 
 
 class GenerateContentResponse(_GenerateContentResponse):

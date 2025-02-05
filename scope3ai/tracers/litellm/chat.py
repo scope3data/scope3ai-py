@@ -8,13 +8,11 @@ from litellm.utils import CustomStreamWrapper
 
 from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext, ImpactRow
-from scope3ai.constants import PROVIDERS
 from scope3ai.tracers.utils.multimodal import (
     aggregate_multimodal,
     aggregate_multimodal_audio_content_output,
 )
 
-PROVIDER = PROVIDERS.LITELLM.value
 
 logger = logging.getLogger("scope3ai.tracers.litellm.chat")
 

@@ -9,14 +9,12 @@ from openai.types.chat import ChatCompletion as _ChatCompletion
 from openai.types.chat import ChatCompletionChunk as _ChatCompletionChunk
 
 from scope3ai.api.types import ImpactRow, Scope3AIContext
-from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.tracers.utils.multimodal import (
     aggregate_multimodal,
     aggregate_multimodal_audio_content_output,
 )
 
-PROVIDER = PROVIDERS.OPENAI.value
 
 logger = logging.getLogger("scope3ai.tracers.openai.chat")
 

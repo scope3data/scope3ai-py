@@ -11,11 +11,8 @@ from cohere.types.streamed_chat_response import (
     StreamEndStreamedChatResponse as _StreamEndStreamedChatResponse,
 )
 
-from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.api.types import Scope3AIContext, ImpactRow
-
-PROVIDER = PROVIDERS.COHERE.value
 
 
 class NonStreamedChatResponse(_NonStreamedChatResponse):

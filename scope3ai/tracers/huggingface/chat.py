@@ -13,11 +13,9 @@ from huggingface_hub import ChatCompletionStreamOutput as _ChatCompletionStreamO
 from requests import Response
 
 from scope3ai.api.types import ImpactRow, Scope3AIContext
-from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
 
-PROVIDER = PROVIDERS.HUGGINGFACE_HUB.value
 HUGGING_FACE_CHAT_TASK = "chat"
 
 

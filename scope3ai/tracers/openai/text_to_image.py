@@ -5,11 +5,9 @@ from openai.resources.images import AsyncImages, Images
 from openai.types.images_response import ImagesResponse as _ImageResponse
 from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
 from scope3ai.api.typesgen import Image as RootImage
-from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.tracers.openai.utils import BaseModelResponse
 
-PROVIDER = PROVIDERS.OPENAI.value
 DEFAULT_MODEL = "dall-e-2"
 DEFAULT_SIZE = "1024x1024"
 DEFAULT_N = 1

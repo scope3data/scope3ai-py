@@ -8,9 +8,7 @@ from litellm.utils import ImageResponse as _ImageResponse
 from scope3ai import Scope3AI
 from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.api.typesgen import Image as RootImage, Task
-from scope3ai.constants import PROVIDERS
 
-PROVIDER = PROVIDERS.LITELLM.value
 DEFAULT_MODEL = "dall-e-2"
 DEFAULT_SIZE = "1024x1024"
 DEFAULT_N = 1

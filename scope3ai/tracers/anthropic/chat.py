@@ -18,10 +18,8 @@ from anthropic.types.raw_message_stream_event import RawMessageStreamEvent
 from typing_extensions import override
 
 from scope3ai.api.types import Scope3AIContext, ImpactRow
-from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 
-PROVIDER = PROVIDERS.ANTROPIC.value
 
 MessageStreamT = TypeVar("MessageStreamT", bound=_MessageStream)
 AsyncMessageStreamT = TypeVar("AsyncMessageStreamT", bound=_AsyncMessageStream)

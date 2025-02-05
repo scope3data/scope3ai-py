@@ -6,12 +6,10 @@ import tiktoken
 from openai.resources.audio.speech import AsyncSpeech, Speech, _legacy_response
 
 from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
-from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.tracers.openai.utils import BaseModelResponse
 from scope3ai.tracers.utils.audio import _get_audio_duration
 
-PROVIDER = PROVIDERS.OPENAI.value
 logger = logging.getLogger(f"scope3ai.tracers.{__name__}")
 
 
