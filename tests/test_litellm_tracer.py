@@ -3,7 +3,6 @@ from pathlib import Path
 import litellm
 import pytest
 
-from scope3ai.constants import PROVIDERS
 
 USE_ALWAYS_LITELLM_TRACER = True
 
@@ -98,7 +97,8 @@ def test_litellm_image_generation(tracer_with_sync_init):
     assert response
     assert len(response.data) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request is not None
     assert response.scope3ai.request.input_tokens == 8
     assert response.scope3ai.request.request_duration_ms > 0
@@ -122,7 +122,8 @@ async def test_litellm_async_image_generation(tracer_with_sync_init):
     assert response
     assert len(response.data) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request is not None
     assert response.scope3ai.request.input_tokens == 6
     assert response.scope3ai.request.request_duration_ms > 0
@@ -150,7 +151,8 @@ def test_litellm_speech_to_text(tracer_with_sync_init):
     assert response.text is not None
     assert len(response.text) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request is not None
     assert response.scope3ai.request.output_tokens == 2
     assert response.scope3ai.request.request_duration_ms > 0
@@ -177,7 +179,8 @@ async def test_litellm_async_speech_to_text(tracer_with_sync_init):
     assert response.text is not None
     assert len(response.text) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request is not None
     assert response.scope3ai.request.output_tokens == 2
     assert response.scope3ai.request.request_duration_ms > 0
@@ -202,7 +205,8 @@ def test_litellm_text_to_speech(tracer_with_sync_init):
     assert response.text is not None
     assert len(response.text) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request is not None
     assert response.scope3ai.request.input_tokens == 12
     assert response.scope3ai.request.request_duration_ms > 0
@@ -229,7 +233,8 @@ async def test_litellm_async_text_to_speech(tracer_with_sync_init):
     assert response.text is not None
     assert len(response.text) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request is not None
     assert response.scope3ai.request.input_tokens == 12
     assert response.scope3ai.request.request_duration_ms > 0

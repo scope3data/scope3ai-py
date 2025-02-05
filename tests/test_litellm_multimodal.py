@@ -2,7 +2,6 @@ import pytest
 import litellm
 
 from scope3ai.api.typesgen import Image
-from scope3ai.constants import PROVIDERS
 from tests.utils import (
     load_image_b64,
     TEST_IMAGE_PNG,
@@ -41,7 +40,8 @@ def test_litellm_multimodal_vision_openai(tracer_with_sync_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request.input_tokens == 872
     assert response.scope3ai.request.output_tokens == 931
     assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
@@ -87,7 +87,8 @@ def test_litellm_multimodal_vision_2_images_openai(tracer_with_sync_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request.input_tokens == 1082
     assert response.scope3ai.request.output_tokens == 1136
     assert response.scope3ai.request.input_images == [
@@ -129,7 +130,8 @@ def test_litellm_multimodal_audio_openai(tracer_with_sync_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request.input_tokens == 29
     assert response.scope3ai.request.output_tokens == 39
     assert response.scope3ai.request.input_audio_seconds >= 1
@@ -175,7 +177,8 @@ def test_litellm_multimodal_audio_2_openai(tracer_with_sync_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request.input_tokens == 46
     assert response.scope3ai.request.output_tokens == 81
     assert response.scope3ai.request.input_audio_seconds >= 1
@@ -214,7 +217,8 @@ def test_litellm_multimodal_vision_mistralai(tracer_with_sync_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request.input_tokens == 4172
     assert response.scope3ai.request.output_tokens == 4253
     assert response.scope3ai.request.input_images == [Image(root="1024x1024")]
@@ -260,7 +264,8 @@ def test_litellm_multimodal_vision_2_images_mistralai(tracer_with_sync_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request.input_tokens == 5228
     assert response.scope3ai.request.output_tokens == 5337
     assert response.scope3ai.request.input_images == [

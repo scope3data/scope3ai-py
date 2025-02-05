@@ -16,7 +16,6 @@ async def main(filename: Path, model: str, response_format: str):
             response_format=response_format,
         )
         print(response)
-        print("---------------")
         impact = tracer.impact()
         print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")

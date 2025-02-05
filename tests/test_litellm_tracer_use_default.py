@@ -3,7 +3,6 @@ from pathlib import Path
 import litellm
 import pytest
 
-from scope3ai.constants import PROVIDERS
 
 USE_ALWAYS_LITELLM_TRACER = False
 
@@ -18,7 +17,8 @@ def test_litellm_chat(tracer_with_sync_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request.input_tokens == 44
     assert response.scope3ai.request.output_tokens == 69
     assert response.scope3ai.impact is not None
@@ -40,7 +40,8 @@ async def test_litellm_async_chat(tracer_with_sync_init):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
     assert response.scope3ai.request.input_tokens == 3
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
