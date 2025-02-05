@@ -1,4 +1,5 @@
 import asyncio
+import os
 from scope3ai import Scope3AI
 from mistralai import Mistral
 
@@ -10,6 +11,7 @@ async def main(
     temperature: float,
     api_key: str | None = None,
 ):
+    api_key = api_key or os.environ["MISTRAL_API_KEY"]
     scope3 = Scope3AI.init()
     client = Mistral(api_key=api_key) if api_key else Mistral()
 

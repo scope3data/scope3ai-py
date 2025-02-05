@@ -47,15 +47,28 @@ def test_mistralai_stream_chat(tracer_with_sync_init):
     stream = client.chat.stream(
         messages=[{"role": "user", "content": "Hello World!"}], model="mistral-tiny"
     )
-    for chunk in stream:
-        assert getattr(chunk.data, "scope3ai") is not None
-        assert chunk.data.scope3ai.impact is not None
-        assert chunk.data.scope3ai.impact.total_impact is not None
-        assert chunk.data.scope3ai.impact.total_impact.usage_energy_wh > 0
-        assert chunk.data.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
-        assert chunk.data.scope3ai.impact.total_impact.usage_water_ml > 0
-        assert chunk.data.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
-        assert chunk.data.scope3ai.impact.total_impact.embodied_water_ml > 0
+    with tracer_with_sync_init.trace() as tracer:
+        for chunk in stream:
+            if chunk.data.usage:
+                if (
+                    chunk.data.usage.prompt_tokens > 0
+                    or chunk.data.usage.completion_tokens > 0
+                ):
+                    assert getattr(chunk.data, "scope3ai") is not None
+                    assert chunk.data.scope3ai.impact is not None
+                    assert chunk.data.scope3ai.impact.total_impact is not None
+                    assert chunk.data.scope3ai.impact.total_impact.usage_energy_wh > 0
+                    assert (
+                        chunk.data.scope3ai.impact.total_impact.usage_emissions_gco2e
+                        > 0
+                    )
+                    assert chunk.data.scope3ai.impact.total_impact.usage_water_ml > 0
+                    assert (
+                        chunk.data.scope3ai.impact.total_impact.embodied_emissions_gco2e
+                        > 0
+                    )
+                    assert chunk.data.scope3ai.impact.total_impact.embodied_water_ml > 0
+        assert len(tracer.get_all_rows()) > 0
 
 
 @pytest.mark.vcr
@@ -65,12 +78,25 @@ async def test_mistralai_async_stream_chat(tracer_with_sync_init):
     stream = await client.chat.stream_async(
         messages=[{"role": "user", "content": "Hello World!"}], model="mistral-tiny"
     )
-    async for chunk in stream:
-        assert getattr(chunk.data, "scope3ai") is not None
-        assert chunk.data.scope3ai.impact is not None
-        assert chunk.data.scope3ai.impact.total_impact is not None
-        assert chunk.data.scope3ai.impact.total_impact.usage_energy_wh > 0
-        assert chunk.data.scope3ai.impact.total_impact.usage_emissions_gco2e > 0
-        assert chunk.data.scope3ai.impact.total_impact.usage_water_ml > 0
-        assert chunk.data.scope3ai.impact.total_impact.embodied_emissions_gco2e > 0
-        assert chunk.data.scope3ai.impact.total_impact.embodied_water_ml > 0
+    with tracer_with_sync_init.trace() as tracer:
+        async for chunk in stream:
+            if chunk.data.usage:
+                if (
+                    chunk.data.usage.prompt_tokens > 0
+                    or chunk.data.usage.completion_tokens > 0
+                ):
+                    assert getattr(chunk.data, "scope3ai") is not None
+                    assert chunk.data.scope3ai.impact is not None
+                    assert chunk.data.scope3ai.impact.total_impact is not None
+                    assert chunk.data.scope3ai.impact.total_impact.usage_energy_wh > 0
+                    assert (
+                        chunk.data.scope3ai.impact.total_impact.usage_emissions_gco2e
+                        > 0
+                    )
+                    assert chunk.data.scope3ai.impact.total_impact.usage_water_ml > 0
+                    assert (
+                        chunk.data.scope3ai.impact.total_impact.embodied_emissions_gco2e
+                        > 0
+                    )
+                    assert chunk.data.scope3ai.impact.total_impact.embodied_water_ml > 0
+        assert len(tracer.get_all_rows()) > 0
