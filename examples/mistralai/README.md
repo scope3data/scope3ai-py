@@ -12,14 +12,16 @@ This directory contains examples of using Mistral AI's API with environmental im
 
 ## Usage Examples
 
+From the root directory, run the following commands:
+
 ```bash
-python mistral-complete.py --model "mistral-large-latest" --message "What is artificial intelligence?" --max-tokens 100
+uv run python -m examples.mistralai.mistral-complete --model "mistral-large-latest" --message "What is artificial intelligence?" --max-tokens 100
 
 # With custom temperature
-python mistral-complete.py --message "Write a story" --temperature 0.9
+uv run python -m examples.mistralai.mistral-complete --message "Write a story" --temperature 0.9
 
-python mistral-stream.py --message "Explain quantum mechanics" --max-tokens 200
+uv run python -m examples.mistralai.mistral-stream --message "Explain quantum mechanics" --max-tokens 200
 
 # Async streaming
-python mistral-stream-async.py--model "mistral-medium" --message "Tell me a story"
+uv run python -m examples.mistralai.mistral-stream-async --model "mistral-medium" --message "Tell me a story"
 ```

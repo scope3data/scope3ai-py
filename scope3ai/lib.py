@@ -237,7 +237,6 @@ class Scope3AI:
             )
             ctx.set_impact(response.rows[0])
             if ctx._tracer:
-                ctx._tracer.add_impact(response.rows[0])
                 ctx._tracer._unlink_trace(ctx)
             return response
 
@@ -285,7 +284,6 @@ class Scope3AI:
         )
         ctx.set_impact(response.rows[0])
         if tracer:
-            tracer.add_impact(response.rows[0])
             tracer._unlink_trace(ctx)
 
         return ctx

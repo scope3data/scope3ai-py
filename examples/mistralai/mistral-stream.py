@@ -1,5 +1,6 @@
 from scope3ai import Scope3AI
 from mistralai import Mistral
+import os
 
 
 def main(
@@ -9,10 +10,12 @@ def main(
     temperature: float,
     api_key: str | None = None,
 ):
+    api_key = api_key or os.environ["MISTRAL_API_KEY"]
     scope3 = Scope3AI.init()
     client = Mistral(api_key=api_key) if api_key else Mistral()
 
     with scope3.trace() as tracer:
+        chunk_count = 0
         stream = client.chat.stream(
             model=model,
             messages=[{"role": "user", "content": message}],
@@ -20,9 +23,10 @@ def main(
             temperature=temperature,
         )
         for chunk in stream:
-            print(chunk.choices[0].delta.content or "", end="", flush=True)
+            chunk_count += 1
+            print(chunk.data.choices[0].delta.content, end="", flush=True)
         print()
-
+        print(f"Chunk count: {chunk_count}")
         impact = tracer.impact()
         print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")

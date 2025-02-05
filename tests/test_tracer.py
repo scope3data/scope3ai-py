@@ -188,6 +188,33 @@ def test_tracer_context_nested(tracer_init):
         assert impact2.total_mlh2o > impact.total_mlh2o
 
 
+@pytest.mark.vcr
+def test_tracer_rows(tracer_init):
+    from mistralai import Mistral
+
+    client = Mistral()
+
+    with tracer_init.trace() as tracer:
+        client.chat.complete(
+            model="mistral-large-latest",
+            messages=[
+                {
+                    "role": "user",
+                    "content": "Give me small summary of 100 years of Loneliness",
+                }
+            ],
+            max_tokens=100,
+            temperature=0.7,
+        )
+
+        impact = tracer.impact()
+        assert impact is not None
+        assert impact.total_energy_wh > 0
+        assert impact.total_gco2e > 0
+        assert impact.total_mlh2o > 0
+        assert len(tracer.get_all_rows()) == 1
+
+
 def test_tracer_submit_impact(tracer_init):
     from scope3ai.api.types import ImpactRow
 
