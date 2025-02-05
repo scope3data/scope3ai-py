@@ -191,9 +191,8 @@ def test_tracer_context_nested(tracer_init):
 @pytest.mark.vcr
 def test_tracer_rows(tracer_init):
     from mistralai import Mistral
-    import os
 
-    client = Mistral(api_key=os.environ["MISTRAL_API_KEY"])
+    client = Mistral()
 
     with tracer_init.trace() as tracer:
         client.chat.complete(
