@@ -16,7 +16,6 @@ async def main(text: str, model: str, response_format: str):
             response_format=response_format,
         )
         print(response)
-        print(response.scope3ai.request.model_dump(mode="json"))
         impact = tracer.impact()
         print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")

@@ -16,7 +16,6 @@ async def main(filename: Path, model: str, response_format: str):
             response_format=response_format,
         )
         print(response)
-        print(response.scope3ai.request.model_dump(mode="json"))
         print("---------------")
         impact = tracer.impact()
         print(impact)
