@@ -59,7 +59,6 @@ def _hugging_face_image_classification_get_impact_row(
         task=Task.image_classification,
         output_images=[],  # No images to output in classification
         request_duration_ms=float(compute_time) * 1000,
-        managed_service_id=PROVIDER,
         input_images=input_images,
     )
     result = ImageClassificationOutput(elements=response)

@@ -63,7 +63,6 @@ class MessageStream(_MessageStream):
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
                 request_duration_ms=requests_latency * 1000,
-                managed_service_id=PROVIDER,
             )
             self.scope3ai = Scope3AI.get_instance().submit_impact(scope3_row)
 
@@ -106,7 +105,6 @@ class AsyncMessageStream(_AsyncMessageStream):
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
                 request_duration_ms=requests_latency * 1000,
-                managed_service_id=PROVIDER,
             )
             self.scope3ai = await Scope3AI.get_instance().asubmit_impact(scope3_row)
 
@@ -177,7 +175,6 @@ class Stream(_Stream[_T]):
             input_tokens=input_tokens,
             output_tokens=output_tokens,
             request_duration_ms=request_latency * 1000,
-            managed_service_id=PROVIDER,
         )
         self.scope3ai = Scope3AI.get_instance().submit_impact(scope3_row)
 
@@ -210,7 +207,6 @@ class AsyncStream(_AsyncStream[_T]):
             input_tokens=input_tokens,
             output_tokens=output_tokens,
             request_duration_ms=request_latency * 1000,
-            managed_service_id=PROVIDER,
         )
         self.scope3ai = await Scope3AI.get_instance().asubmit_impact(scope3_row)
 
@@ -229,7 +225,6 @@ def _anthropic_chat_wrapper(response: Message, request_latency: float) -> Messag
         input_tokens=response.usage.input_tokens,
         output_tokens=response.usage.output_tokens,
         request_duration_ms=request_latency * 1000,
-        managed_service_id=PROVIDER,
     )
     scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
     if scope3ai_ctx is not None:
@@ -263,7 +258,6 @@ async def _anthropic_async_chat_wrapper(
         input_tokens=response.usage.input_tokens,
         output_tokens=response.usage.output_tokens,
         request_duration_ms=request_latency * 1000,
-        managed_service_id=PROVIDER,
     )
     scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
     if scope3ai_ctx is not None:

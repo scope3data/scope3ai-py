@@ -51,7 +51,6 @@ def _hugging_face_translation_get_impact_row(
         input_tokens=int(input_tokens),
         output_tokens=output_tokens,
         request_duration_ms=float(compute_time) * 1000,
-        managed_service_id=PROVIDER,
     )
     result = TranslationOutput(**asdict(response))
     return result, scope3_row

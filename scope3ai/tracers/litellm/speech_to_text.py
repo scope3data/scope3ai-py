@@ -39,7 +39,6 @@ def litellm_speech_to_text_get_impact_row(
         model_id=model,
         output_tokens=output_tokens,
         request_duration_ms=float(request_latency) * 1000,
-        managed_service_id=PROVIDER,
         task=Task.speech_to_text,
         **options,
     )

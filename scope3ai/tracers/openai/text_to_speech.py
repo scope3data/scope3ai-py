@@ -45,7 +45,6 @@ def _openai_text_to_speech_get_impact_row(
         model_id=model_requested,
         input_tokens=input_tokens,
         request_duration_ms=request_latency,
-        managed_service_id=PROVIDER,
         output_audio_seconds=duration,
         task=Task.text_to_speech,
     )

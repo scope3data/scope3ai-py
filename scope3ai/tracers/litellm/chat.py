@@ -56,7 +56,6 @@ def litellm_chat_wrapper_stream(  # type: ignore[misc]
                 model_id=model,
                 output_tokens=token_count,
                 request_duration_ms=float(request_latency) * 1000,
-                managed_service_id=PROVIDER,
             )
             scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
             if scope3ai_ctx is not None:
@@ -90,7 +89,6 @@ def litellm_chat_wrapper_non_stream(
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.total_tokens,
         request_duration_ms=float(request_latency) * 1000,
-        managed_service_id=PROVIDER,
     )
     if "audio" in modalities:
         audio_format = kwargs.get("audio", {}).get("format", "mp3")
@@ -143,7 +141,6 @@ async def litellm_async_chat_wrapper_base(
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.total_tokens,
         request_duration_ms=float(request_latency) * 1000,
-        managed_service_id=PROVIDER,
     )
     if "audio" in modalities:
         audio_format = kwargs.get("audio", {}).get("format", "mp3")
@@ -184,7 +181,6 @@ async def litellm_async_chat_wrapper_stream(  # type: ignore[misc]
                 model_id=model,
                 output_tokens=token_count,
                 request_duration_ms=float(request_latency) * 1000,
-                managed_service_id=PROVIDER,
             )
             scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
             if scope3ai_ctx is not None:

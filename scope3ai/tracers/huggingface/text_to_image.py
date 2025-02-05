@@ -52,7 +52,6 @@ def _hugging_face_text_to_image_get_impact_row(
         task=Task.text_to_image,
         output_images=[RootImage(root=f"{width}x{height}")],
         request_duration_ms=float(compute_time) * 1000,
-        managed_service_id=PROVIDER,
     )
 
     result = TextToImageOutput(response)

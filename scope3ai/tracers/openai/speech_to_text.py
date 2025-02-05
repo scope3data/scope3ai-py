@@ -51,7 +51,6 @@ def _openai_speech_to_text_get_impact_row(
 
     scope3_row = ImpactRow(
         model_id=model,
-        managed_service_id=PROVIDER,
         output_tokens=output_tokens,
         request_duration_ms=request_latency,
         task=Task.speech_to_text,

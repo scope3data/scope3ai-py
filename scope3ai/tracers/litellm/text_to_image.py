@@ -40,7 +40,6 @@ def litellm_image_generation_get_impact_row(
         model_id=model or DEFAULT_MODEL,
         task=Task.text_to_image,
         request_duration_ms=float(request_latency) * 1000,
-        managed_service_id=PROVIDER,
         output_images=[size] * n,
         input_tokens=input_tokens,
     )

@@ -58,7 +58,6 @@ def _hugging_face_object_detection_get_impact_row(
         input_tokens=0,  # No token usage for object detection
         task=Task.object_detection,
         request_duration_ms=float(compute_time) * 1000,
-        managed_service_id=PROVIDER,
         input_images=input_images,
     )
     result = ObjectDetectionOutput(elements=response)

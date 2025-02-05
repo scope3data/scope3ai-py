@@ -50,7 +50,6 @@ def _hugging_face_automatic_recognition_get_impact_row(
         task=Task.text_to_speech,
         input_audio_seconds=float(compute_audio_length),
         request_duration_ms=float(compute_time) * 1000,
-        managed_service_id=PROVIDER,
     )
     result = AutomaticSpeechRecognitionOutput(**asdict(response))
     return result, scope3_row

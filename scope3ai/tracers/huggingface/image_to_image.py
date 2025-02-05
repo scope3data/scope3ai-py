@@ -64,7 +64,6 @@ def _hugging_face_image_to_image_get_impact_row(
         input_tokens=int(input_tokens),
         task=Task.image_generation,
         request_duration_ms=float(compute_time) * 1000,
-        managed_service_id=PROVIDER,
         output_images=[RootImage(root=f"{output_width}x{output_height}")],
         input_images=input_images,
     )

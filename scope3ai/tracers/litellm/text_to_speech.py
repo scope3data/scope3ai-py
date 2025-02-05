@@ -41,7 +41,6 @@ def litellm_speech_generation_get_impact_row(
     scope3_row = ImpactRow(
         model_id=model,
         request_duration_ms=float(request_latency) * 1000,
-        managed_service_id=PROVIDER,
         **options,
     )
     return scope3_row

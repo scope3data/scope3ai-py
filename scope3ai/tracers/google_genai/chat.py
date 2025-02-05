@@ -21,7 +21,6 @@ def get_impact_row(response: _GenerateContentResponse, duration_ms: float) -> Im
         input_tokens=response.usage_metadata.prompt_token_count,
         output_tokens=response.usage_metadata.candidates_token_count or 0,
         request_duration_ms=duration_ms * 1000,
-        managed_service_id=PROVIDER,
     )
 
 

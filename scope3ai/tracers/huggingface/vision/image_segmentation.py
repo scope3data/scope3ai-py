@@ -58,7 +58,6 @@ def _hugging_face_image_segmentation_get_impact_row(
         input_tokens=0,
         task=Task.image_segmentation,
         request_duration_ms=float(compute_time) * 1000,
-        managed_service_id=PROVIDER,
         input_images=input_images,
     )
     result = ImageSegmentationOutput()

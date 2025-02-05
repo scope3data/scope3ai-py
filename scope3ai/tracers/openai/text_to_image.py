@@ -31,7 +31,6 @@ def _openai_image_get_impact_row(
         task=Task.text_to_image,
         output_images=[size] * n,
         request_duration_ms=request_latency * 1000,
-        managed_service_id=PROVIDER,
     )
 
     result = ImageResponse.model_construct(**response.model_dump())

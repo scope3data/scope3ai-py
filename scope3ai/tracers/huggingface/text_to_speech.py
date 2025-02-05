@@ -50,7 +50,6 @@ def _hugging_face_text_to_speech_get_impact_row(
         input_tokens=int(input_tokens),
         task=Task.text_to_speech,
         request_duration_ms=float(compute_time) * 1000,
-        managed_service_id=PROVIDER,
     )
     result = TextToSpeechOutput(audio=response, sampling_rate=16000)
     return result, scope3_row
