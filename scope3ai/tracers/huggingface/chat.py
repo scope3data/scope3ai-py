@@ -13,11 +13,9 @@ from huggingface_hub import ChatCompletionStreamOutput as _ChatCompletionStreamO
 from requests import Response
 
 from scope3ai.api.types import ImpactRow, Scope3AIContext
-from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
 
-PROVIDER = PROVIDERS.HUGGINGFACE_HUB.value
 HUGGING_FACE_CHAT_TASK = "chat"
 
 
@@ -64,7 +62,6 @@ def huggingface_chat_wrapper_non_stream(
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
         request_duration_ms=float(compute_time) * 1000,
-        managed_service_id=PROVIDER,
     )
     scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
     chat = ChatCompletionOutput(**asdict(response))
@@ -90,7 +87,6 @@ def huggingface_chat_wrapper_stream(
             model_id=model,
             output_tokens=token_count,
             request_duration_ms=request_latency * 1000,
-            managed_service_id=PROVIDER,
         )
         chunk_data = ChatCompletionStreamOutput(**asdict(chunk))
         scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
@@ -127,7 +123,6 @@ async def huggingface_async_chat_wrapper_non_stream(
         input_tokens=response.usage.prompt_tokens,
         output_tokens=output_tokens,
         request_duration_ms=request_latency * 1000,
-        managed_service_id=PROVIDER,
     )
 
     scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
@@ -152,7 +147,6 @@ async def huggingface_async_chat_wrapper_stream(
             output_tokens=token_count,
             request_duration_ms=request_latency
             * 1000,  # TODO: can we get the header that has the processing time
-            managed_service_id=PROVIDER,
         )
         scope3_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
         chunk_data = ChatCompletionStreamOutput(**asdict(chunk))

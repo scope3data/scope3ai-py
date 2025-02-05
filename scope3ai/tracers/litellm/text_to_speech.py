@@ -7,10 +7,7 @@ from openai.resources.audio.speech import _legacy_response
 
 from scope3ai import Scope3AI
 from scope3ai.api.types import ImpactRow, Scope3AIContext
-from scope3ai.constants import PROVIDERS
 from scope3ai.tracers.utils.audio import _get_audio_duration
-
-PROVIDER = PROVIDERS.LITELLM.value
 
 
 class HttpxBinaryResponseContent(_legacy_response.HttpxBinaryResponseContent):
@@ -41,7 +38,6 @@ def litellm_speech_generation_get_impact_row(
     scope3_row = ImpactRow(
         model_id=model,
         request_duration_ms=float(request_latency) * 1000,
-        managed_service_id=PROVIDER,
         **options,
     )
     return scope3_row

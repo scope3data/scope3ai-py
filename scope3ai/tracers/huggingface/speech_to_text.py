@@ -14,12 +14,10 @@ from requests import Response
 
 from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.api.typesgen import Task
-from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.response_interceptor.aiohttp_interceptor import aiohttp_response_capture
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
 
-PROVIDER = PROVIDERS.HUGGINGFACE_HUB.value
 HUGGING_FACE_SPEECH_TO_TEXT_TASK = "automatic-speech-recognition"
 
 
@@ -50,7 +48,6 @@ def _hugging_face_automatic_recognition_get_impact_row(
         task=Task.text_to_speech,
         input_audio_seconds=float(compute_audio_length),
         request_duration_ms=float(compute_time) * 1000,
-        managed_service_id=PROVIDER,
     )
     result = AutomaticSpeechRecognitionOutput(**asdict(response))
     return result, scope3_row

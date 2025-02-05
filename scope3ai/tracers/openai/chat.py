@@ -9,14 +9,12 @@ from openai.types.chat import ChatCompletion as _ChatCompletion
 from openai.types.chat import ChatCompletionChunk as _ChatCompletionChunk
 
 from scope3ai.api.types import ImpactRow, Scope3AIContext
-from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.tracers.utils.multimodal import (
     aggregate_multimodal,
     aggregate_multimodal_audio_content_output,
 )
 
-PROVIDER = PROVIDERS.OPENAI.value
 
 logger = logging.getLogger("scope3ai.tracers.openai.chat")
 
@@ -47,7 +45,6 @@ def _openai_chat_wrapper(
             input_tokens=http_response.get("usage", {}).get("prompt_tokens"),
             output_tokens=http_response.get("usage", {}).get("completion_tokens"),
             request_duration_ms=request_latency * 1000,
-            managed_service_id=PROVIDER,
         )
         if "audio" in modalities:
             audio_format = kwargs.get("audio", {}).get("format", "mp3")
@@ -70,7 +67,6 @@ def _openai_chat_wrapper(
             input_tokens=response.usage.prompt_tokens,
             output_tokens=response.usage.completion_tokens,
             request_duration_ms=request_latency * 1000,
-            managed_service_id=PROVIDER,
         )
         if "audio" in modalities:
             audio_format = kwargs.get("audio", {}).get("format", "mp3")
@@ -138,7 +134,6 @@ def openai_chat_wrapper_stream(
                 output_tokens=chunk.usage.completion_tokens,
                 request_duration_ms=request_latency
                 * 1000,  # TODO: can we get the header that has the processing time
-                managed_service_id=PROVIDER,
             )
 
             scope3_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
@@ -195,7 +190,6 @@ async def openai_async_chat_wrapper_stream(
                 output_tokens=chunk.usage.completion_tokens,
                 request_duration_ms=request_latency
                 * 1000,  # TODO: can we get the header that has the processing time
-                managed_service_id=PROVIDER,
             )
 
             scope3_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)

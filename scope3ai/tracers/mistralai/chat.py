@@ -11,11 +11,9 @@ from mistralai.models import CompletionEvent
 from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext
 from scope3ai.api.typesgen import ImpactRow
-from scope3ai.constants import PROVIDERS
 from scope3ai.tracers.utils.multimodal import aggregate_multimodal
 
-PROVIDER = PROVIDERS.MISTRALAI.value
-PROVIDER = ""
+
 logger = logging.getLogger("scope3ai.tracers.mistralai.chat")
 
 
@@ -41,7 +39,6 @@ def mistralai_v1_chat_wrapper(
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
         request_duration_ms=request_latency * 1000,
-        managed_service_id=PROVIDER,
     )
     scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
     messages = args[1] if len(args) > 1 else kwargs.get("messages")
@@ -71,7 +68,6 @@ def mistralai_v1_chat_wrapper_stream(
             input_tokens=chunk.data.usage.prompt_tokens,
             output_tokens=chunk.data.usage.completion_tokens,
             request_duration_ms=request_latency * 1000,
-            managed_service_id=PROVIDER,
         )
         scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
         chunk.data = CompletionChunk(**chunk.data.model_dump(), scope3ai=scope3ai_ctx)
@@ -92,7 +88,6 @@ async def mistralai_v1_async_chat_wrapper(
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
         request_duration_ms=request_latency * 1000,
-        managed_service_id=PROVIDER,
     )
     scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
     chat = ChatCompletionResponse(**response.model_dump())
@@ -114,7 +109,6 @@ async def _generator(
             input_tokens=chunk.data.usage.prompt_tokens,
             output_tokens=chunk.data.usage.completion_tokens,
             request_duration_ms=request_latency * 1000,
-            managed_service_id=PROVIDER,
         )
         scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
         chunk.data = CompletionChunk(**chunk.data.model_dump(), scope3ai=scope3ai_ctx)

@@ -1,5 +1,4 @@
 import pytest
-from scope3ai.constants import PROVIDERS
 
 
 @pytest.mark.vcr
@@ -18,7 +17,9 @@ def test_openai_multimodal_output(tracer_with_sync_init, audio_format):
     )
     assert len(response.choices) > 0
     assert getattr(response, "scope3ai") is not None
-    assert response.scope3ai.request.managed_service_id == PROVIDERS.OPENAI.value
+    # TODO: Add this assert when AiApi support it
+    # assert response.scope3ai.request.managed_service_id == PROVIDERS.OPENAI.value
+
     assert response.scope3ai.request.input_tokens == 17
     assert response.scope3ai.request.output_tokens > 0
     assert response.scope3ai.request.output_audio_seconds > 0

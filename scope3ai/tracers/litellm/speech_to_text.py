@@ -9,10 +9,7 @@ from scope3ai import Scope3AI
 from scope3ai.api.types import ImpactRow
 from scope3ai.api.types import Scope3AIContext
 from scope3ai.api.typesgen import Task
-from scope3ai.constants import PROVIDERS
 from scope3ai.tracers.utils.audio import _get_file_audio_duration
-
-PROVIDER = PROVIDERS.LITELLM.value
 
 
 class TranscriptionResponse(_TranscriptionResponse):
@@ -39,7 +36,6 @@ def litellm_speech_to_text_get_impact_row(
         model_id=model,
         output_tokens=output_tokens,
         request_duration_ms=float(request_latency) * 1000,
-        managed_service_id=PROVIDER,
         task=Task.speech_to_text,
         **options,
     )

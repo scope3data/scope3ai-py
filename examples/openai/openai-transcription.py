@@ -31,6 +31,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "--response_format", type=str, default="json", help="Response format"
     )
-    parser.add_argument("filename", type=Path, help="The path to the input file")
+    parser.add_argument("--filename", type=Path, help="The path to the input file")
     args = parser.parse_args()
     main(**vars(args))

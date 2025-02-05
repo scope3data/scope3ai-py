@@ -436,6 +436,13 @@ class Scope3AI:
         )
 
         # copy tracer or global metadata
+
+        set_only_if(
+            row,
+            "managed_service_id",
+            row.managed_service_id if row.managed_service_id else "",
+        )
+
         set_only_if(
             row,
             "client_id",

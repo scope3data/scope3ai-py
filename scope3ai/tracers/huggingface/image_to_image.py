@@ -16,12 +16,10 @@ from requests import Response
 from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.api.typesgen import Image as RootImage
 from scope3ai.api.typesgen import Task
-from scope3ai.constants import PROVIDERS
 from scope3ai.lib import Scope3AI
 from scope3ai.response_interceptor.aiohttp_interceptor import aiohttp_response_capture
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
 
-PROVIDER = PROVIDERS.HUGGINGFACE_HUB.value
 HUGGING_FACE_IMAGE_TO_IMAGE_TASK = "chat"
 
 
@@ -64,7 +62,6 @@ def _hugging_face_image_to_image_get_impact_row(
         input_tokens=int(input_tokens),
         task=Task.image_generation,
         request_duration_ms=float(compute_time) * 1000,
-        managed_service_id=PROVIDER,
         output_images=[RootImage(root=f"{output_width}x{output_height}")],
         input_images=input_images,
     )

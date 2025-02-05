@@ -5,26 +5,24 @@ from openai import AsyncOpenAI
 from scope3ai import Scope3AI
 
 
-async def main(model: str, message: str, role: str, stream: bool):
+async def main(model: str, message: str, role: str):
     client = AsyncOpenAI()
     scope3 = Scope3AI.init()
 
     with scope3.trace() as tracer:
+        chunk_count = 0
         response = await client.chat.completions.create(
             model=model,
             messages=[{"role": role, "content": message}],
-            stream=stream,
+            stream=True,
         )
-
-        if stream:
-            async for event in response:
-                if not event.choices:
-                    continue
-                print(event.choices[0].delta.content, end="", flush=True)
-            print()
-        else:
-            print(response.choices[0].message.content.strip())
-
+        async for event in response:
+            chunk_count += 1
+            if not event.choices:
+                continue
+            print(event.choices[0].delta.content, end="", flush=True)
+        print()
+        print(f"Chunk count: {chunk_count}")
         impact = tracer.impact()
         print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")
@@ -55,13 +53,6 @@ if __name__ == "__main__":
         type=str,
         default="user",
         help="Role for the message (user, system, or assistant)",
-    )
-    parser.add_argument(
-        "--no-stream",
-        action="store_false",
-        dest="stream",
-        help="Disable streaming mode",
-        default=True,
     )
     args = parser.parse_args()
     asyncio.run(main(**vars(args)))

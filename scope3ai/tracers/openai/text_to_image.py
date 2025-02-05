@@ -1,15 +1,13 @@
 import time
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Tuple
 
 from openai.resources.images import AsyncImages, Images
 from openai.types.images_response import ImagesResponse as _ImageResponse
-
 from scope3ai.api.types import ImpactRow, Scope3AIContext, Task
 from scope3ai.api.typesgen import Image as RootImage
 from scope3ai.lib import Scope3AI
 from scope3ai.tracers.openai.utils import BaseModelResponse
 
-PROVIDER = "openai"
 DEFAULT_MODEL = "dall-e-2"
 DEFAULT_SIZE = "1024x1024"
 DEFAULT_N = 1
@@ -21,7 +19,7 @@ class ImageResponse(BaseModelResponse, _ImageResponse):
 
 def _openai_image_get_impact_row(
     response: _ImageResponse, request_latency: float, **kwargs: Any
-) -> (ImageResponse, ImpactRow):
+) -> Tuple[ImageResponse, ImpactRow]:
     model = kwargs.get("model", DEFAULT_MODEL)
     size = RootImage(root=kwargs.get("size", DEFAULT_SIZE))
     n = kwargs.get("n", DEFAULT_N)
@@ -31,7 +29,6 @@ def _openai_image_get_impact_row(
         task=Task.text_to_image,
         output_images=[size] * n,
         request_duration_ms=request_latency * 1000,
-        managed_service_id=PROVIDER,
     )
 
     result = ImageResponse.model_construct(**response.model_dump())

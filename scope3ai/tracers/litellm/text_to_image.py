@@ -8,9 +8,7 @@ from litellm.utils import ImageResponse as _ImageResponse
 from scope3ai import Scope3AI
 from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.api.typesgen import Image as RootImage, Task
-from scope3ai.constants import PROVIDERS
 
-PROVIDER = PROVIDERS.LITELLM.value
 DEFAULT_MODEL = "dall-e-2"
 DEFAULT_SIZE = "1024x1024"
 DEFAULT_N = 1
@@ -40,7 +38,6 @@ def litellm_image_generation_get_impact_row(
         model_id=model or DEFAULT_MODEL,
         task=Task.text_to_image,
         request_duration_ms=float(request_latency) * 1000,
-        managed_service_id=PROVIDER,
         output_images=[size] * n,
         input_tokens=input_tokens,
     )
