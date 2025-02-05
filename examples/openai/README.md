@@ -24,20 +24,26 @@ This directory contains examples of using OpenAI's API with environmental impact
 
 ```bash
 # Basic chat
-python openai-chat.py --model "gpt-4" --message "What is artificial intelligence?" --max-tokens 100
+uv run python -m examples.openai.openai-chat --model "gpt-4" --message "What is artificial intelligence?"
 
 # Async streaming chat
-python openai-async-stream-chat.py --model "gpt-4" --message "Explain quantum computing" --stream
+uv run python -m examples.openai.openai-async-stream-chat --model "gpt-4" --message "Explain quantum computing"
 
 # Generate an image
-python openai-image.py --prompt "A beautiful sunset over mountains" --size "1024x1024"
+uv run python -m examples.openai.openai-image --prompt "A beautiful sunset over mountains" --model "dall-e-2" --size "1024x1024"
 
 # Async image generation
-python openai-async-image.py --prompt "A futuristic city" --model "dall-e-3"
+uv run python -m examples.openai.openai-async-image --prompt "A futuristic city" --model "dall-e-2" --size "1024x1024"
 
 # Text to Speech
-python openai-speech.py --text "Hello, welcome to the future!" --voice "alloy" --output speech.mp3
+uv run python -m examples.openai.openai-speech --text "Hello, welcome to the future!" --model "tts-1" --response-format "mp3"
+
+# Async Text to Speech
+uv run python -m examples.openai.openai-async-speech --text "Hello, welcome to the future!" --model "tts-1" --response-format "mp3"
 
 # Audio Transcription
-python openai-transcription.py --file "recording.mp3" --model "whisper-1"
+uv run python -m examples.openai.openai-transcription --filename "recording.mp3" --model "whisper-1"
+
+# Async Audio Transcription
+uv run python -m examples.openai.openai-async-transcription --filename "recording.mp3" --model "whisper-1"
 ```

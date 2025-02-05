@@ -17,7 +17,7 @@ from scope3ai.tracers.utils.multimodal import (
 )
 
 PROVIDER = PROVIDERS.OPENAI.value
-
+PROVIDER = ""
 logger = logging.getLogger("scope3ai.tracers.openai.chat")
 
 

@@ -16,7 +16,7 @@ from scope3ai.tracers.openai.utils import BaseModelResponse
 from scope3ai.tracers.utils.audio import _get_file_audio_duration
 
 PROVIDER = PROVIDERS.OPENAI.value
-
+PROVIDER = ""
 logger = logging.getLogger("scope3.tracers.openai.speech_to_text")
 
 

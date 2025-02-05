@@ -1,21 +1,23 @@
 from pathlib import Path
+import asyncio
 
-from openai import OpenAI
+from openai import AsyncOpenAI
 from scope3ai import Scope3AI
 
 
-def main(filename: Path, model: str, response_format: str):
-    client = OpenAI()
+async def main(filename: Path, model: str, response_format: str):
+    client = AsyncOpenAI()
     scope3 = Scope3AI.init()
 
     with scope3.trace() as tracer:
-        response = client.audio.transcriptions.create(
+        response = await client.audio.transcriptions.create(
             model=model,
             file=filename,
             response_format=response_format,
         )
         print(response)
-        print(response.scope3ai.request)
+        print(response.scope3ai.request.model_dump(mode="json"))
+        print("---------------")
         impact = tracer.impact()
         print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")
@@ -31,6 +33,6 @@ if __name__ == "__main__":
     parser.add_argument(
         "--response_format", type=str, default="json", help="Response format"
     )
-    parser.add_argument("filename", type=Path, help="The path to the input file")
+    parser.add_argument("--filename", type=Path, help="The path to the input file")
     args = parser.parse_args()
-    main(**vars(args))
+    asyncio.run(main(**vars(args)))
