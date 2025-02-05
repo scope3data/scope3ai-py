@@ -1,5 +1,6 @@
 from scope3ai import Scope3AI
 from mistralai import Mistral
+import os
 
 
 def main(
@@ -9,8 +10,9 @@ def main(
     temperature: float,
     api_key: str | None = None,
 ):
+    api_key = api_key or os.environ["MISTRAL_API_KEY"]
     scope3 = Scope3AI.init()
-    client = Mistral(api_key=api_key) if api_key else Mistral()
+    client = Mistral(api_key=api_key)
 
     with scope3.trace() as tracer:
         response = client.chat.complete(
@@ -19,8 +21,8 @@ def main(
             max_tokens=max_tokens,
             temperature=temperature,
         )
-        print(response.choices[0].message.content)
 
+        print(response.choices[0].message.content)
         impact = tracer.impact()
         print(impact)
         print(f"Total Energy Wh: {impact.total_energy_wh}")

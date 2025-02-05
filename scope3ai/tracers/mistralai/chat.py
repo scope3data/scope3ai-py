@@ -15,7 +15,7 @@ from scope3ai.constants import PROVIDERS
 from scope3ai.tracers.utils.multimodal import aggregate_multimodal
 
 PROVIDER = PROVIDERS.MISTRALAI.value
-
+PROVIDER = ""
 logger = logging.getLogger("scope3ai.tracers.mistralai.chat")
 
 
