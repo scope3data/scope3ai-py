@@ -62,25 +62,19 @@ def mistralai_v1_chat_wrapper_stream(
     stream = wrapped(*args, **kwargs)
     for i, chunk in enumerate(stream):
         model_name = chunk.data.model
-        if chunk.data:
-            input_tokens = 0
-            output_tokens = 0
-            if chunk.data.usage is not None:
-                input_tokens = chunk.data.usage.prompt_tokens
-                output_tokens = chunk.data.usage.completion_tokens
-            if input_tokens != 0 or output_tokens != 0:
-                request_latency = time.perf_counter() - timer_start
-                scope3_row = ImpactRow(
-                    model_id=model_name,
-                    input_tokens=input_tokens,
-                    output_tokens=output_tokens,
-                    request_duration_ms=request_latency * 1000,
-                    managed_service_id=PROVIDER,
-                )
-                scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-                chunk.data = CompletionChunk(
-                    **chunk.data.model_dump(), scope3ai=scope3ai_ctx
-                )
+        # Mistral returns the full usage in the last chunk only we don't want to submit the impact for the empty chunks
+        if not chunk.data or not chunk.data.usage:
+            continue
+        request_latency = time.perf_counter() - timer_start
+        scope3_row = ImpactRow(
+            model_id=model_name,
+            input_tokens=chunk.data.usage.prompt_tokens,
+            output_tokens=chunk.data.usage.completion_tokens,
+            request_duration_ms=request_latency * 1000,
+            managed_service_id=PROVIDER,
+        )
+        scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+        chunk.data = CompletionChunk(**chunk.data.model_dump(), scope3ai=scope3ai_ctx)
         yield chunk
 
 
@@ -110,25 +104,20 @@ async def _generator(
     stream: AsyncGenerator[CompletionEvent, None], timer_start: float
 ) -> AsyncGenerator[CompletionEvent, None]:
     async for chunk in stream:
-        input_tokens = 0
-        output_tokens = 0
-        if chunk.data.usage is not None:
-            input_tokens = chunk.data.usage.prompt_tokens
-            output_tokens = chunk.data.usage.completion_tokens
-        if input_tokens != 0 or output_tokens != 0:
-            request_latency = time.perf_counter() - timer_start
-            model_name = chunk.data.model
-            scope3_row = ImpactRow(
-                model_id=model_name,
-                input_tokens=input_tokens,
-                output_tokens=output_tokens,
-                request_duration_ms=request_latency * 1000,
-                managed_service_id=PROVIDER,
-            )
-            scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
-            chunk.data = CompletionChunk(
-                **chunk.data.model_dump(), scope3ai=scope3ai_ctx
-            )
+        # Mistral returns the full usage in the last chunk only we don't want to submit the impact for the empty chunks
+        if not chunk.data or not chunk.data.usage:
+            continue
+        request_latency = time.perf_counter() - timer_start
+        model_name = chunk.data.model
+        scope3_row = ImpactRow(
+            model_id=model_name,
+            input_tokens=chunk.data.usage.prompt_tokens,
+            output_tokens=chunk.data.usage.completion_tokens,
+            request_duration_ms=request_latency * 1000,
+            managed_service_id=PROVIDER,
+        )
+        scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
+        chunk.data = CompletionChunk(**chunk.data.model_dump(), scope3ai=scope3ai_ctx)
         yield chunk
 
 
