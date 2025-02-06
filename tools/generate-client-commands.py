@@ -88,7 +88,15 @@ class GenerateClientCommands:
     def generate_start(self):
         content = [
             "class ClientCommands:\n",
+            '    """\n',
+            "    Base class that implements the command methods for interacting with the Scope3AI API.\n",
+            "    The execute_request method must be implemented by subclasses to handle the actual HTTP requests.\n",
+            '    """\n',
             "    def execute_request(self, *args, **kwargs) -> Any:\n",
+            '        """\n',
+            "        Execute an HTTP request to the Scope3AI API.\n",
+            "        Must be implemented by subclasses to handle synchronous or asynchronous requests.\n",
+            '        """\n',
             "        raise NotImplementedError\n\n",
         ]
         self.output.write("".join(content))

@@ -5,6 +5,27 @@ from .typesgen import ImpactResponse, ModeledRow
 
 
 class Tracer:
+    """
+    Tracer is responsible for tracking and aggregating environmental impact metrics
+    from AI model interactions. It supports nested tracing, async operations, and
+    provides detailed impact breakdowns for energy, emissions and water usage.
+
+    Args:
+        name (str, optional): Name identifier for the tracer. Defaults to None.
+        keep_traces (bool, optional): Whether to keep trace history after completion.
+            Defaults to False.
+        client_id (str, optional): Client identifier for categorizing traces.
+            Overrides global `SCOPE3AI_CLIENT_ID` setting. Defaults to None.
+        project_id (str, optional): Project identifier for categorizing traces.
+            Overrides global `SCOPE3AI_PROJECT_ID` setting. Defaults to None.
+        application_id (str, optional): Application identifier for categorizing traces.
+            Overrides global `SCOPE3AI_APPLICATION_ID` setting. Defaults to None.
+        session_id (str, optional): Session identifier for tracking user sessions.
+            Only available at tracer level. Defaults to None.
+        trace_id (str, optional): Unique identifier for the trace.
+            Auto-generated if not provided. Defaults to None.
+    """
+
     def __init__(
         self,
         name: str = None,

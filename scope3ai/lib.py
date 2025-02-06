@@ -148,6 +148,35 @@ class Scope3AI:
         project_id: Optional[str] = None,
         application_id: Optional[str] = None,
     ) -> "Scope3AI":
+        """
+        Initialize the Scope3AI SDK with the provided configuration settings.
+
+        Args:
+            api_key (str, optional): The Scope3AI API key. Can be set via `SCOPE3AI_API_KEY`
+                environment variable. Required for authentication.
+            api_url (str, optional): The base URL for the Scope3AI API. Can be set via
+                `SCOPE3AI_API_URL` environment variable. Defaults to standard API URL.
+            sync_mode (bool, optional): If True, the SDK will operate synchronously. Can be
+                set via `SCOPE3AI_SYNC_MODE` environment variable. Defaults to False.
+            enable_debug_logging (bool, optional): Enable debug level logging. Can be set via
+                `SCOPE3AI_DEBUG_LOGGING` environment variable. Defaults to False.
+            providers (List[str], optional): List of providers to instrument. If None,
+                all available providers will be instrumented.
+            environment (str, optional): The environment name (e.g. "production", "staging").
+                Can be set via `SCOPE3AI_ENVIRONMENT` environment variable.
+            client_id (str, optional): Client identifier for grouping traces. Can be set via
+                `SCOPE3AI_CLIENT_ID` environment variable.
+            project_id (str, optional): Project identifier for grouping traces. Can be set via
+                `SCOPE3AI_PROJECT_ID` environment variable.
+            application_id (str, optional): Application identifier. Can be set via
+                `SCOPE3AI_APPLICATION_ID` environment variable. Defaults to "default".
+
+        Returns:
+            Scope3AI: The initialized Scope3AI instance.
+
+        Raises:
+            Scope3AIError: If the instance is already initialized or if required settings are missing.
+        """
         if cls._instance is not None:
             raise Scope3AIError("Scope3AI is already initialized")
         cls._instance = self = Scope3AI()
@@ -367,7 +396,6 @@ class Scope3AI:
         tracer._unlink_parent(self.current_tracer)
 
     def _init_providers(self, providers: List[str]) -> None:
-        """Initialize the specified providers."""
         for provider in providers:
             if provider not in _INSTRUMENTS:
                 raise Scope3AIError(

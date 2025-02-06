@@ -37,6 +37,12 @@ from .typesgen import (
 
 
 class Scope3AIContext(BaseModel):
+    """Context helper for scope3ai.
+
+    Context can be retrieve from object with scope3.context, i.e. response.scope3ai.
+    This object contains the impact request and response data.
+    """
+
     request: Optional[ImpactRow] = Field(
         None,
         description="The impact request information. Contains `trace_id` and `record_id`",
