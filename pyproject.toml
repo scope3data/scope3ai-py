@@ -60,10 +60,6 @@ tests = [
 openapi = [
     "datamodel-code-generator>=0.26.4",
 ]
-dev = [
-    "pydoc-markdown>=4.8.2",
-    "tomli>=2.2.1",
-]
 
 [tool.semantic_release]
 assets = []
