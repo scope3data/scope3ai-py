@@ -1,13 +1,16 @@
 import asyncio
+from os import getenv
 
 from litellm import aimage_generation
 
 from scope3ai import Scope3AI
+import os
 
 
 async def main(model: str, prompt: str, size: str, api_key: str | None = None):
     scope3 = Scope3AI.init()
-
+    print(os.environ)
+    print(getenv("SCOPE3AI_API_KEY"), "aca")
     with scope3.trace() as tracer:
         response = await aimage_generation(
             model=model, prompt=prompt, size=size, api_key=api_key

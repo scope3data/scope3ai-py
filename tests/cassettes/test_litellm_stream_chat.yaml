@@ -1,148 +1,274 @@
 interactions:
 - request:
-    body: '{"messages": [{"role": "user", "content": [{"type": "text", "text": "Hello
-      World!"}]}], "max_tokens": 4096, "model": "claude-3-5-sonnet-20240620", "stream":
-      true}'
+    body: '{"model": "command-r", "chat_history": [], "stream": true, "use_always_litellm_tracer":
+      false, "message": "Hello World!"}'
     headers:
       Accept-Encoding:
       - gzip, deflate
       Connection:
       - keep-alive
       Content-Length:
-      - '162'
+      - '121'
+      Request-Source:
+      - unspecified:litellm
       User-Agent:
       - python-requests/2.32.3
       accept:
       - application/json
-      anthropic-version:
-      - '2023-06-01'
+      authorization:
+      - DUMMY
       content-type:
       - application/json
     method: POST
-    uri: https://api.anthropic.com/v1/messages
+    uri: https://api.cohere.ai/v1/chat
   response:
     body:
-      string: 'event: message_start
-
-        data: {"type":"message_start","message":{"id":"msg_01K8R7oa2MDmHMxNTXRdYwH1","type":"message","role":"assistant","model":"claude-3-5-sonnet-20240620","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":10,"output_tokens":5}}             }
-
-
-        event: content_block_start
-
-        data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}           }
-
-
-        event: ping
-
-        data: {"type": "ping"}
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello!
-        It''s great"}   }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        to meet you. How"}  }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        can"}     }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        I assist you today?"}          }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        Feel"}              }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        free to ask me anything"}         }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        you"}            }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"''d
-        like help"}           }
-
-
-        event: content_block_delta
-
-        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"
-        with."}     }
-
-
-        event: content_block_stop
-
-        data: {"type":"content_block_stop","index":0          }
-
-
-        event: message_delta
-
-        data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":31}         }
-
-
-        event: message_stop
-
-        data: {"type":"message_stop"             }
-
-
-        '
+      string: "{\"is_finished\":false,\"event_type\":\"stream-start\",\"generation_id\":\"768e2f94-cd41-400a-a1b7-a6df2be89e35\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"Hello\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"!\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        How\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"'s\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        it\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        going\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"?\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        I\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        hope\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        you\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"'re\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        having\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        a\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        fantastic\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        day\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"!\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        \U0001F60A\"}\n{\"is_finished\":true,\"event_type\":\"stream-end\",\"response\":{\"response_id\":\"01ef3da7-c084-4bb1-8d22-3b47182a4e13\",\"text\":\"Hello!
+        How's it going? I hope you're having a fantastic day! \U0001F60A\",\"generation_id\":\"768e2f94-cd41-400a-a1b7-a6df2be89e35\",\"chat_history\":[{\"role\":\"USER\",\"message\":\"Hello
+        World!\"},{\"role\":\"CHATBOT\",\"message\":\"Hello! How's it going? I hope
+        you're having a fantastic day! \U0001F60A\"}],\"finish_reason\":\"COMPLETE\",\"meta\":{\"api_version\":{\"version\":\"1\"},\"billed_units\":{\"input_tokens\":3,\"output_tokens\":18},\"tokens\":{\"input_tokens\":69,\"output_tokens\":18}}},\"finish_reason\":\"COMPLETE\"}\n"
     headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-RAY:
-      - 8be72d9dabb2b733-BRU
-      Cache-Control:
-      - no-cache
-      Connection:
-      - keep-alive
-      Content-Type:
-      - text/event-stream; charset=utf-8
-      Date:
-      - Thu, 05 Sep 2024 15:16:03 GMT
-      Server:
-      - cloudflare
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
       Transfer-Encoding:
       - chunked
-      X-Robots-Tag:
-      - none
-      anthropic-ratelimit-requests-limit:
-      - '5'
-      anthropic-ratelimit-requests-remaining:
-      - '3'
-      anthropic-ratelimit-requests-reset:
-      - '2024-09-05T15:16:43Z'
-      anthropic-ratelimit-tokens-limit:
-      - '20000'
-      anthropic-ratelimit-tokens-remaining:
-      - '16000'
-      anthropic-ratelimit-tokens-reset:
-      - '2024-09-05T15:16:15Z'
-      request-id:
-      - req_0126Z9CVAxnRKbK2ee7AVsYT
-      via:
+      Via:
       - 1.1 google
+      access-control-expose-headers:
+      - X-Debug-Trace-ID
+      cache-control:
+      - no-cache, no-store, no-transform, must-revalidate, private, max-age=0
+      content-type:
+      - application/stream+json
+      date:
+      - Thu, 06 Feb 2025 16:03:58 GMT
+      expires:
+      - Thu, 01 Jan 1970 00:00:00 UTC
+      pragma:
+      - no-cache
+      server:
+      - envoy
+      vary:
+      - Origin
+      x-accel-expires:
+      - '0'
+      x-debug-trace-id:
+      - 9c06fc0a408b2c8aca97a2d263e1de34
+      x-endpoint-monthly-call-limit:
+      - '1000'
+      x-envoy-upstream-service-time:
+      - '81'
+      x-trial-endpoint-call-limit:
+      - '40'
+      x-trial-endpoint-call-remaining:
+      - '39'
     status:
       code: 200
       message: OK
+- request:
+    body: '{"model": "command-r", "chat_history": [], "stream": true, "use_always_litellm_tracer":
+      false, "message": "Hello World!"}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - DUMMY
+      connection:
+      - keep-alive
+      content-length:
+      - '121'
+      content-type:
+      - application/json
+      host:
+      - api.cohere.ai
+      request-source:
+      - unspecified:litellm
+      user-agent:
+      - litellm/1.53.3
+    method: POST
+    uri: https://api.cohere.ai/v1/chat
+  response:
+    body:
+      string: "{\"is_finished\":false,\"event_type\":\"stream-start\",\"generation_id\":\"8701496c-9bb0-477d-bd80-819b6f07e342\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"Hello\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"!\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        How\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"'s\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        it\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        going\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"?\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        I\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        hope\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        you\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"'re\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        having\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        a\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        fantastic\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        day\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"!\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        \U0001F60A\"}\n{\"is_finished\":true,\"event_type\":\"stream-end\",\"response\":{\"response_id\":\"e7bfbb80-1f37-46ae-af35-c64f96beacf4\",\"text\":\"Hello!
+        How's it going? I hope you're having a fantastic day! \U0001F60A\",\"generation_id\":\"8701496c-9bb0-477d-bd80-819b6f07e342\",\"chat_history\":[{\"role\":\"USER\",\"message\":\"Hello
+        World!\"},{\"role\":\"CHATBOT\",\"message\":\"Hello! How's it going? I hope
+        you're having a fantastic day! \U0001F60A\"}],\"finish_reason\":\"COMPLETE\",\"meta\":{\"api_version\":{\"version\":\"1\"},\"billed_units\":{\"input_tokens\":3,\"output_tokens\":18},\"tokens\":{\"input_tokens\":69,\"output_tokens\":18}}},\"finish_reason\":\"COMPLETE\"}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 google
+      access-control-expose-headers:
+      - X-Debug-Trace-ID
+      cache-control:
+      - no-cache, no-store, no-transform, must-revalidate, private, max-age=0
+      content-type:
+      - application/stream+json
+      date:
+      - Thu, 06 Feb 2025 16:03:58 GMT
+      expires:
+      - Thu, 01 Jan 1970 00:00:00 UTC
+      pragma:
+      - no-cache
+      server:
+      - envoy
+      vary:
+      - Origin
+      x-accel-expires:
+      - '0'
+      x-debug-trace-id:
+      - 1c9181b671c6c141e70b0b7bca7be11c
+      x-endpoint-monthly-call-limit:
+      - '1000'
+      x-envoy-upstream-service-time:
+      - '83'
+      x-trial-endpoint-call-limit:
+      - '40'
+      x-trial-endpoint-call-remaining:
+      - '38'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - identity
+      Connection:
+      - keep-alive
+      X-Amzn-Trace-Id:
+      - 23ff336f-e625-4eab-b5fa-19e69f06dc0e
+      user-agent:
+      - unknown/None; hf_hub/0.26.5; python/3.12.8
+    method: HEAD
+    uri: https://huggingface.co/command-r/resolve/main/tokenizer.json
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Origin:
+      - https://huggingface.co
+      Access-Control-Expose-Headers:
+      - X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Xet-Access-Token,X-Xet-Token-Expiration,X-Xet-Refresh-Route,X-Xet-Cas-Url,X-Xet-Hash
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '29'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Thu, 06 Feb 2025 16:03:58 GMT
+      ETag:
+      - W/"1d-DMkJvg8tpLoaQbsiq9Mz7l2CJyI"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Vary:
+      - Origin
+      Via:
+      - 1.1 55fac76ddad4056139456fd010801a3a.cloudfront.net (CloudFront)
+      WWW-Authenticate:
+      - Bearer realm="Authentication required", charset="UTF-8"
+      X-Amz-Cf-Id:
+      - hQCeWUlSq388HOEKPQ3C42CDGTMZnUclxSRFJ1upnpf-tMTv5Nevlw==
+      X-Amz-Cf-Pop:
+      - BOG50-C1
+      X-Cache:
+      - Error from cloudfront
+      X-Error-Message:
+      - Invalid username or password.
+      X-Powered-By:
+      - huggingface-moon
+      X-Request-Id:
+      - Root=1-67a4dd6e-4c7235e40fcd20e234b8be0d;23ff336f-e625-4eab-b5fa-19e69f06dc0e
+      cross-origin-opener-policy:
+      - same-origin
+    status:
+      code: 401
+      message: Unauthorized
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - identity
+      Connection:
+      - keep-alive
+      X-Amzn-Trace-Id:
+      - 1767f55f-0570-4a8c-8b1b-2d06b7a14559
+      user-agent:
+      - unknown/None; hf_hub/0.26.5; python/3.12.8
+    method: HEAD
+    uri: https://huggingface.co/command-r/resolve/main/tokenizer.json
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Origin:
+      - https://huggingface.co
+      Access-Control-Expose-Headers:
+      - X-Repo-Commit,X-Request-Id,X-Error-Code,X-Error-Message,X-Total-Count,ETag,Link,Accept-Ranges,Content-Range,X-Xet-Access-Token,X-Xet-Token-Expiration,X-Xet-Refresh-Route,X-Xet-Cas-Url,X-Xet-Hash
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '29'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Thu, 06 Feb 2025 16:03:58 GMT
+      ETag:
+      - W/"1d-DMkJvg8tpLoaQbsiq9Mz7l2CJyI"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Vary:
+      - Origin
+      Via:
+      - 1.1 2fe3b10bc3da6ef618e3ab1598c2020c.cloudfront.net (CloudFront)
+      WWW-Authenticate:
+      - Bearer realm="Authentication required", charset="UTF-8"
+      X-Amz-Cf-Id:
+      - 2WUEY6QVBCS1-GRhH-F6jfHrY2EK1shdDcAJnqH2UUZr7romUtnVhg==
+      X-Amz-Cf-Pop:
+      - BOG50-C1
+      X-Cache:
+      - Error from cloudfront
+      X-Error-Message:
+      - Invalid username or password.
+      X-Powered-By:
+      - huggingface-moon
+      X-Request-Id:
+      - Root=1-67a4dd6e-00a4794f6423a90b75068f3c;1767f55f-0570-4a8c-8b1b-2d06b7a14559
+      cross-origin-opener-policy:
+      - same-origin
+    status:
+      code: 401
+      message: Unauthorized
 version: 1

@@ -31,7 +31,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--model",
         type=str,
-        default="claude-3-5-sonnet-latest",
+        default="claude-3-5-sonnet-20241022",
         help="Model to use for chat completion",
     )
     parser.add_argument(

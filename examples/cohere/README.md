@@ -20,14 +20,22 @@ This directory contains examples of using Cohere's API with environmental impact
 
 ### Basic Chat (v1)
 ```bash
-python cohere-chat.py --message "What is machine learning?" --max-tokens 100
+uv run python -m examples.cohere.cohere-chat --message "What is machine learning?" --max-tokens 100
 
-# With custom API key
-python cohere-chat.py --message "Explain neural networks" --api-key "your-api-key"
+uv run python -m examples.cohere.cohere-async-chat --message "Explain neural networks" --max-tokens 200
 
+uv run python -m examples.cohere.cohere-stream-chat --message "Write a story about AI"
 
-python cohere_v2-stream-chat.py --model "command-r-plus-08-2024" --message "Write a story about AI"
+uv run python -m examples.cohere.cohere-async-stream-chat --message "Explain quantum mechanics" --max-tokens 200
+```
 
-# Async streaming
-python cohere_v2-async-stream-chat.py --message "Explain quantum mechanics" --max-tokens 200
+### Basic Chat (v2)
+```bash
+uv run python -m examples.cohere.cohere_v2-chat --message "What is machine learning?" --max-tokens 100
+
+uv run python -m examples.cohere.cohere_v2-async-chat --message "Explain neural networks" --max-tokens 200
+
+uv run python -m examples.cohere.cohere_v2-stream-chat --message "Write a story about AI"
+
+uv run python -m examples.cohere.cohere_v2-async-stream-chat --message "Explain quantum mechanics" --max-tokens 200
 ```

@@ -28,17 +28,31 @@ This directory contains examples of using HuggingFace's Inference API with envir
 
 ```bash
 # chat
-python chat.py --message "Explain the theory of relativity" --max-tokens 100
+uv run python -m examples.hugging-face.chat --message "Explain the theory of relativity" --max-tokens 100
 
 # chat async
-python chat-async.py --message "What is quantum computing?"
+uv run python -m examples.hugging-face.chat-async --message "What is quantum computing?"
 
 # speech & Audio
-python speech-to-text.py --audio-path "recording.wav"
+uv run python -m examples.hugging-face.speech-to-text --audio-path "recording.wav"
 
 # speech & Audio async
-python text-to-speech.py --text "Hello world!"
+uv run python -m examples.hugging-face.text-to-speech --text "Hello world!"
 
 # translation
-python translation.py --text "Hello, how are you?" --target-language "es"
+uv run python -m examples.hugging-face.translation --text "Hello, how are you?" --target-language "es"
+
+# text to image
+uv run python -m examples.hugging-face.text-to-image --prompt "A beautiful sunset over mountains" --model "dall-e-2" --size "1024x1024"
+
+# text to image async
+uv run python -m examples.hugging-face.text-to-image-async --prompt "A futuristic city" --model "dall-e-2" --size "1024x1024"
+
+# image to image
+uv run python -m examples.hugging-face.image-to-image --image-path "image.png" --prompt "A beautiful sunset over mountains" --model "dall-e-2" --size "1024x1024"
+
+# image to image async
+uv run python -m examples.hugging-face.image-to-image-async --image-path "image.png" --prompt "A futuristic city" --model "dall-e-2" --size "1024x1024"
+
+
 ```

@@ -17,8 +17,14 @@ async def main(
             messages=[{"role": role, "content": message}],
             max_tokens=max_tokens,
         )
+
         async for event in stream:
-            print(event)
+            if (
+                hasattr(event, "delta")
+                and hasattr(event.delta, "message")
+                and event.delta.message.content
+            ):
+                print(event.delta.message.content.text, end="", flush=True)
 
         impact = await tracer.aimpact()
         print(f"Total Energy Wh: {impact.total_energy_wh}")

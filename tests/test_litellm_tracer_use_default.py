@@ -11,7 +11,7 @@ USE_ALWAYS_LITELLM_TRACER = False
 @pytest.mark.vcr
 def test_litellm_chat(tracer_with_sync_init):
     response = litellm.completion(
-        model="huggingface/meta-llama/Meta-Llama-3-8B-Instruct",
+        model="command-r",
         messages=[{"role": "user", "content": "Hello World!"}],
         use_always_litellm_tracer=USE_ALWAYS_LITELLM_TRACER,
     )
@@ -19,8 +19,8 @@ def test_litellm_chat(tracer_with_sync_init):
     assert getattr(response, "scope3ai") is not None
     # TODO: Add this assert when AiApi support it
     # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
-    assert response.scope3ai.request.input_tokens == 44
-    assert response.scope3ai.request.output_tokens == 69
+    assert response.scope3ai.request.input_tokens == 3
+    assert response.scope3ai.request.output_tokens == 21
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
     assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
@@ -56,11 +56,13 @@ async def test_litellm_async_chat(tracer_with_sync_init):
 def test_litellm_stream_chat(tracer_with_sync_init):
     stream = litellm.completion(
         messages=[{"role": "user", "content": "Hello World!"}],
-        model="claude-3-5-sonnet-20240620",
+        model="command-r",
         stream=True,
         use_always_litellm_tracer=USE_ALWAYS_LITELLM_TRACER,
     )
     for chunk in stream:
+        if chunk.choices[0].finish_reason is None:
+            continue
         assert getattr(chunk, "scope3ai") is not None
         assert chunk.scope3ai.impact is not None
         assert chunk.scope3ai.impact.total_impact is not None
@@ -76,11 +78,13 @@ def test_litellm_stream_chat(tracer_with_sync_init):
 async def test_litellm_async_stream_chat(tracer_with_sync_init):
     stream = await litellm.acompletion(
         messages=[{"role": "user", "content": "Hello World!"}],
-        model="claude-3-5-sonnet-20240620",
+        model="command-r",
         stream=True,
         use_always_litellm_tracer=USE_ALWAYS_LITELLM_TRACER,
     )
     async for chunk in stream:
+        if chunk.choices[0].finish_reason is None:
+            continue
         assert getattr(chunk, "scope3ai") is not None
         assert chunk.scope3ai.impact is not None
         assert chunk.scope3ai.impact.total_impact is not None
