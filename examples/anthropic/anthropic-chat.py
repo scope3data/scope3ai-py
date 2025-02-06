@@ -13,6 +13,7 @@ def main(model: str, message: str, max_tokens: int, api_key: str | None = None):
             messages=[{"role": "user", "content": message}],
             max_tokens=max_tokens,
         )
+        print(response.scope3ai)
         print(response.content[0].text.strip())
 
         impact = tracer.impact()

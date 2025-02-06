@@ -42,9 +42,10 @@ def litellm_chat_wrapper_stream(  # type: ignore[misc]
     kwargs: Any,
 ) -> CustomStreamWrapper:
     timer_start = time.perf_counter()
-    stream = wrapped(*args, **kwargs)
     token_count = 0
-    print(enumerate(stream))
+    keep_traces = not kwargs.pop("use_always_litellm_tracer", False)
+    with Scope3AI.get_instance().trace(keep_traces=keep_traces):
+        stream = wrapped(*args, **kwargs)
     for i, chunk in enumerate(stream):
         if i > 0:
             token_count += 1
@@ -171,7 +172,9 @@ async def litellm_async_chat_wrapper_stream(  # type: ignore[misc]
     kwargs: Any,
 ) -> CustomStreamWrapper:
     timer_start = time.perf_counter()
-    stream = await wrapped(*args, **kwargs)
+    keep_traces = not kwargs.pop("use_always_litellm_tracer", False)
+    with Scope3AI.get_instance().trace(keep_traces=keep_traces):
+        stream = await wrapped(*args, **kwargs)
     i = 0
     token_count = 0
     async for chunk in stream:
