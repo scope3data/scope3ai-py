@@ -9,7 +9,8 @@ def main(message: str, max_tokens: int, api_key: str | None = None):
     with scope3.trace() as tracer:
         stream = co.chat_stream(message=message, max_tokens=max_tokens)
         for event in stream:
-            print(event)
+            if event.event_type == "text-generation":
+                print(event.text, end="", flush=True)
 
         impact = tracer.impact()
         print(f"Total Energy Wh: {impact.total_energy_wh}")

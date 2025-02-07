@@ -14,8 +14,6 @@ interactions:
       - '223'
       User-Agent:
       - python-requests/2.32.3
-      authorization:
-      - DUMMY
       content-type:
       - application/json
     method: POST
@@ -23,25 +21,25 @@ interactions:
   response:
     body:
       string: '[{"generated_text":"Hello World! It''s nice to meet you! Is there something
-        I can help you with or would you like to chat?","details":{"finish_reason":"eos_token","generated_tokens":26,"seed":null,"prefill":[],"tokens":[{"id":9906,"text":"Hello","logprob":-0.0009560585,"special":false},{"id":4435,"text":"
-        World","logprob":-0.7558594,"special":false},{"id":0,"text":"!","logprob":-0.0005221367,"special":false},{"id":1102,"text":"
-        It","logprob":-0.23486328,"special":false},{"id":596,"text":"''s","logprob":-0.00017082691,"special":false},{"id":6555,"text":"
+        I can help you with or would you like to chat?","details":{"finish_reason":"eos_token","generated_tokens":26,"seed":null,"prefill":[],"tokens":[{"id":9906,"text":"Hello","logprob":-0.00096035004,"special":false},{"id":4435,"text":"
+        World","logprob":-0.76416016,"special":false},{"id":0,"text":"!","logprob":-0.0005226135,"special":false},{"id":1102,"text":"
+        It","logprob":-0.23828125,"special":false},{"id":596,"text":"''s","logprob":-0.000172019,"special":false},{"id":6555,"text":"
         nice","logprob":-0.19726562,"special":false},{"id":311,"text":" to","logprob":-0.0000030994415,"special":false},{"id":3449,"text":"
-        meet","logprob":-0.00020265579,"special":false},{"id":499,"text":" you","logprob":-0.0000010728836,"special":false},{"id":0,"text":"!","logprob":-0.08087158,"special":false},{"id":2209,"text":"
-        Is","logprob":-0.016540527,"special":false},{"id":1070,"text":" there","logprob":-0.0000166893,"special":false},{"id":2555,"text":"
-        something","logprob":-0.0016059875,"special":false},{"id":358,"text":" I","logprob":-0.015335083,"special":false},{"id":649,"text":"
-        can","logprob":-3.5762787e-7,"special":false},{"id":1520,"text":" help","logprob":-0.0012950897,"special":false},{"id":499,"text":"
+        meet","logprob":-0.00020253658,"special":false},{"id":499,"text":" you","logprob":-0.0000010728836,"special":false},{"id":0,"text":"!","logprob":-0.082092285,"special":false},{"id":2209,"text":"
+        Is","logprob":-0.016296387,"special":false},{"id":1070,"text":" there","logprob":-0.0000166893,"special":false},{"id":2555,"text":"
+        something","logprob":-0.0016317368,"special":false},{"id":358,"text":" I","logprob":-0.015335083,"special":false},{"id":649,"text":"
+        can","logprob":-3.5762787e-7,"special":false},{"id":1520,"text":" help","logprob":-0.0013160706,"special":false},{"id":499,"text":"
         you","logprob":-0.0008840561,"special":false},{"id":449,"text":" with","logprob":-0.000014305115,"special":false},{"id":477,"text":"
-        or","logprob":-0.6582031,"special":false},{"id":1053,"text":" would","logprob":-0.0008378029,"special":false},{"id":499,"text":"
-        you","logprob":-0.0000013113022,"special":false},{"id":1093,"text":" like","logprob":-0.00037932396,"special":false},{"id":311,"text":"
-        to","logprob":-0.0000047683716,"special":false},{"id":6369,"text":" chat","logprob":-0.005405426,"special":false},{"id":30,"text":"?","logprob":-0.056884766,"special":false},{"id":128009,"text":"<|eot_id|>","logprob":-0.0006275177,"special":true}]}}]'
+        or","logprob":-0.6582031,"special":false},{"id":1053,"text":" would","logprob":-0.0008363724,"special":false},{"id":499,"text":"
+        you","logprob":-0.0000013113022,"special":false},{"id":1093,"text":" like","logprob":-0.0003736019,"special":false},{"id":311,"text":"
+        to","logprob":-0.0000047683716,"special":false},{"id":6369,"text":" chat","logprob":-0.0053977966,"special":false},{"id":30,"text":"?","logprob":-0.056274414,"special":false},{"id":128009,"text":"<|eot_id|>","logprob":-0.0006275177,"special":true}]}}]'
     headers:
       Connection:
       - keep-alive
       Content-Type:
       - application/json
       Date:
-      - Fri, 27 Dec 2024 18:09:38 GMT
+      - Thu, 06 Feb 2025 18:14:08 GMT
       Transfer-Encoding:
       - chunked
       access-control-allow-credentials:
@@ -51,28 +49,33 @@ interactions:
       vary:
       - origin, access-control-request-method, access-control-request-headers, Origin,
         Access-Control-Request-Method, Access-Control-Request-Headers
+      - origin, access-control-request-method, access-control-request-headers
       x-compute-characters:
       - '128'
       x-compute-time:
-      - '0.524935096'
+      - '0.555443295'
       x-compute-type:
       - 2-a10-g
       x-generated-tokens:
       - '26'
       x-inference-time:
-      - '524'
+      - '551'
       x-prompt-tokens:
       - '14'
+      x-proxied-host:
+      - internal.api-inference.huggingface.co
+      x-proxied-path:
+      - /
       x-queue-time:
-      - '0'
+      - '4'
       x-request-id:
-      - hZ4W55TpV8NIXDdDvwnG5
+      - KL9UFz
       x-sha:
       - 5f0b02c75b57c5855da9ae460ce51323ea669d8a
       x-time-per-token:
-      - '20'
+      - '21'
       x-total-time:
-      - '524'
+      - '555'
       x-validation-time:
       - '0'
     status:

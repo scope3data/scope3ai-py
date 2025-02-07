@@ -5,14 +5,15 @@ import cohere
 from scope3ai import Scope3AI
 
 
-async def main(message: str, max_tokens: int, api_key: str | None = None):
+async def main(message: str, model: str, max_tokens: int, api_key: str | None = None):
     scope3 = Scope3AI.init()
     co = cohere.AsyncClient(api_key=api_key) if api_key else cohere.AsyncClient()
 
     with scope3.trace() as tracer:
-        stream = co.chat_stream(message=message, max_tokens=max_tokens)
+        stream = co.chat_stream(message=message, model=model, max_tokens=max_tokens)
         async for event in stream:
-            print(event)
+            if event.event_type == "text-generation":
+                print(event.text, end="", flush=True)
 
         impact = await tracer.aimpact()
         print(f"Total Energy Wh: {impact.total_energy_wh}")
@@ -37,6 +38,12 @@ if __name__ == "__main__":
         type=int,
         default=100,
         help="Maximum number of tokens in the response",
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="command-r",
+        help="Model to use for the chat",
     )
     parser.add_argument(
         "--api-key",

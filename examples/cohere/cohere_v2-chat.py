@@ -2,7 +2,9 @@ import cohere
 from scope3ai import Scope3AI
 
 
-def main(model: str, message: str, role: str, api_key: str | None = None):
+def main(
+    model: str, message: str, role: str, max_tokens: int, api_key: str | None = None
+):
     scope3 = Scope3AI.init()
     co = cohere.ClientV2(api_key=api_key) if api_key else cohere.ClientV2()
 
@@ -10,6 +12,7 @@ def main(model: str, message: str, role: str, api_key: str | None = None):
         response = co.chat(
             model=model,
             messages=[{"role": role, "content": message}],
+            max_tokens=max_tokens,
         )
         print(response)
 
@@ -30,6 +33,12 @@ if __name__ == "__main__":
         type=str,
         default="command-r-plus-08-2024",
         help="Model to use for chat completion",
+    )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=100,
+        help="Maximum number of tokens in the response",
     )
     parser.add_argument(
         "--message",

@@ -9,9 +9,9 @@ USE_ALWAYS_LITELLM_TRACER = False
 
 #
 @pytest.mark.vcr
-def test_litellm_chat(tracer_with_sync_init):
+def test_litellm_chat_default(tracer_with_sync_init):
     response = litellm.completion(
-        model="huggingface/meta-llama/Meta-Llama-3-8B-Instruct",
+        model="command-r",
         messages=[{"role": "user", "content": "Hello World!"}],
         use_always_litellm_tracer=USE_ALWAYS_LITELLM_TRACER,
     )
@@ -19,8 +19,8 @@ def test_litellm_chat(tracer_with_sync_init):
     assert getattr(response, "scope3ai") is not None
     # TODO: Add this assert when AiApi support it
     # assert response.scope3ai.request.managed_service_id == PROVIDERS.LITELLM.value
-    assert response.scope3ai.request.input_tokens == 44
-    assert response.scope3ai.request.output_tokens == 69
+    assert response.scope3ai.request.input_tokens == 3
+    assert response.scope3ai.request.output_tokens == 21
     assert response.scope3ai.impact is not None
     assert response.scope3ai.impact.total_impact is not None
     assert response.scope3ai.impact.total_impact.usage_energy_wh > 0
@@ -32,7 +32,7 @@ def test_litellm_chat(tracer_with_sync_init):
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
-async def test_litellm_async_chat(tracer_with_sync_init):
+async def test_litellm_async_chat_default(tracer_with_sync_init):
     response = await litellm.acompletion(
         messages=[{"role": "user", "content": "Hello World!"}],
         model="command-r",
@@ -53,14 +53,16 @@ async def test_litellm_async_chat(tracer_with_sync_init):
 
 
 @pytest.mark.vcr
-def test_litellm_stream_chat(tracer_with_sync_init):
+def test_litellm_stream_chat_default(tracer_with_sync_init):
     stream = litellm.completion(
         messages=[{"role": "user", "content": "Hello World!"}],
-        model="claude-3-5-sonnet-20240620",
+        model="command-r",
         stream=True,
         use_always_litellm_tracer=USE_ALWAYS_LITELLM_TRACER,
     )
     for chunk in stream:
+        if chunk.choices[0].finish_reason is None:
+            continue
         assert getattr(chunk, "scope3ai") is not None
         assert chunk.scope3ai.impact is not None
         assert chunk.scope3ai.impact.total_impact is not None
@@ -73,14 +75,16 @@ def test_litellm_stream_chat(tracer_with_sync_init):
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
-async def test_litellm_async_stream_chat(tracer_with_sync_init):
+async def test_litellm_async_stream_chat_default(tracer_with_sync_init):
     stream = await litellm.acompletion(
         messages=[{"role": "user", "content": "Hello World!"}],
-        model="claude-3-5-sonnet-20240620",
+        model="command-r",
         stream=True,
         use_always_litellm_tracer=USE_ALWAYS_LITELLM_TRACER,
     )
     async for chunk in stream:
+        if chunk.choices[0].finish_reason is None:
+            continue
         assert getattr(chunk, "scope3ai") is not None
         assert chunk.scope3ai.impact is not None
         assert chunk.scope3ai.impact.total_impact is not None
@@ -92,7 +96,7 @@ async def test_litellm_async_stream_chat(tracer_with_sync_init):
 
 
 @pytest.mark.vcr
-def test_litellm_image_generation(tracer_with_sync_init):
+def test_litellm_image_generation_default(tracer_with_sync_init):
     response = litellm.image_generation(
         prompt="A serene landscape with mountains and a lake",
         model="dall-e-3",
@@ -117,7 +121,7 @@ def test_litellm_image_generation(tracer_with_sync_init):
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
-async def test_litellm_async_image_generation(tracer_with_sync_init):
+async def test_litellm_async_image_generation_default(tracer_with_sync_init):
     response = await litellm.aimage_generation(
         prompt="A futuristic cityscape at night",
         model="dall-e-3",
@@ -141,7 +145,7 @@ async def test_litellm_async_image_generation(tracer_with_sync_init):
 
 
 @pytest.mark.vcr
-def test_litellm_speech_to_text(tracer_with_sync_init):
+def test_litellm_speech_to_text_default(tracer_with_sync_init):
     datadir = Path(__file__).parent / "data"
     hello_there_audio = open((datadir / "hello_there.mp3").as_posix(), "rb")
 
@@ -172,7 +176,7 @@ def test_litellm_speech_to_text(tracer_with_sync_init):
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
-async def test_litellm_async_speech_to_text(tracer_with_sync_init):
+async def test_litellm_async_speech_to_text_default(tracer_with_sync_init):
     datadir = Path(__file__).parent / "data"
     hello_there_audio = open((datadir / "hello_there.mp3").as_posix(), "rb")
     response = await litellm.atranscription(
@@ -200,7 +204,7 @@ async def test_litellm_async_speech_to_text(tracer_with_sync_init):
 
 
 @pytest.mark.vcr
-def test_litellm_text_to_speech(tracer_with_sync_init):
+def test_litellm_text_to_speech_default(tracer_with_sync_init):
     response = litellm.speech(
         model="tts-1",
         input="Hello, this is a test of the speech synthesis system.",
@@ -229,7 +233,7 @@ def test_litellm_text_to_speech(tracer_with_sync_init):
 
 @pytest.mark.vcr
 @pytest.mark.asyncio
-async def test_litellm_async_text_to_speech(tracer_with_sync_init):
+async def test_litellm_async_text_to_speech_default(tracer_with_sync_init):
     response = await litellm.aspeech(
         model="tts-1",
         input="Hello, this is a test of the speech synthesis system.",

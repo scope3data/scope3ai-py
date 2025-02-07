@@ -22,13 +22,19 @@ This directory contains examples of using LiteLLM with environmental impact trac
 
 ### Completion
 ```bash
-python litellm-completion.py --model "gpt-4" --message "What is artificial intelligence?"
+uv run python -m examples.litellm.litellm-completion --model "gpt-4" --message "What is artificial intelligence?"
 
-python litellm-acompletion.py --message "Explain quantum computing" --max-tokens 200
+uv run python -m examples.litellm.litellm-acompletion --model "gpt-4" --message "Explain quantum computing" --max-tokens 200
 
-python litellm-image-generation.py --prompt "A beautiful sunset" --size "1024x1024"
+uv run python -m examples.litellm.litellm-image-generation --prompt "A beautiful sunset" --size "1024x1024"
 
-python litellm-speech.py --text "Hello world" --voice "alloy"
+uv run python -m examples.litellm.litellm-aimage-generation --prompt "A beautiful sunset" --size "1024x1024"
 
-python litellm-transcription.py --audio-path "recording.wav" --model "whisper-1"
+uv run python -m examples.litellm.litellm-speech --text "Hello world" --voice "alloy"
+
+uv run python -m examples.litellm.litellm-aspeech --text "Hello world" --voice "alloy"
+
+uv run python -m examples.litellm.litellm-transcription --audio-path "recording.wav" --model "whisper-1"
+
+uv run python -m examples.litellm.litellm-atranscription --audio-path "recording.wav" --model "whisper-1"
 ```

@@ -7,7 +7,6 @@ from scope3ai import Scope3AI
 
 async def main(model: str, prompt: str, size: str, api_key: str | None = None):
     scope3 = Scope3AI.init()
-
     with scope3.trace() as tracer:
         response = await aimage_generation(
             model=model, prompt=prompt, size=size, api_key=api_key

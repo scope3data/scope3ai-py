@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: '{"model": "command-r", "chat_history": [], "message": "Hello World!"}'
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '69'
+      Request-Source:
+      - unspecified:litellm
+      User-Agent:
+      - python-requests/2.32.3
+      accept:
+      - application/json
+      authorization:
+      - DUMMY
+      content-type:
+      - application/json
+    method: POST
+    uri: https://api.cohere.ai/v1/chat
+  response:
+    body:
+      string: "{\"response_id\":\"9c6d4f87-29e4-4b2d-bd83-af5aa2349747\",\"text\":\"Hello!
+        How's it going? I hope you're having a fantastic day! \U0001F60A\",\"generation_id\":\"bc03286a-44a8-404a-8e51-fff9882f468e\",\"chat_history\":[{\"role\":\"USER\",\"message\":\"Hello
+        World!\"},{\"role\":\"CHATBOT\",\"message\":\"Hello! How's it going? I hope
+        you're having a fantastic day! \U0001F60A\"}],\"finish_reason\":\"COMPLETE\",\"meta\":{\"api_version\":{\"version\":\"1\"},\"billed_units\":{\"input_tokens\":3,\"output_tokens\":18},\"tokens\":{\"input_tokens\":69,\"output_tokens\":18}}}"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Content-Length:
+      - '506'
+      Via:
+      - 1.1 google
+      access-control-expose-headers:
+      - X-Debug-Trace-ID
+      cache-control:
+      - no-cache, no-store, no-transform, must-revalidate, private, max-age=0
+      content-type:
+      - application/json
+      date:
+      - Thu, 06 Feb 2025 18:07:26 GMT
+      expires:
+      - Thu, 01 Jan 1970 00:00:00 UTC
+      num_chars:
+      - '432'
+      num_tokens:
+      - '21'
+      pragma:
+      - no-cache
+      server:
+      - envoy
+      vary:
+      - Origin
+      x-accel-expires:
+      - '0'
+      x-debug-trace-id:
+      - 7705da10a6c1899e63c5f19bccb89efc
+      x-endpoint-monthly-call-limit:
+      - '1000'
+      x-envoy-upstream-service-time:
+      - '241'
+      x-trial-endpoint-call-limit:
+      - '40'
+      x-trial-endpoint-call-remaining:
+      - '38'
+    status:
+      code: 200
+      message: OK
+version: 1

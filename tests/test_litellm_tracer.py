@@ -57,6 +57,8 @@ def test_litellm_stream_chat(tracer_with_sync_init):
         use_always_litellm_tracer=USE_ALWAYS_LITELLM_TRACER,
     )
     for chunk in stream:
+        if chunk.choices[0].finish_reason is None:
+            continue
         assert getattr(chunk, "scope3ai") is not None
         assert chunk.scope3ai.impact is not None
         assert chunk.scope3ai.impact.total_impact is not None
@@ -77,6 +79,8 @@ async def test_litellm_async_stream_chat(tracer_with_sync_init):
         use_always_litellm_tracer=USE_ALWAYS_LITELLM_TRACER,
     )
     async for chunk in stream:
+        if chunk.choices[0].finish_reason is None:
+            continue
         assert getattr(chunk, "scope3ai") is not None
         assert chunk.scope3ai.impact is not None
         assert chunk.scope3ai.impact.total_impact is not None

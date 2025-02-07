@@ -5,6 +5,7 @@ from typing import Any, Callable, Optional, Union
 from litellm import AsyncCompletions, Completions
 from litellm.types.utils import ModelResponse
 from litellm.utils import CustomStreamWrapper
+import tiktoken
 
 from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext, ImpactRow
@@ -41,27 +42,32 @@ def litellm_chat_wrapper_stream(  # type: ignore[misc]
     kwargs: Any,
 ) -> CustomStreamWrapper:
     timer_start = time.perf_counter()
-    stream = wrapped(*args, **kwargs)
     token_count = 0
+    keep_traces = not kwargs.pop("use_always_litellm_tracer", False)
+    with Scope3AI.get_instance().trace(keep_traces=keep_traces):
+        stream = wrapped(*args, **kwargs)
     for i, chunk in enumerate(stream):
-        if i > 0 and chunk.choices[0].finish_reason is None:
+        if i > 0:
             token_count += 1
-        request_latency = time.perf_counter() - timer_start
-
-        model = chunk.model
-        if model is not None:
-            scope3_row = ImpactRow(
-                model_id=model,
-                output_tokens=token_count,
-                request_duration_ms=float(request_latency) * 1000,
-            )
-            scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
-            if scope3ai_ctx is not None:
-                yield ChatCompletionChunk(**chunk.model_dump(), scope3ai=scope3ai_ctx)
-            else:
-                yield chunk
-        else:
+        if chunk.choices[0].finish_reason is None:
             yield chunk
+            continue
+        request_latency = time.perf_counter() - timer_start
+        model = args[0] if len(args) > 0 else kwargs.get("model")
+        messages = args[1] if len(args) > 1 else kwargs.get("messages")
+        prompt = " ".join([message.get("content") for message in messages])
+        encoder = tiktoken.get_encoding("cl100k_base")
+        input_tokens = len(encoder.encode(prompt))
+        if model is None:
+            model = chunk.model
+        scope3_row = ImpactRow(
+            model_id=model,
+            input_tokens=input_tokens,
+            output_tokens=token_count,
+            request_duration_ms=float(request_latency) * 1000,
+        )
+        scope3ai_ctx = Scope3AI.get_instance().submit_impact(scope3_row)
+        yield ChatCompletionChunk(**chunk.model_dump(), scope3ai=scope3ai_ctx)
 
 
 def litellm_chat_wrapper_non_stream(
@@ -79,9 +85,9 @@ def litellm_chat_wrapper_non_stream(
             setattr(response, "scope3ai", tracer.traces[0])
             return response
     request_latency = time.perf_counter() - timer_start
-    model = response.model
+    model = args[0] if len(args) > 0 else kwargs.get("model")
     if model is None:
-        return response
+        model = response.model
     scope3_row = ImpactRow(
         model_id=model,
         input_tokens=response.usage.prompt_tokens,
@@ -131,9 +137,9 @@ async def litellm_async_chat_wrapper_base(
             setattr(response, "scope3ai", tracer.traces[0])
             return response
     request_latency = time.perf_counter() - timer_start
-    model = response.model
+    model = args[0] if len(args) > 0 else kwargs.get("model")
     if model is None:
-        return response
+        model = response.model
     scope3_row = ImpactRow(
         model_id=model,
         input_tokens=response.usage.prompt_tokens,
@@ -166,25 +172,31 @@ async def litellm_async_chat_wrapper_stream(  # type: ignore[misc]
     kwargs: Any,
 ) -> CustomStreamWrapper:
     timer_start = time.perf_counter()
-    stream = await wrapped(*args, **kwargs)
+    keep_traces = not kwargs.pop("use_always_litellm_tracer", False)
+    with Scope3AI.get_instance().trace(keep_traces=keep_traces):
+        stream = await wrapped(*args, **kwargs)
     i = 0
     token_count = 0
     async for chunk in stream:
-        if i > 0 and chunk.choices[0].finish_reason is None:
+        if i > 0:
             token_count += 1
-        request_latency = time.perf_counter() - timer_start
-        model = chunk.model
-        if model is not None:
-            scope3_row = ImpactRow(
-                model_id=model,
-                output_tokens=token_count,
-                request_duration_ms=float(request_latency) * 1000,
-            )
-            scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
-            if scope3ai_ctx is not None:
-                yield ChatCompletionChunk(**chunk.model_dump(), scope3ai=scope3ai_ctx)
-            else:
-                yield chunk
-        else:
+        if chunk.choices[0].finish_reason is None:
+            i += 1
             yield chunk
-        i += 1
+            continue
+        request_latency = time.perf_counter() - timer_start
+        model = args[0] if len(args) > 0 else kwargs.get("model")
+        messages = args[1] if len(args) > 1 else kwargs.get("messages")
+        prompt = " ".join([message.get("content") for message in messages])
+        encoder = tiktoken.get_encoding("cl100k_base")
+        input_tokens = len(encoder.encode(prompt))
+        if model is None:
+            model = chunk.model
+        scope3_row = ImpactRow(
+            model_id=model,
+            input_tokens=input_tokens,
+            output_tokens=token_count,
+            request_duration_ms=float(request_latency) * 1000,
+        )
+        scope3ai_ctx = await Scope3AI.get_instance().asubmit_impact(scope3_row)
+        yield ChatCompletionChunk(**chunk.model_dump(), scope3ai=scope3ai_ctx)

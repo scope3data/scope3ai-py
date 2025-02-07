@@ -5,7 +5,9 @@ import cohere
 from scope3ai import Scope3AI
 
 
-async def main(model: str, message: str, role: str, api_key: str | None = None):
+async def main(
+    model: str, message: str, role: str, max_tokens: int, api_key: str | None = None
+):
     scope3 = Scope3AI.init()
     co = cohere.AsyncClientV2(api_key=api_key) if api_key else cohere.AsyncClientV2()
 
@@ -13,6 +15,7 @@ async def main(model: str, message: str, role: str, api_key: str | None = None):
         response = await co.chat(
             model=model,
             messages=[{"role": role, "content": message}],
+            max_tokens=max_tokens,
         )
         print(response)
 
@@ -39,6 +42,12 @@ if __name__ == "__main__":
         type=str,
         default="Hello world!",
         help="Message to send to the chat model",
+    )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=100,
+        help="Maximum number of tokens in the response",
     )
     parser.add_argument("--role", type=str, default="user", help="Role for the message")
     parser.add_argument(

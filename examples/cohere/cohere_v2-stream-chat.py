@@ -16,7 +16,12 @@ def main(
             max_tokens=max_tokens,
         )
         for event in stream:
-            print(event)
+            if (
+                hasattr(event, "delta")
+                and hasattr(event.delta, "message")
+                and event.delta.message.content
+            ):
+                print(event.delta.message.content.text, end="", flush=True)
 
         impact = tracer.impact()
         print(f"Total Energy Wh: {impact.total_energy_wh}")

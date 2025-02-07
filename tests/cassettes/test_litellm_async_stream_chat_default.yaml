@@ -1,0 +1,158 @@
+interactions:
+- request:
+    body: '{"model": "command-r", "chat_history": [], "stream": true, "message": "Hello
+      World!"}'
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '85'
+      Request-Source:
+      - unspecified:litellm
+      User-Agent:
+      - python-requests/2.32.3
+      accept:
+      - application/json
+      authorization:
+      - DUMMY
+      content-type:
+      - application/json
+    method: POST
+    uri: https://api.cohere.ai/v1/chat
+  response:
+    body:
+      string: "{\"is_finished\":false,\"event_type\":\"stream-start\",\"generation_id\":\"71b805cb-1470-40c6-bb19-9d7fa1d5742f\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"Hello\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"!\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        How\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"'s\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        it\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        going\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"?\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        I\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        hope\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        you\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"'re\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        having\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        a\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        fantastic\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        day\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"!\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        \U0001F60A\"}\n{\"is_finished\":true,\"event_type\":\"stream-end\",\"response\":{\"response_id\":\"c1d3cf83-2832-4638-91f9-34094522f9c7\",\"text\":\"Hello!
+        How's it going? I hope you're having a fantastic day! \U0001F60A\",\"generation_id\":\"71b805cb-1470-40c6-bb19-9d7fa1d5742f\",\"chat_history\":[{\"role\":\"USER\",\"message\":\"Hello
+        World!\"},{\"role\":\"CHATBOT\",\"message\":\"Hello! How's it going? I hope
+        you're having a fantastic day! \U0001F60A\"}],\"finish_reason\":\"COMPLETE\",\"meta\":{\"api_version\":{\"version\":\"1\"},\"billed_units\":{\"input_tokens\":3,\"output_tokens\":18},\"tokens\":{\"input_tokens\":69,\"output_tokens\":18}}},\"finish_reason\":\"COMPLETE\"}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 google
+      access-control-expose-headers:
+      - X-Debug-Trace-ID
+      cache-control:
+      - no-cache, no-store, no-transform, must-revalidate, private, max-age=0
+      content-type:
+      - application/stream+json
+      date:
+      - Thu, 06 Feb 2025 18:07:27 GMT
+      expires:
+      - Thu, 01 Jan 1970 00:00:00 UTC
+      pragma:
+      - no-cache
+      server:
+      - envoy
+      vary:
+      - Origin
+      x-accel-expires:
+      - '0'
+      x-debug-trace-id:
+      - a49977f260ad8617e56766a87be11669
+      x-endpoint-monthly-call-limit:
+      - '1000'
+      x-envoy-upstream-service-time:
+      - '65'
+      x-trial-endpoint-call-limit:
+      - '40'
+      x-trial-endpoint-call-remaining:
+      - '35'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"model": "command-r", "chat_history": [], "stream": true, "message": "Hello
+      World!"}'
+    headers:
+      accept:
+      - application/json
+      accept-encoding:
+      - gzip, deflate
+      authorization:
+      - DUMMY
+      connection:
+      - keep-alive
+      content-length:
+      - '85'
+      content-type:
+      - application/json
+      host:
+      - api.cohere.ai
+      request-source:
+      - unspecified:litellm
+      user-agent:
+      - litellm/1.53.3
+    method: POST
+    uri: https://api.cohere.ai/v1/chat
+  response:
+    body:
+      string: "{\"is_finished\":false,\"event_type\":\"stream-start\",\"generation_id\":\"888e9e3b-7e60-473c-8066-314790fd01ea\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"Hello\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"!\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        How\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"'s\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        it\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        going\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"?\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        I\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        hope\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        you\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"'re\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        having\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        a\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        fantastic\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        day\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"!\"}\n{\"is_finished\":false,\"event_type\":\"text-generation\",\"text\":\"
+        \U0001F60A\"}\n{\"is_finished\":true,\"event_type\":\"stream-end\",\"response\":{\"response_id\":\"c502e4a3-3a80-4631-bfcf-26df7c99ed7b\",\"text\":\"Hello!
+        How's it going? I hope you're having a fantastic day! \U0001F60A\",\"generation_id\":\"888e9e3b-7e60-473c-8066-314790fd01ea\",\"chat_history\":[{\"role\":\"USER\",\"message\":\"Hello
+        World!\"},{\"role\":\"CHATBOT\",\"message\":\"Hello! How's it going? I hope
+        you're having a fantastic day! \U0001F60A\"}],\"finish_reason\":\"COMPLETE\",\"meta\":{\"api_version\":{\"version\":\"1\"},\"billed_units\":{\"input_tokens\":3,\"output_tokens\":18},\"tokens\":{\"input_tokens\":69,\"output_tokens\":18}}},\"finish_reason\":\"COMPLETE\"}\n"
+    headers:
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 google
+      access-control-expose-headers:
+      - X-Debug-Trace-ID
+      cache-control:
+      - no-cache, no-store, no-transform, must-revalidate, private, max-age=0
+      content-type:
+      - application/stream+json
+      date:
+      - Thu, 06 Feb 2025 18:07:28 GMT
+      expires:
+      - Thu, 01 Jan 1970 00:00:00 UTC
+      pragma:
+      - no-cache
+      server:
+      - envoy
+      vary:
+      - Origin
+      x-accel-expires:
+      - '0'
+      x-debug-trace-id:
+      - 9da5a0626c75252098b6f8f0462c2b21
+      x-endpoint-monthly-call-limit:
+      - '1000'
+      x-envoy-upstream-service-time:
+      - '78'
+      x-trial-endpoint-call-limit:
+      - '40'
+      x-trial-endpoint-call-remaining:
+      - '34'
+    status:
+      code: 200
+      message: OK
+version: 1
