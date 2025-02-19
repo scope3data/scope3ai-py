@@ -6,7 +6,7 @@
 **Track the environmental impact of your use of AI !**
 
 The **Scope3AI Python SDK** provides an easy-to-use interface for interacting with [Scope3AI's API](https://aidocs.scope3.com/docs/overview).<br/>
-It allow you to record, trace, and analyze the impact of interactions with a focus on sustainability metrics.
+It allows you to record, trace, and analyze the impact of interactions (such as generative AI inference requests) with a focus on sustainability metrics.
 
 ![PyPI - Version](https://img.shields.io/pypi/v/scope3ai)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/scope3ai)
@@ -29,7 +29,7 @@ uv add scope3ai
 
 ## 📚 Library and SDK support Matrix
 
-| Library/SDK | Text generation | TTS | STT | Image Generation | Translation | Multimodal input | Multimodal output |
+| Library/SDK | Text generation | Text to Speech | Speech to Text | Image Generation | Translation | Multimodal input | Multimodal output |
 |-------------|-----------------|----|-----|------------------|-----------|------------------|-------------------|
 | Anthropic   | ✅              |    |     |                  |           |                  |
 | Cohere      | ✅              |    |     |                  |           |                  |
@@ -101,7 +101,7 @@ scope3 = Scope3AI.init()
 ### 1. Using Context Management for Tracing
 
 Within the context of a `trace`, all interactions are recorded and you can query the impact of the trace.
-As the interactions are captured and send to Scope3 AI for analysis, the impact is calculated and returned asynchronously.
+As the interactions are captured and sent to Scope3 AI for analysis, the impact is calculated and returned asynchronously.
 This will automatically wait for all traces to be processed and return the impact.
 
 ```python
