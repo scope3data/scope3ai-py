@@ -10,6 +10,7 @@ from openai.types.chat import ChatCompletionChunk as _ChatCompletionChunk
 
 from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.lib import Scope3AI
+from scope3ai.constants import CLIENTS, try_provider_for_client
 from scope3ai.tracers.utils.multimodal import (
     aggregate_multimodal,
     aggregate_multimodal_audio_content_output,
@@ -40,6 +41,7 @@ def _openai_chat_wrapper(
         http_response = response.http_response.json()
         model_used = http_response.get("model")
         scope3_row = ImpactRow(
+            managed_service_id=try_provider_for_client(CLIENTS.OPENAI),
             model_id=model_requested,
             model_used_id=model_used,
             input_tokens=http_response.get("usage", {}).get("prompt_tokens"),
@@ -62,6 +64,7 @@ def _openai_chat_wrapper(
         return response, scope3_row
     else:
         scope3_row = ImpactRow(
+            managed_service_id=try_provider_for_client(CLIENTS.OPENAI),
             model_id=model_requested,
             model_used_id=response.model,
             input_tokens=response.usage.prompt_tokens,
@@ -128,6 +131,7 @@ def openai_chat_wrapper_stream(
             model_used = chunk.model
 
             scope3_row = ImpactRow(
+                managed_service_id=try_provider_for_client(CLIENTS.OPENAI),
                 model_id=model_requested,
                 model_used_id=model_used,
                 input_tokens=chunk.usage.prompt_tokens,
@@ -184,6 +188,7 @@ async def openai_async_chat_wrapper_stream(
             model_used = chunk.model
 
             scope3_row = ImpactRow(
+                managed_service_id=try_provider_for_client(CLIENTS.OPENAI),
                 model_id=model_requested,
                 model_used_id=model_used,
                 input_tokens=chunk.usage.prompt_tokens,

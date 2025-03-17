@@ -11,6 +11,7 @@ from mistralai.models import CompletionEvent
 from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext
 from scope3ai.api.typesgen import ImpactRow
+from scope3ai.constants import CLIENTS, try_provider_for_client
 from scope3ai.tracers.utils.multimodal import aggregate_multimodal
 
 
@@ -35,6 +36,7 @@ def mistralai_v1_chat_wrapper(
     response = wrapped(*args, **kwargs)
     request_latency = time.perf_counter() - timer_start
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.MISTRALAI),
         model_id=response.model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
@@ -64,6 +66,7 @@ def mistralai_v1_chat_wrapper_stream(
             continue
         request_latency = time.perf_counter() - timer_start
         scope3_row = ImpactRow(
+            managed_service_id=try_provider_for_client(CLIENTS.MISTRALAI),
             model_id=model_name,
             input_tokens=chunk.data.usage.prompt_tokens,
             output_tokens=chunk.data.usage.completion_tokens,
@@ -84,6 +87,7 @@ async def mistralai_v1_async_chat_wrapper(
     response = await wrapped(*args, **kwargs)
     request_latency = time.perf_counter() - timer_start
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.MISTRALAI),
         model_id=response.model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
@@ -105,6 +109,7 @@ async def _generator(
         request_latency = time.perf_counter() - timer_start
         model_name = chunk.data.model
         scope3_row = ImpactRow(
+            managed_service_id=try_provider_for_client(CLIENTS.MISTRALAI),
             model_id=model_name,
             input_tokens=chunk.data.usage.prompt_tokens,
             output_tokens=chunk.data.usage.completion_tokens,

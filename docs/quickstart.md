@@ -56,15 +56,15 @@ from scope3ai import Scope3AI
 scope3 = Scope3AI.init()
 ```
 
-## Enable Specific Providers
+## Enable Specific Providers Clients
 
-By default, all supported providers are enabled if found in available installed
+By default, all supported provider clients are enabled if found in available installed
 libraries. You can specify which ones to enable:
 
 ```python
 scope3 = Scope3AI.init(
     api_key="YOUR_API_KEY",
-    providers=["openai", "anthropic", "cohere"]
+    provider_clients=["openai", "anthropic", "cohere"]
 )
 ```
 

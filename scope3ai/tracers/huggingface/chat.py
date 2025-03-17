@@ -15,6 +15,7 @@ from requests import Response
 from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.lib import Scope3AI
 from scope3ai.response_interceptor.requests_interceptor import requests_response_capture
+from scope3ai.constants import CLIENTS, try_provider_for_client
 
 HUGGING_FACE_CHAT_TASK = "chat"
 
@@ -58,6 +59,7 @@ def huggingface_chat_wrapper_non_stream(
     else:
         compute_time = time.perf_counter() - timer_start
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.HUGGINGFACE_HUB),
         model_id=model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.completion_tokens,
@@ -84,6 +86,7 @@ def huggingface_chat_wrapper_stream(
         token_count += 1
         request_latency = time.perf_counter() - timer_start
         scope3_row = ImpactRow(
+            managed_service_id=try_provider_for_client(CLIENTS.HUGGINGFACE_HUB),
             model_id=model,
             output_tokens=token_count,
             request_duration_ms=request_latency * 1000,
@@ -119,6 +122,7 @@ async def huggingface_async_chat_wrapper_non_stream(
     encoder = tiktoken.get_encoding("cl100k_base")
     output_tokens = len(encoder.encode(response.choices[0].message.content))
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.HUGGINGFACE_HUB),
         model_id=model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=output_tokens,
@@ -143,6 +147,7 @@ async def huggingface_async_chat_wrapper_stream(
         token_count += 1
         request_latency = time.perf_counter() - timer_start
         scope3_row = ImpactRow(
+            managed_service_id=try_provider_for_client(CLIENTS.HUGGINGFACE_HUB),
             model_id=model,
             output_tokens=token_count,
             request_duration_ms=request_latency
