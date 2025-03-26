@@ -88,7 +88,7 @@ _INSTRUMENTS = {
     CLIENTS.OPENAI.value: init_openai_instrumentor,
     CLIENTS.HUGGINGFACE_HUB.value: init_huggingface_hub_instrumentor,
     # TODO current tests use gemini
-    CLIENTS.GOOGLE_OPENAI.value: init_google_genai_instrumentor,
+    CLIENTS.GOOGLE_GENAI.value: init_google_genai_instrumentor,
     CLIENTS.LITELLM.value: init_litellm_instrumentor,
     CLIENTS.MISTRALAI.value: init_mistral_v1_instrumentor,
     CLIENTS.RESPONSE.value: init_response_instrumentor,

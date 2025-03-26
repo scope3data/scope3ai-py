@@ -5,7 +5,7 @@ from typing import Optional
 # client is an API provided by managed service providers or third parties to interact with managed service providers
 class CLIENTS(Enum):
     # some clients hide more than 1 provider, like monsieur Google. We want to distinguish between attaching to a client and sending a provider
-    GOOGLE_OPENAI = "google-openai"
+    GOOGLE_GENAI = "google-genai"
 
     OPENAI = "openai"
     ANTHROPIC = "anthropic"
@@ -58,8 +58,8 @@ class PROVIDERS(Enum):
 # API to Provider are many to many
 # but we assume they x = x for all the providers/clients in PROVIDER_CLIENTS
 PROVIDER_TO_CLIENT = {
-    PROVIDERS.GOOGLE_GEMINI: [CLIENTS.GOOGLE_OPENAI],
-    PROVIDERS.GOOGLE_VERTEX: [CLIENTS.GOOGLE_OPENAI],
+    PROVIDERS.GOOGLE_GEMINI: [CLIENTS.GOOGLE_GENAI],
+    PROVIDERS.GOOGLE_VERTEX: [CLIENTS.GOOGLE_GENAI],
     PROVIDERS.OPENAI: [CLIENTS.OPENAI],
     PROVIDERS.ANTHROPIC: [CLIENTS.ANTHROPIC],
     PROVIDERS.COHERE: [CLIENTS.COHERE],
@@ -70,7 +70,7 @@ PROVIDER_TO_CLIENT = {
 }
 
 CLIENT_TO_PROVIDER = {
-    CLIENTS.GOOGLE_OPENAI: [PROVIDERS.GOOGLE_GEMINI, PROVIDERS.GOOGLE_VERTEX],
+    CLIENTS.GOOGLE_GENAI: [PROVIDERS.GOOGLE_GEMINI, PROVIDERS.GOOGLE_VERTEX],
     CLIENTS.OPENAI: [PROVIDERS.OPENAI],
     CLIENTS.ANTHROPIC: [PROVIDERS.ANTHROPIC],
     CLIENTS.COHERE: [PROVIDERS.COHERE],

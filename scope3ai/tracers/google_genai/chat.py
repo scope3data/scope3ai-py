@@ -15,7 +15,7 @@ class GenerateContentResponse(_GenerateContentResponse):
 
 def get_impact_row(response: _GenerateContentResponse, duration_ms: float) -> ImpactRow:
     return ImpactRow(
-        managed_service_id=try_provider_for_client(CLIENTS.GOOGLE_OPENAI),
+        managed_service_id=try_provider_for_client(CLIENTS.GOOGLE_GENAI),
         model_id=response.model_version,
         input_tokens=response.usage_metadata.prompt_token_count,
         output_tokens=response.usage_metadata.candidates_token_count or 0,
