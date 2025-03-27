@@ -18,6 +18,7 @@ from anthropic.types.raw_message_stream_event import RawMessageStreamEvent
 from typing_extensions import override
 
 from scope3ai.api.types import Scope3AIContext, ImpactRow
+from scope3ai.constants import try_provider_for_client, CLIENTS
 from scope3ai.lib import Scope3AI
 
 
@@ -99,6 +100,7 @@ class AsyncMessageStream(_AsyncMessageStream):
         requests_latency = time.perf_counter() - timer_start
         if model_name is not None:
             scope3_row = ImpactRow(
+                managed_service_id=try_provider_for_client(CLIENTS.ANTHROPIC),
                 model_id=model_name,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
@@ -169,6 +171,7 @@ class Stream(_Stream[_T]):
                 request_latency = time.perf_counter() - timer_start
 
         scope3_row = ImpactRow(
+            managed_service_id=try_provider_for_client(CLIENTS.ANTHROPIC),
             model_id=model,
             input_tokens=input_tokens,
             output_tokens=output_tokens,
@@ -201,6 +204,7 @@ class AsyncStream(_AsyncStream[_T]):
                 request_latency = time.perf_counter() - timer_start
 
         scope3_row = ImpactRow(
+            managed_service_id=try_provider_for_client(CLIENTS.ANTHROPIC),
             model_id=model,
             input_tokens=input_tokens,
             output_tokens=output_tokens,
@@ -219,6 +223,7 @@ class AsyncStream(_AsyncStream[_T]):
 def _anthropic_chat_wrapper(response: Message, request_latency: float) -> Message:
     model_name = response.model
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.ANTHROPIC),
         model_id=model_name,
         input_tokens=response.usage.input_tokens,
         output_tokens=response.usage.output_tokens,
@@ -252,6 +257,7 @@ async def _anthropic_async_chat_wrapper(
 ) -> Message:
     model_name = response.model
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.ANTHROPIC),
         model_id=model_name,
         input_tokens=response.usage.input_tokens,
         output_tokens=response.usage.output_tokens,

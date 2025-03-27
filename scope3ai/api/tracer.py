@@ -4,6 +4,7 @@ from uuid import uuid4
 from .typesgen import ImpactResponse, ModeledRow
 
 
+# TODO Tracer is not BaseTracer?
 class Tracer:
     """
     Tracer is responsible for tracking and aggregating environmental impact metrics

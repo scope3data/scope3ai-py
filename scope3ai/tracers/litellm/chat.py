@@ -9,6 +9,7 @@ import tiktoken
 
 from scope3ai import Scope3AI
 from scope3ai.api.types import Scope3AIContext, ImpactRow
+from scope3ai.constants import CLIENTS, try_provider_for_client
 from scope3ai.tracers.utils.multimodal import (
     aggregate_multimodal,
     aggregate_multimodal_audio_content_output,
@@ -61,6 +62,7 @@ def litellm_chat_wrapper_stream(  # type: ignore[misc]
         if model is None:
             model = chunk.model
         scope3_row = ImpactRow(
+            managed_service_id=try_provider_for_client(CLIENTS.LITELLM),
             model_id=model,
             input_tokens=input_tokens,
             output_tokens=token_count,
@@ -89,6 +91,7 @@ def litellm_chat_wrapper_non_stream(
     if model is None:
         model = response.model
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.LITELLM),
         model_id=model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.total_tokens,
@@ -141,6 +144,7 @@ async def litellm_async_chat_wrapper_base(
     if model is None:
         model = response.model
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.LITELLM),
         model_id=model,
         input_tokens=response.usage.prompt_tokens,
         output_tokens=response.usage.total_tokens,
@@ -193,6 +197,7 @@ async def litellm_async_chat_wrapper_stream(  # type: ignore[misc]
         if model is None:
             model = chunk.model
         scope3_row = ImpactRow(
+            managed_service_id=try_provider_for_client(CLIENTS.LITELLM),
             model_id=model,
             input_tokens=input_tokens,
             output_tokens=token_count,

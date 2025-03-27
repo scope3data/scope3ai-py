@@ -11,6 +11,7 @@ from cohere.types.streamed_chat_response import (
     StreamEndStreamedChatResponse as _StreamEndStreamedChatResponse,
 )
 
+from scope3ai.constants import CLIENTS, try_provider_for_client
 from scope3ai.lib import Scope3AI
 from scope3ai.api.types import Scope3AIContext, ImpactRow
 
@@ -40,6 +41,7 @@ def cohere_chat_wrapper(
     request_latency = time.perf_counter() - timer_start
     model_name = kwargs.get("model", "command-r")
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.COHERE),
         model_id=model_name,
         input_tokens=response.meta.tokens.input_tokens,
         output_tokens=response.meta.tokens.output_tokens,
@@ -60,6 +62,7 @@ async def cohere_async_chat_wrapper(
     request_latency = time.perf_counter() - timer_start
     model_name = kwargs.get("model", "command-r")
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.COHERE),
         model_id=model_name,
         input_tokens=response.meta.tokens.input_tokens,
         output_tokens=response.meta.tokens.output_tokens,
@@ -84,6 +87,7 @@ def cohere_stream_chat_wrapper(
             input_tokens = event.response.meta.tokens.input_tokens
             output_tokens = event.response.meta.tokens.output_tokens
             scope3_row = ImpactRow(
+                managed_service_id=try_provider_for_client(CLIENTS.COHERE),
                 model_id=model_name,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
@@ -110,6 +114,7 @@ async def cohere_async_stream_chat_wrapper(
             input_tokens = event.response.meta.tokens.input_tokens
             output_tokens = event.response.meta.tokens.output_tokens
             scope3_row = ImpactRow(
+                managed_service_id=try_provider_for_client(CLIENTS.COHERE),
                 model_id=model_name,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,

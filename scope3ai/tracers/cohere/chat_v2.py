@@ -12,6 +12,7 @@ from cohere.types.streamed_chat_response_v2 import (
 
 from scope3ai.api.types import ImpactRow, Scope3AIContext
 from scope3ai.lib import Scope3AI
+from scope3ai.constants import CLIENTS, try_provider_for_client
 
 
 class ChatResponse(_ChatResponse):
@@ -43,6 +44,7 @@ def cohere_chat_v2_wrapper(
     request_latency = time.perf_counter() - timer_start
     model_name = kwargs["model"]
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.COHERE),
         model_id=model_name,
         input_tokens=response.usage.tokens.input_tokens,
         output_tokens=response.usage.tokens.output_tokens,
@@ -63,6 +65,7 @@ async def cohere_async_chat_v2_wrapper(
     request_latency = time.perf_counter() - timer_start
     model_name = kwargs["model"]
     scope3_row = ImpactRow(
+        managed_service_id=try_provider_for_client(CLIENTS.COHERE),
         model_id=model_name,
         input_tokens=response.usage.tokens.input_tokens,
         output_tokens=response.usage.tokens.output_tokens,
@@ -88,6 +91,7 @@ def cohere_stream_chat_v2_wrapper(
             input_tokens = event.delta.usage.tokens.input_tokens
             output_tokens = event.delta.usage.tokens.output_tokens
             scope3_row = ImpactRow(
+                managed_service_id=try_provider_for_client(CLIENTS.COHERE),
                 model_id=model_name,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
@@ -113,6 +117,7 @@ async def cohere_async_stream_chat_v2_wrapper(
             input_tokens = event.delta.usage.tokens.input_tokens
             output_tokens = event.delta.usage.tokens.output_tokens
             scope3_row = ImpactRow(
+                managed_service_id=try_provider_for_client(CLIENTS.COHERE),
                 model_id=model_name,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,

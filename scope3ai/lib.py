@@ -13,7 +13,7 @@ from .api.client import AsyncClient, Client
 from .api.defaults import DEFAULT_API_URL, DEFAULT_APPLICATION_ID
 from .api.tracer import Tracer
 from .api.types import ImpactRequest, ImpactResponse, ImpactRow, Scope3AIContext
-from .constants import PROVIDERS
+from .constants import CLIENTS
 from .worker import BackgroundWorker
 
 logger = logging.getLogger("scope3ai.lib")
@@ -83,17 +83,19 @@ def init_response_instrumentor() -> None:
 
 
 _INSTRUMENTS = {
-    PROVIDERS.ANTROPIC.value: init_anthropic_instrumentor,
-    PROVIDERS.COHERE.value: init_cohere_instrumentor,
-    PROVIDERS.OPENAI.value: init_openai_instrumentor,
-    PROVIDERS.HUGGINGFACE_HUB.value: init_huggingface_hub_instrumentor,
-    PROVIDERS.GOOGLE_GENAI.value: init_google_genai_instrumentor,
-    PROVIDERS.LITELLM.value: init_litellm_instrumentor,
-    PROVIDERS.MISTRALAI.value: init_mistral_v1_instrumentor,
-    PROVIDERS.RESPONSE.value: init_response_instrumentor,
+    CLIENTS.ANTHROPIC.value: init_anthropic_instrumentor,
+    CLIENTS.COHERE.value: init_cohere_instrumentor,
+    CLIENTS.OPENAI.value: init_openai_instrumentor,
+    CLIENTS.HUGGINGFACE_HUB.value: init_huggingface_hub_instrumentor,
+    # TODO current tests use gemini
+    CLIENTS.GOOGLE_GENAI.value: init_google_genai_instrumentor,
+    CLIENTS.LITELLM.value: init_litellm_instrumentor,
+    CLIENTS.MISTRALAI.value: init_mistral_v1_instrumentor,
+    CLIENTS.RESPONSE.value: init_response_instrumentor,
 }
 
-_RE_INIT_PROVIDERS = [PROVIDERS.RESPONSE.value]
+# TODO what it means / why reinit is allowed here
+_RE_INIT_CLIENTS = [CLIENTS.RESPONSE.value]
 
 
 def generate_id() -> str:
@@ -115,7 +117,7 @@ class Scope3AI:
     _instance: Optional["Scope3AI"] = None
     _tracer: ContextVar[List[Tracer]] = ContextVar("tracer", default=[])
     _worker: Optional[BackgroundWorker] = None
-    _providers: List[str] = []
+    _clients: List[str] = []
     _keep_tracers: bool = False
 
     def __new__(cls, *args, **kwargs):
@@ -141,7 +143,8 @@ class Scope3AI:
         api_url: Optional[str] = None,
         sync_mode: bool = False,
         enable_debug_logging: bool = False,
-        providers: Optional[List[str]] = None,
+        # we have provider_clients and not clients naming here because client also has client_id which is not a [provider] client but a [scope3] client
+        provider_clients: Optional[List[str]] = None,
         # metadata for scope3
         environment: Optional[str] = None,
         client_id: Optional[str] = None,
@@ -160,8 +163,8 @@ class Scope3AI:
                 set via `SCOPE3AI_SYNC_MODE` environment variable. Defaults to False.
             enable_debug_logging (bool, optional): Enable debug level logging. Can be set via
                 `SCOPE3AI_DEBUG_LOGGING` environment variable. Defaults to False.
-            providers (List[str], optional): List of providers to instrument. If None,
-                all available providers will be instrumented.
+            clients (List[str], optional): List of provider clients to instrument. If None,
+                all available provider clients will be instrumented.
             environment (str, optional): The environment name (e.g. "production", "staging").
                 Can be set via `SCOPE3AI_ENVIRONMENT` environment variable.
             client_id (str, optional): Client identifier for grouping traces. Can be set via
@@ -209,13 +212,14 @@ class Scope3AI:
         if enable_debug_logging:
             self._init_logging()
 
-        if providers is None:
-            providers = list(_INSTRUMENTS.keys())
+        clients = provider_clients
+        if clients is None:
+            clients = list(_INSTRUMENTS.keys())
 
         http_client_options = {"api_key": self.api_key, "api_url": self.api_url}
         self._sync_client = Client(**http_client_options)
         self._async_client = AsyncClient(**http_client_options)
-        self._init_providers(providers)
+        self._init_clients(clients)
         self._init_atexit()
         return cls._instance
 
@@ -395,18 +399,16 @@ class Scope3AI:
         self._tracer.get().remove(tracer)
         tracer._unlink_parent(self.current_tracer)
 
-    def _init_providers(self, providers: List[str]) -> None:
-        for provider in providers:
-            if provider not in _INSTRUMENTS:
-                raise Scope3AIError(
-                    f"Could not find tracer for the `{provider}` provider."
-                )
-            if provider in self._providers and provider not in _RE_INIT_PROVIDERS:
+    def _init_clients(self, clients: List[str]) -> None:
+        for client in clients:
+            if client not in _INSTRUMENTS:
+                raise Scope3AIError(f"Could not find tracer for the `{client}` client.")
+            if client in self._clients and client not in _RE_INIT_CLIENTS:
                 # already initialized
                 continue
-            init_func = _INSTRUMENTS[provider]
+            init_func = _INSTRUMENTS[client]
             init_func()
-            self._providers.append(provider)
+            self._clients.append(client)
 
     def _ensure_worker(self) -> None:
         if not self._worker:
